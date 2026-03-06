@@ -56,8 +56,16 @@ class GameLevelCustom {
             downLeft: { row: 0, start: 0, columns: 3 },
             hitbox: { widthPercentage: 0.1, heightPercentage: 0.2 },
             dialogues: ['Ok you can pass now'],
+            interactionCount: 0,
             reaction: function() { if (this.dialogueSystem) { this.showReactionDialogue(); } else { console.log(this.greeting); } },
-            interact: function() { if (this.dialogueSystem) { this.showRandomDialogue(); } }
+            interact: function() { 
+                this.interactionCount++;
+                if (this.interactionCount === 1) {
+                    if (this.destroy && typeof this.destroy === 'function') {
+                        this.destroy();
+                    }
+                }
+            }
         };
         const dbarrier_1 = {
             id: 'dbarrier_1', x: 6, y: 242, width: 163, height: 7, visible: true /* BUILDER_DEFAULT */,
