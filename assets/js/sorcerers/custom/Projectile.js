@@ -1,4 +1,4 @@
-import Character from '../MansionLogic/Character.js';
+import Character from '../essentials/Character.js';
 
 /*
 Projectile code reused from the Mansion Game boss fight from CSSE Tri 1
