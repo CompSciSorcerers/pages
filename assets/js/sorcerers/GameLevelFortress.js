@@ -110,7 +110,7 @@ class GameLevelFortress {
             width: width,
             height: 20,
             color: 'rgba(139, 69, 19, 0.8)',
-            visible: true,
+            visible: false,
             zIndex: 10
         };
 
