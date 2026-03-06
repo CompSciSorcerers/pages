@@ -2,11 +2,10 @@ import GameEnvBackground  from "./essentials/GameEnvBackground.js";
 import Player from "./essentials/Player.js";
 import Npc from './essentials/Npc.js';
 import Barrier from './essentials/Barrier.js';
-import Enemy from './essentials/Enemy.js';
 import Scythe from './custom/Scythe.js';
 
 class GameLevelFortress {
-   static friendlyName = "Fortress";
+   static friendlyName = "Level 6: Fortress";
    
    constructor(gameEnv){
 
@@ -99,13 +98,23 @@ class GameLevelFortress {
             ],
 
             reaction: function() {
-                // Find the NPC instance and call showRandomDialogue
-                const npcInstance = this.gameEnv?.gameObjects?.find(obj => 
-                    obj.spriteData && obj.spriteData.id === this.id
-                );
-                if (npcInstance && npcInstance.showRandomDialogue) {
-                    npcInstance.showRandomDialogue();
+                // Clear any existing dialogue first to prevent duplicates
+                if (this.dialogueSystem && this.dialogueSystem.isDialogueOpen()) {
+                    this.dialogueSystem.closeDialogue();
                 }
+                
+                // Create a new dialogue system if needed
+                if (!this.dialogueSystem) {
+                    this.dialogueSystem = new DialogueSystem();
+                }
+                
+                // Show portal dialogue with buttons
+                const whattosay = this.data.dialogues[Math.floor(Math.random() * this.data.dialogues.length)];
+                this.dialogueSystem.showDialogue(
+                    whattosay,
+                    "Panicked NPC",
+                    this.spriteData.src
+                );
             },
 
             // We don't want an interaction function, so we set it to an empty function
