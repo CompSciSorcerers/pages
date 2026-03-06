@@ -3,7 +3,7 @@ import GameEnvBackground from './essentials/GameEnvBackground.js';
 import Player from './essentials/Player.js';
 import Npc from './essentials/Npc.js';
 import Barrier from './essentials/Barrier.js';
-import GameLevelMaze from './GameLevelMaze (1).js';
+import GameLevelMaze from './GameLevelMaze.js';
 
 class GameLevelMaze {
     constructor(gameEnv) {
@@ -332,4 +332,4 @@ this.classes = [      { class: GameEnvBackground, data: bgData },
     }
 }
 
-export default GameLevelMaze;;
+export default GameLevelMaze;
