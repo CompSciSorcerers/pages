@@ -1,6 +1,7 @@
 import GameEnvBackground  from "./essentials/GameEnvBackground.js";
 import Player from "./essentials/Player.js";
 import Npc from './essentials/Npc.js';
+import Barrier from './essentials/Barrier.js';
 
 class GameLevelFortress {
    constructor(gameEnv){
@@ -70,16 +71,16 @@ class GameLevelFortress {
         };
 
         // This is the panicked npc
-        const sprite_src_zombie = path + "/images/mansionGame/zombieNpc.png";
-        const sprite_greet_zombie = "Hi, I'm a zombie.";
+        const paniced_npc_src = path + "/images/mansionGame/zombieNpc.png";
+        const PANICED_NPC_SCALE_FACTOR = 4;
         const sprite_data_zombie1 = {
             id: 'Panicked NPC',
-            greeting: sprite_greet_zombie,
-            src: sprite_src_zombie,
-            SCALE_FACTOR: 4,
+            greeting: "Help!",
+            src: paniced_npc_src,
+            SCALE_FACTOR: PANICED_NPC_SCALE_FACTOR,
             ANIMATION_RATE: 30,
             pixels: {width: 3600, height: 1200},
-            INIT_POSITION: {x: (width * 9 / 16), y: (height * 1 / 4)},
+            INIT_POSITION: {x: (width * 9 / 16), y: height - (height / PANICED_NPC_SCALE_FACTOR)},
             orientation: {rows: 1, columns: 3 },
             down: {row: 0, start: 0, columns: 3 },
             hitbox: {widthPercentage: 0.2, heightPercentage: 0.2},
@@ -96,62 +97,16 @@ class GameLevelFortress {
             interact: function() {}
         };
 
-        // invisible sprite for door collision that handles going to lv6 battle room
-        const sprite_src_bossdoor = path + "/images/mansionGame/invisDoorCollisionSprite.png";
-        const sprite_greet_bossdoor = "Battle the Reaper? Press E";
-        const sprite_data_bossdoor = {
-            id: 'Door',
-            greeting: sprite_greet_bossdoor,
-            src: sprite_src_bossdoor,
-            SCALE_FACTOR: 6,
-            ANIMATION_RATE: 100,
-            pixels: {width: 2029, height: 2025},
-            INIT_POSITION: {x: (width * 37 / 80), y: (height / 8)},
-            orientation: {rows: 1, columns: 1},
-            down: {row: 0, start: 0, columns: 1},
-            hitbox: {widthPercentage: 0.1, heightPercentage: 0.2},
-            dialogues: [
-                "Many have entered. Few have returned.",
-                "Dangerous things await you beyond this door..",
-                "Prepare yourself. The journey beyond won't be easy."
-            ],
-            reaction: function() {
-                // Don't show any reaction dialogue - this prevents the first alert
-                // The interact function will handle all dialogue instead
-            },
-            // Ask the player whether they want to enter the doors-- if they do, move to the battle room
-            interact: function() {
-                // Placeholder empty interaction function
-                // Replace with actual dialogue system when needed
-            }
-        };
-
-        const sprite_src_chair = path + "/images/mansionGame/invisDoorCollisionSprite.png";
-        const sprite_data_chair = {
-            id: 'Chair',
-            greeting: "Don't sit on me!",
-            src: sprite_src_chair,
-            SCALE_FACTOR: 6,
-            ANIMATION_RATE: 100,
-            pixels: {width: 2029, height: 2025},
-            INIT_POSITION: {x: (width * 8 / 80), y: (height * 1 / 4)},
-            orientation: {rows: 1, columns: 1},
-            down: {row: 0, start: 0, columns: 1},
-            hitbox: {widthPercentage: 0.1, heightPercentage: 0.2}
-        };
-
-        const sprite_src_chair2 = path + "/images/mansionGame/invisDoorCollisionSprite.png";
-        const sprite_data_chair2 = {
-            id: 'Chair 2',
-            greeting: "Don't sit on me!",
-            src: sprite_src_chair2,
-            SCALE_FACTOR: 6,
-            ANIMATION_RATE: 100,
-            pixels: {width: 2029, height: 2025},
-            INIT_POSITION: {x: (width * 71 / 80), y: (height * 9 / 40)},
-            orientation: {rows: 1, columns: 1},
-            down: {row: 0, start: 0, columns: 1},
-            hitbox: {widthPercentage: 0.1, heightPercentage: 0.2}
+        // Barrier at one-third height from bottom
+        const barrier_data = {
+            id: 'bottom_barrier',
+            x: 0,
+            y: height - (height / 3),
+            width: width,
+            height: 20,
+            color: 'rgba(139, 69, 19, 0.8)',
+            visible: true,
+            zIndex: 10
         };
 
         // This is every sprite we want the game engine to render, and with whatever data
@@ -159,9 +114,7 @@ class GameLevelFortress {
             {class: GameEnvBackground, data: image_data_chamber},
             {class: Player, data: sprite_data_mc},
             {class: Npc, data: sprite_data_zombie1},
-            {class: Npc, data: sprite_data_bossdoor},
-            {class: Npc, data: sprite_data_chair},
-            {class: Npc, data: sprite_data_chair2}
+            {class: Barrier, data: barrier_data}
         ];
 
     };
