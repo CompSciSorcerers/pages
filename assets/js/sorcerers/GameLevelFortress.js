@@ -94,8 +94,14 @@ class GameLevelFortress {
                 "I'm trapped! Please help me!"
             ],
 
-            reaction: () => {
-                this.showRandomDialogue();
+            reaction: function() {
+                // Find the NPC instance and call showRandomDialogue
+                const npcInstance = this.gameEnv?.gameObjects?.find(obj => 
+                    obj.spriteData && obj.spriteData.id === this.id
+                );
+                if (npcInstance && npcInstance.showRandomDialogue) {
+                    npcInstance.showRandomDialogue();
+                }
             },
 
             // We don't want an interaction function, so we set it to an empty function
