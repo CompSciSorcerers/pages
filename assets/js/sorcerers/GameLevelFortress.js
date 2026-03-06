@@ -69,11 +69,11 @@ class GameLevelFortress {
             keypress: {up: 87, left: 65, down: 83, right: 68} // W, A, S, D
         };
 
-        // This is the zombie npc
+        // This is the panicked npc
         const sprite_src_zombie = path + "/images/mansionGame/zombieNpc.png";
         const sprite_greet_zombie = "Hi, I'm a zombie.";
         const sprite_data_zombie1 = {
-            id: 'ZombieNPC1',
+            id: 'Panicked NPC',
             greeting: sprite_greet_zombie,
             src: sprite_src_zombie,
             SCALE_FACTOR: 4,
@@ -85,25 +85,15 @@ class GameLevelFortress {
             hitbox: {widthPercentage: 0.2, heightPercentage: 0.2},
             // Add dialogues array for random messages
             dialogues: [
-                "I heard the boss is waiting for you...",
-                "Enter if you dare... he's waiting for you...",
-                "I heard the Reaper himself was in there.",
-                "You have no chance... his power is unstoppable...",
-                "No one has survived a battle against the Reaper.",
-                "Haha! You want to battle my boss? You'll die within the first minute...",
-                "Go ahead. I aint stoppin' you. The Reaper'll finish you clean.",
-                "You are a fool to challenge the Reaper.",
-                "You will end up like me once you face the Reaper.",
-                "Are you the next opponent for my master? That's unfortunate for you.",
+                "I'm so scared! The scythes have been comming for me!",
+                "Rumor has it that missiles with scythes!",
+                "I don't want to face the scythes and missiles!",
+                "Flee for yourself! I'll be hit before you can save me!",
+                "Try dodging the scythes and missiles! It's your only hope!",
+                "I'm trapped! Please help me!"
             ],
-            reaction: function() {
-                // Don't do anything on touch
-                // The Zombie only speaks when interacted with
-            },
-            interact: function() {
-                // Placeholder empty interaction function
-                // Replace with actual dialogue system when needed
-            }
+            // Use the default reaction function, and have no interaction function
+            interact: function() {}
         };
 
         // invisible sprite for door collision that handles going to lv6 battle room
