@@ -98,17 +98,21 @@ class GameLevelFortress {
                 "I'm trapped! Please help me!"
             ],
 
-            reaction: function() {
+            // This is the reaction when the npc is interacted with -- empty for no reaction
+            reaction: function() {},
+
+            // This is the interaction function
+            interact: function() {
                 // Clear any existing dialogue first to prevent duplicates
                 if (this.dialogueSystem && this.dialogueSystem.isDialogueOpen()) {
                     this.dialogueSystem.closeDialogue();
                 }
-                
+
                 // Create a new dialogue system if needed
                 if (!this.dialogueSystem) {
                     this.dialogueSystem = new DialogueSystem();
                 }
-                
+
                 // Show portal dialogue with buttons
                 const whattosay = this.data.dialogues[Math.floor(Math.random() * this.data.dialogues.length)];
                 this.dialogueSystem.showDialogue(
@@ -116,10 +120,7 @@ class GameLevelFortress {
                     "Panicked NPC",
                     this.spriteData.src
                 );
-            },
-
-            // We don't want an interaction function, so we set it to an empty function
-            interact: () => {}
+            }
         };
 
         // Barrier at one-third height from bottom
