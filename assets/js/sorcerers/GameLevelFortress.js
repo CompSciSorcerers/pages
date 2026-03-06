@@ -2,6 +2,8 @@ import GameEnvBackground  from "./essentials/GameEnvBackground.js";
 import Player from "./essentials/Player.js";
 import Npc from './essentials/Npc.js';
 import Barrier from './essentials/Barrier.js';
+import Enemy from './essentials/Enemy.js';
+import Scythe from './custom/Scythe.js';
 
 class GameLevelFortress {
    static friendlyName = "Fortress";
@@ -10,6 +12,8 @@ class GameLevelFortress {
 
         // keep reference to gameEnv for lifecycle methods
         this.gameEnv = gameEnv;
+        this.scytheSpawnTimer = 0;
+        this.scytheSpawnInterval = 120; // Spawn scythe every 2 seconds (60 FPS)
 
         let width = gameEnv.innerWidth;
         let height = gameEnv.innerHeight;
@@ -128,7 +132,33 @@ class GameLevelFortress {
             {class: Barrier, data: barrier_data}
         ];
 
-    };
+        // Start spawning scythes
+        this.startScytheSpawning();
+    }
+
+    startScytheSpawning() {
+        // Override the game loop to add scythe spawning logic
+        const originalUpdate = this.gameEnv.gameLoop;
+        const self = this;
+        
+        this.gameEnv.gameLoop = function() {
+            // Call original game loop
+            originalUpdate.call(this);
+            
+            // Spawn scythes at intervals
+            self.scytheSpawnTimer++;
+            if (self.scytheSpawnTimer >= self.scytheSpawnInterval) {
+                self.spawnScythe();
+                self.scytheSpawnTimer = 0;
+            }
+        };
+    }
+
+    spawnScythe() {
+        const scythe = new Scythe(this.gameEnv);
+        this.gameEnv.gameObjects.push(scythe);
+        this.gameEnv.container.appendChild(scythe.canvas);
+    }
 }
 
 export default GameLevelFortress;
