@@ -26,7 +26,7 @@ class GameLevelFortress {
         // Level music: play Legend of Zelda theme when entering this level
         // update: now changed to mario castle theme
         // Will be stopped when transitioning to the battle room below
-        let randomSong = ["marioCastle.mp3", "legendZelda.mp3"][Math.floor(Math.random()*2)]
+        let randomSong = ["marioCastle.mp3", "legendZelda.mp3"][Math.floor(Math.random() * 2)];
         const levelMusic = new Audio(path + `/assets/sounds/mansionGame/${randomSong}`);
         levelMusic.loop = true;
         levelMusic.volume = 0.3;
@@ -105,41 +105,6 @@ class GameLevelFortress {
                 // Replace with actual dialogue system when needed
             }
         };
-
-        const sprite_data_zombie2 = {
-            id: 'ZombieNPC2',
-            greeting: sprite_greet_zombie,
-            src: sprite_src_zombie,
-            SCALE_FACTOR: 4,
-            ANIMATION_RATE: 30,
-            pixels: {width: 3600, height: 1200},
-            INIT_POSITION: {x: (width * 5.5 / 16), y: (height * 1 / 4)},
-            orientation: {rows: 1, columns: 3 },
-            down: {row: 0, start: 0, columns: 3 , mirror: true},
-            hitbox: {widthPercentage: 0.2, heightPercentage: 0.2},
-            // Add dialogues array for random messages
-            dialogues: [
-                "Boss.js inherits and extends Enemy.js to add more danger.",
-                "When you enter the battle room, your player becomes a FightingPlayer object, which extends the Player class.",
-                "The arrows and fireballs that you fight with are all Projectile objects.",
-                "The Reaper's scythe is a Boomerang object- meaning, it moves in an ellipse.",
-                "I was supposed to be a harmless NPC... then they gave me dialogue arrays.",
-                "All of this runs in a continuous update loop — one tick at a time.",
-                "Both the arrows and fireballs are Projectile objects. Code reuse is peak!",
-                "If I ever freeze, check the console. I might've thrown an error.",
-                "The Reaper's attack is so powerful, it takes a Desmos graph to understand its power.", // reference to the desmos graph we used to calculate the scythe path!
-                "*brains*"
-            ],
-            reaction: function() {
-                // Don't do anything on touch
-                // The Zombie only speaks when interacted with
-            },
-            interact: function() {
-                // Placeholder empty interaction function
-                // Replace with actual dialogue system when needed
-            }
-        }; 
-
 
         // invisible sprite for door collision that handles going to lv6 battle room
         const sprite_src_bossdoor = path + "/images/mansionGame/invisDoorCollisionSprite.png";
