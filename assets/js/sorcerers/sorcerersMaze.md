@@ -12,9 +12,9 @@ permalink: /gamify/sorcerers-maze
 <script type="module">
 
     // Adventure Game assets locations
-    import Game from "/assets/js/sorcerers/essentials/Game.js";
-    import GameLevelMaze from "/assets/js/sorcerers/GameLevelMaze.js";
-    import { pythonURI, javaURI, fetchOptions } from '/assets/js/api/config.js';
+    import Game from "{{site.baseurl}}/assets/js/sorcerers/essentials/Game.js";
+    import GameLevelMaze from "{{site.baseurl}}/assets/js/sorcerers/GameLevelMaze.js";
+    import { pythonURI, javaURI, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js';
 
     const gameLevelClasses = [GameLevelMaze];
 

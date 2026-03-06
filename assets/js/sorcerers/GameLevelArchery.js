@@ -62,7 +62,7 @@ class GameLevelArchery {
         down: {row: 0, start: 0, columns: 1},
         hitbox: {widthPercentage: 0.1, heightPercentage: 0.2},
         dialogues: [
-            "Are you ready to play some archery"
+            "Are you ready to play some archery?"
         ],
         reaction: function() {
             // Don't show any reaction dialogue - this prevents the first alert
