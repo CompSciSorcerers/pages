@@ -5,7 +5,7 @@ import Npc from './essentials/Npc.js';
 import Barrier from './essentials/Barrier.js';
 import GameLevelMaze from './GameLevelMaze (1).js';
 
-class GameLevelCustom {
+class GameLevelMaze {
     constructor(gameEnv) {
         const path = gameEnv.path;
         const width = gameEnv.innerWidth;
@@ -62,7 +62,7 @@ class GameLevelCustom {
             interact: function() { 
                 this.interactionCount++;
                 if (this.interactionCount === 1) {
-                    if (thisx && typeof this.destroy === 'function') {
+                    if (this && typeof this.destroy === 'function') {
                         this.destroy();
                     }
                 }
