@@ -77,7 +77,7 @@ class GameLevelFortress {
         // This is the panicked npc
         const paniced_npc_src = path + "/images/mansionGame/zombieNpc.png";
         const PANICED_NPC_SCALE_FACTOR = 4;
-        const sprite_data_zombie1 = {
+        const sprite_data_panic_npc = {
             id: 'Panicked NPC',
             greeting: "Help!",
             src: paniced_npc_src,
@@ -139,7 +139,7 @@ class GameLevelFortress {
         this.classes = [
             {class: GameEnvBackground, data: image_data_chamber},
             {class: Player, data: sprite_data_mc},
-            {class: Npc, data: sprite_data_zombie1},
+            {class: Npc, data: sprite_data_panic_npc},
             {class: Barrier, data: barrier_data}
         ];
 
