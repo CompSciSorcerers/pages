@@ -1,7 +1,4 @@
 import Character from '../MansionLogic/Character.js';
-import showDeathScreen from './DeathScreen.js';
-import { updatePlayerHealthBar } from './HealthBars.js';
-import showEndScreen from './EndScreen.js';
 
 /*
 Projectile code reused from the Mansion Game boss fight from CSSE Tri 1
@@ -84,8 +81,7 @@ class Projectile extends Character {
         if (!this.imageLoaded) {
             return;  // Don't try to draw until image is loaded
         }
-        // Rotate projectile to face travel direction (handles diagonal travel)
-        // Compute angle of travel
+
         const travelAngle = Math.atan2(this.velocity.y, this.velocity.x); // radians
 
         // Base angle depends on how the sprite image faces by default
@@ -102,15 +98,12 @@ class Projectile extends Character {
             const col = this.frameIndex % this.frameCols;
             const row = Math.floor(this.frameIndex / this.frameRows);
 
-            // Use logical display dimensions for rotation to avoid clipping
             const dstW = Math.max(1, Math.floor(this.width));
             const dstH = Math.max(1, Math.floor(this.height));
 
-            // Resize canvas to destination size
             this.canvas.width = dstW;
             this.canvas.height = dstH;
 
-            // Draw rotated frame centered
             ctx.save();
             ctx.translate(this.canvas.width / 2, this.canvas.height / 2);
             ctx.rotate(drawAngle);
@@ -125,7 +118,6 @@ class Projectile extends Character {
             this.frameIndex = (this.frameIndex + 1) % this.frameCount;
 
         } else if (this.spriteSheet.complete) {
-            // Non-animated: draw the full image scaled to desired logical size
             const srcW = this.spriteSheet.naturalWidth || this.spriteSheet.width;
             const srcH = this.spriteSheet.naturalHeight || this.spriteSheet.height;
             const dstW = Math.max(1, Math.floor(this.width));
@@ -135,7 +127,7 @@ class Projectile extends Character {
             this.canvas.width = dstW;
             this.canvas.height = dstH;
 
-            // Draw rotated image centered on canvas
+            // draw
             ctx.save();
             ctx.translate(this.canvas.width / 2, this.canvas.height / 2);
             ctx.rotate(drawAngle);
@@ -153,10 +145,6 @@ class Projectile extends Character {
 
     // Deal damage to the player
     execDamage() {
-        // Do not apply damage while the battleroom intro/fade is running.
-        // The level code sets `window.__battleRoomFadeComplete = true` when
-        // the intro finishes. Guarding here ensures projectiles can't harm
-        // the player during the loading/intro sequence.
         if (typeof window !== 'undefined' && window.__battleRoomFadeComplete === false) {
             return;
         }
@@ -235,48 +223,18 @@ class Projectile extends Character {
                 console.log("Player Health:", nearest.data.health);
                 if (nearest.data.health <= 0) {
                     console.log("Game over -- the player has been defeated!");
-                    // Show death screen
-                    showDeathScreen(nearest);
+                    // no death screen in archery version
                 }
             }
 
             // Update the player health bar to accurately show the new health (if available)
-            try {
-                if (nearest && nearest.data && typeof updatePlayerHealthBar === 'function') {
-                    const pct = Math.max(0, Math.min(100, nearest.data.health || 0));
-                    updatePlayerHealthBar(pct);
-                }
-            } catch (e) {
-                console.warn('Failed to update player health bar:', e);
-            }
         }
     }
 
-    // Function to execute death
+    // Optional helper called when projectile should 'die'.
+    // In this simplified sorcerers version it just removes itself.
     die() {
-        // Find all player objects
-        const players = this.gameEnv.gameObjects.filter(obj => 
-            obj.constructor.name === 'Player'
-        );
-        
-        if (players.length === 0) return;
-        
-        // Find nearest player
-        let nearest = players[0];
-        let minDist = Infinity;
-
-        for (const player of players) {
-            const dx = player.position.x - this.position.x;
-            const dy = player.position.y - this.position.y;
-            const dist = Math.sqrt(dx*dx + dy*dy);
-            if (dist < minDist) {
-                minDist = dist;
-                nearest = player;
-            }
-        }
-
-        let player = nearest;
-        showDeathScreen(player);
+        this.destroy();
     }
 
     // Carry over the method that is destroying the image once it's offscreen
