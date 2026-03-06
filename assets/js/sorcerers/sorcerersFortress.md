@@ -13,7 +13,7 @@ permalink: /gamify/sorcerers-fortress
 
     // Adventure Game assets locations
     import Game from "/assets/js/sorcerers/essentials/Game.js";
-    import GameLevelFortress from "assets/js/sorcerers/GameLevelFortress.js";
+    import GameLevelFortress from "/assets/js/sorcerers/GameLevelFortress.js";
     import { pythonURI, javaURI, fetchOptions } from '/assets/js/api/config.js';
 
     const gameLevelClasses = [GameLevelFortress];

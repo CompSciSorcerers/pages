@@ -13,7 +13,7 @@ permalink: /gamify/sorcerers-archery
 
     // Adventure Game assets locations
     import Game from "/assets/js/sorcerers/essentials/Game.js";
-    import GameLevelArchery from "assets/js/sorcerers/GameLevelArchery.js";
+    import GameLevelArchery from "/assets/js/sorcerers/GameLevelArchery.js";
     import { pythonURI, javaURI, fetchOptions } from '/assets/js/api/config.js';
 
     const gameLevelClasses = [GameLevelArchery];
