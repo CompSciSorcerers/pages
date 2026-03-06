@@ -83,7 +83,7 @@ class GameLevelFortress {
             INIT_POSITION: {x: (width * 9 / 16), y: height - (height / PANICED_NPC_SCALE_FACTOR)},
             orientation: {rows: 1, columns: 3 },
             down: {row: 0, start: 0, columns: 3 },
-            hitbox: {widthPercentage: 0.2, heightPercentage: 0.2},
+            hitbox: {widthPercentage: 0.2, heightPercentage: 0.4},
             // Add dialogues array for random messages
             dialogues: [
                 "I'm so scared! The scythes have been comming for me!",
