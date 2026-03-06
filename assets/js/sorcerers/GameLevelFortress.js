@@ -94,12 +94,12 @@ class GameLevelFortress {
                 "I'm trapped! Please help me!"
             ],
 
-            reaction: function() {
+            reaction: () => {
                 this.showRandomDialogue();
             },
 
             // We don't want an interaction function, so we set it to an empty function
-            interact: function() {}
+            interact: () => {}
         };
 
         // Barrier at one-third height from bottom
