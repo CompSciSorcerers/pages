@@ -4,9 +4,9 @@ import Npc from './essentials/Npc.js';
 import Barrier from './essentials/Barrier.js';
 
 class GameLevelFortress {
+   static friendlyName = "Fortress";
+   
    constructor(gameEnv){
-
-        // upon mansion level6 construction, 
 
         // keep reference to gameEnv for lifecycle methods
         this.gameEnv = gameEnv;
@@ -93,7 +93,12 @@ class GameLevelFortress {
                 "Try dodging the scythes and missiles! It's your only hope!",
                 "I'm trapped! Please help me!"
             ],
-            // Use the default reaction function, and have no interaction function
+
+            reaction: function() {
+                this.showRandomDialogue();
+            },
+
+            // We don't want an interaction function, so we set it to an empty function
             interact: function() {}
         };
 
