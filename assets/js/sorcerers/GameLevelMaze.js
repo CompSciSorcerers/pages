@@ -3,6 +3,7 @@ import GameEnvBackground from './essentials/GameEnvBackground.js';
 import Player from './essentials/Player.js';
 import Npc from './essentials/Npc.js';
 import Barrier from './essentials/Barrier.js';
+import GameLevelMaze from './GameLevelMaze (1).js';
 
 class GameLevelCustom {
     constructor(gameEnv) {
@@ -61,7 +62,7 @@ class GameLevelCustom {
             interact: function() { 
                 this.interactionCount++;
                 if (this.interactionCount === 1) {
-                    if (this.destroy && typeof this.destroy === 'function') {
+                    if (thisx && typeof this.destroy === 'function') {
                         this.destroy();
                     }
                 }
@@ -331,4 +332,4 @@ this.classes = [      { class: GameEnvBackground, data: bgData },
     }
 }
 
-export const gameLevelClasses = [GameLevelCustom];
+export default GameLevelMaze;;
