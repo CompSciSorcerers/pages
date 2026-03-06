@@ -159,7 +159,6 @@ class GameLevelFortress {
             {class: GameEnvBackground, data: image_data_chamber},
             {class: Player, data: sprite_data_mc},
             {class: Npc, data: sprite_data_zombie1},
-            {class: Npc, data: sprite_data_zombie2}, // The second zombie is the one that talks about the code
             {class: Npc, data: sprite_data_bossdoor},
             {class: Npc, data: sprite_data_chair},
             {class: Npc, data: sprite_data_chair2}
