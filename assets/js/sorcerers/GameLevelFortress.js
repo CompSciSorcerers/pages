@@ -1,14 +1,19 @@
 import GameEnvBackground  from "./essentials/GameEnvBackground.js";
 import Player from "./essentials/Player.js";
 import Npc from './essentials/Npc.js';
+import Barrier from './essentials/Barrier.js';
+import DialogueSystem from './essentials/DialogueSystem.js';
+import Scythe from './custom/Scythe.js';
 
 class GameLevelFortress {
+   static friendlyName = "Level 6: Fortress";
+   
    constructor(gameEnv){
-
-        // upon mansion level6 construction, 
 
         // keep reference to gameEnv for lifecycle methods
         this.gameEnv = gameEnv;
+        this.scytheSpawnTimer = 0;
+        this.scytheSpawnInterval = 120; // Spawn scythe every 2 seconds (60 FPS)
 
         let width = gameEnv.innerWidth;
         let height = gameEnv.innerHeight;
@@ -70,19 +75,19 @@ class GameLevelFortress {
         };
 
         // This is the panicked npc
-        const sprite_src_zombie = path + "/images/mansionGame/zombieNpc.png";
-        const sprite_greet_zombie = "Hi, I'm a zombie.";
+        const paniced_npc_src = path + "/images/mansionGame/zombieNpc.png";
+        const PANICED_NPC_SCALE_FACTOR = 4;
         const sprite_data_zombie1 = {
             id: 'Panicked NPC',
-            greeting: sprite_greet_zombie,
-            src: sprite_src_zombie,
-            SCALE_FACTOR: 4,
+            greeting: "Help!",
+            src: paniced_npc_src,
+            SCALE_FACTOR: PANICED_NPC_SCALE_FACTOR,
             ANIMATION_RATE: 30,
             pixels: {width: 3600, height: 1200},
-            INIT_POSITION: {x: (width * 9 / 16), y: (height * 1 / 4)},
+            INIT_POSITION: {x: (width * 9 / 16), y: height - (height / PANICED_NPC_SCALE_FACTOR)},
             orientation: {rows: 1, columns: 3 },
             down: {row: 0, start: 0, columns: 3 },
-            hitbox: {widthPercentage: 0.2, heightPercentage: 0.2},
+            hitbox: {widthPercentage: 0.2, heightPercentage: 0.5},
             // Add dialogues array for random messages
             dialogues: [
                 "I'm so scared! The scythes have been comming for me!",
@@ -92,66 +97,41 @@ class GameLevelFortress {
                 "Try dodging the scythes and missiles! It's your only hope!",
                 "I'm trapped! Please help me!"
             ],
-            // Use the default reaction function, and have no interaction function
-            interact: function() {}
-        };
 
-        // invisible sprite for door collision that handles going to lv6 battle room
-        const sprite_src_bossdoor = path + "/images/mansionGame/invisDoorCollisionSprite.png";
-        const sprite_greet_bossdoor = "Battle the Reaper? Press E";
-        const sprite_data_bossdoor = {
-            id: 'Door',
-            greeting: sprite_greet_bossdoor,
-            src: sprite_src_bossdoor,
-            SCALE_FACTOR: 6,
-            ANIMATION_RATE: 100,
-            pixels: {width: 2029, height: 2025},
-            INIT_POSITION: {x: (width * 37 / 80), y: (height / 8)},
-            orientation: {rows: 1, columns: 1},
-            down: {row: 0, start: 0, columns: 1},
-            hitbox: {widthPercentage: 0.1, heightPercentage: 0.2},
-            dialogues: [
-                "Many have entered. Few have returned.",
-                "Dangerous things await you beyond this door..",
-                "Prepare yourself. The journey beyond won't be easy."
-            ],
             reaction: function() {
-                // Don't show any reaction dialogue - this prevents the first alert
-                // The interact function will handle all dialogue instead
+                // Clear any existing dialogue first to prevent duplicates
+                if (this.dialogueSystem && this.dialogueSystem.isDialogueOpen()) {
+                    this.dialogueSystem.closeDialogue();
+                }
+                
+                // Create a new dialogue system if needed
+                if (!this.dialogueSystem) {
+                    this.dialogueSystem = new DialogueSystem();
+                }
+                
+                // Show portal dialogue with buttons
+                const whattosay = this.data.dialogues[Math.floor(Math.random() * this.data.dialogues.length)];
+                this.dialogueSystem.showDialogue(
+                    whattosay,
+                    "Panicked NPC",
+                    this.spriteData.src
+                );
             },
-            // Ask the player whether they want to enter the doors-- if they do, move to the battle room
-            interact: function() {
-                // Placeholder empty interaction function
-                // Replace with actual dialogue system when needed
-            }
+
+            // We don't want an interaction function, so we set it to an empty function
+            interact: () => {}
         };
 
-        const sprite_src_chair = path + "/images/mansionGame/invisDoorCollisionSprite.png";
-        const sprite_data_chair = {
-            id: 'Chair',
-            greeting: "Don't sit on me!",
-            src: sprite_src_chair,
-            SCALE_FACTOR: 6,
-            ANIMATION_RATE: 100,
-            pixels: {width: 2029, height: 2025},
-            INIT_POSITION: {x: (width * 8 / 80), y: (height * 1 / 4)},
-            orientation: {rows: 1, columns: 1},
-            down: {row: 0, start: 0, columns: 1},
-            hitbox: {widthPercentage: 0.1, heightPercentage: 0.2}
-        };
-
-        const sprite_src_chair2 = path + "/images/mansionGame/invisDoorCollisionSprite.png";
-        const sprite_data_chair2 = {
-            id: 'Chair 2',
-            greeting: "Don't sit on me!",
-            src: sprite_src_chair2,
-            SCALE_FACTOR: 6,
-            ANIMATION_RATE: 100,
-            pixels: {width: 2029, height: 2025},
-            INIT_POSITION: {x: (width * 71 / 80), y: (height * 9 / 40)},
-            orientation: {rows: 1, columns: 1},
-            down: {row: 0, start: 0, columns: 1},
-            hitbox: {widthPercentage: 0.1, heightPercentage: 0.2}
+        // Barrier at one-third height from bottom
+        const barrier_data = {
+            id: 'bottom_barrier',
+            x: 0,
+            y: height - (height / 3),
+            width: width,
+            height: 20,
+            color: 'rgba(139, 69, 19, 0.8)',
+            visible: false,
+            zIndex: 10
         };
 
         // This is every sprite we want the game engine to render, and with whatever data
@@ -159,12 +139,36 @@ class GameLevelFortress {
             {class: GameEnvBackground, data: image_data_chamber},
             {class: Player, data: sprite_data_mc},
             {class: Npc, data: sprite_data_zombie1},
-            {class: Npc, data: sprite_data_bossdoor},
-            {class: Npc, data: sprite_data_chair},
-            {class: Npc, data: sprite_data_chair2}
+            {class: Barrier, data: barrier_data}
         ];
 
-    };
+        // Start spawning scythes
+        this.startScytheSpawning();
+    }
+
+    startScytheSpawning() {
+        // Override the game loop to add scythe spawning logic
+        const originalUpdate = this.gameEnv.gameLoop;
+        const self = this;
+        
+        this.gameEnv.gameLoop = function() {
+            // Call original game loop
+            originalUpdate.call(this);
+            
+            // Spawn scythes at intervals
+            self.scytheSpawnTimer++;
+            if (self.scytheSpawnTimer >= self.scytheSpawnInterval) {
+                self.spawnScythe();
+                self.scytheSpawnTimer = 0;
+            }
+        };
+    }
+
+    spawnScythe() {
+        const scythe = new Scythe(this.gameEnv);
+        this.gameEnv.gameObjects.push(scythe);
+        this.gameEnv.container.appendChild(scythe.canvas);
+    }
 }
 
 export default GameLevelFortress;
