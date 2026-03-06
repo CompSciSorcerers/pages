@@ -1,7 +1,9 @@
 
-import GameEnvBackground  from '../essentials/GameEnvBackground.js';
+import GameEnvBackground  from './essentials/GameEnvBackground.js';
 import FightingPlayer from './custom/FightingPlayer.js';
-import Npc  from '../essentials/essentials/Npc.js';
+import Npc  from './essentials//Npc.js';
+import Barrier from './essentials/Barrier.js';
+import Enemy from './essentials/Enemy.js';
 
 class GameLevelArchery {
     constructor(gameEnv) {
@@ -48,64 +50,154 @@ class GameLevelArchery {
         };
     
 
-    const sprite_src_villager = path + "/images/sorcerers/villager.png";
-    const sprite_greet_villager = "Start the game? Press E";
-    const sprite_data_villager = {
-        id: 'Villager',
-        greeting: sprite_greet_villager,
-        src: sprite_src_villager,
-        SCALE_FACTOR: 6,
-        ANIMATION_RATE: 100,
-        pixels: {width: 2029, height: 2025},
-        INIT_POSITION: {x: (width * 37 / 80), y: (height / 8)},
-        orientation: {rows: 1, columns: 1},
-        down: {row: 0, start: 0, columns: 1},
-        hitbox: {widthPercentage: 0.1, heightPercentage: 0.2},
-        dialogues: [
-            "Are you ready to play some archery?"
-        ],
-        reaction: function() {
-            // Don't show any reaction dialogue - this prevents the first alert
-            // The interact function will handle all dialogue instead
-        },
-        interact: function() {
-            // Clear any existing dialogue first to prevent duplicates
-            if (this.dialogueSystem && this.dialogueSystem.isDialogueOpen()) {
-                this.dialogueSystem.closeDialogue();
-            }
-            
-            // Create a new dialogue system if needed
-            if (!this.dialogueSystem) {
-                this.dialogueSystem = new DialogueSystem();
-            }
-            
-            // Show portal dialogue with buttons
-            this.dialogueSystem.showDialogue(
-                "",
-                "Villager",
-                this.spriteData.src
-            );
-            
-            // Add buttons directly to the dialogue
-            this.dialogueSystem.addButtons([
-                {
-                    text: "Start",
-                    primary: true,
-                    action: () => {
-                        this.dialogueSystem.closeDialogue();
-                        
-                        // remove the barrier and stuff here
+
+        const sprite_src_villager = path + "/images/sorcerers/villager.png";
+        const sprite_greet_villager = "Start the game? Press E";
+        const sprite_data_villager = {
+            id: 'Villager',
+            greeting: sprite_greet_villager,
+            src: sprite_src_villager,
+            SCALE_FACTOR: 6,
+            ANIMATION_RATE: 100,
+            pixels: {width: 2029, height: 2025},
+            INIT_POSITION: {x: (width * 37 / 80), y: (height / 8)},
+            orientation: {rows: 1, columns: 1},
+            down: {row: 0, start: 0, columns: 1},
+            hitbox: {widthPercentage: 0.1, heightPercentage: 0.2},
+            dialogues: [
+                "Are you ready to play some archery?"
+            ],
+            reaction: function() {
+                // Don't show any reaction dialogue - this prevents the first alert
+                // The interact function will handle all dialogue instead
+            },
+            interact: function() {
+                // Clear any existing dialogue first to prevent duplicates
+                if (this.dialogueSystem && this.dialogueSystem.isDialogueOpen()) {
+                    this.dialogueSystem.closeDialogue();
+                }
+                
+                // Create a new dialogue system if needed
+                if (!this.dialogueSystem) {
+                    this.dialogueSystem = new DialogueSystem();
+                }
+                
+                // Show portal dialogue with buttons
+                this.dialogueSystem.showDialogue(
+                    "",
+                    "Villager",
+                    this.spriteData.src
+                );
+                
+                // Add buttons directly to the dialogue
+                this.dialogueSystem.addButtons([
+                    {
+                        text: "Start",
+                        primary: true,
+                        action: () => {
+                            this.dialogueSystem.closeDialogue();
+                            
+                            // Remove the barrier
+                            const barrier = this.gameEnv.gameObjects.find(obj => obj.canvas && obj.canvas.id === 'archery_barrier');
+                            if (barrier) {
+                                barrier.destroy();
+                            }
+
+                            // Start the target moving
+                            const target = this.gameEnv.gameObjects.find(obj => obj.canvas && obj.canvas.id === 'archery_target');
+                            if (target) {
+                                target.velocity.x = 2; // move right
+                            }
+
+                            window.archeryGameStarted = true;
+                        }
+                    },
+                    {
+                        text: "Nevermind",
+                        action: () => {
+                            this.dialogueSystem.closeDialogue();
+                        }
                     }
-                },
-                {
-                    text: "Nevermind",
-                    action: () => {
-                        this.dialogueSystem.closeDialogue();
+                ]);
+            }
+        };
+
+        // --- Barrier ---
+        const barrier_data = {
+            id: 'archery_barrier',
+            x: 0,
+            y: height / 2,
+            width: width,
+            height: 20,
+            color: 'rgba(0, 0, 0, 0.8)',
+            visible: true,
+            hitbox: { widthPercentage: 1.0, heightPercentage: 0.05 }
+        };
+
+        // --- Target ---
+        const target_data = {
+            id: 'archery_target',
+            greeting: "Target",
+            src: path + "/images/sorcerers/target.png",
+            SCALE_FACTOR: 5,
+            ANIMATION_RATE: 100,
+            pixels: {width: 100, height: 100},
+            INIT_POSITION: {x: (width / 2), y: (height / 4)},
+            orientation: {rows: 1, columns: 1},
+            down: {row: 0, start: 0, columns: 1},
+            hitbox: {widthPercentage: 0.1, heightPercentage: 0.2},
+            // custom stuff for my archery game
+            hitsRemaining: 10,
+            update: function() {
+                // counter element
+                if (!this.counterEl) {
+                    this.counterEl = document.createElement('div');
+                    this.counterEl.style.position = 'absolute';
+                    this.counterEl.style.color = 'red';
+                    this.counterEl.style.font = 'bold 18px monospace';
+                    this.counterEl.style.textAlign = 'center';
+                    this.counterEl.style.pointerEvents = 'none';
+                    this.counterEl.style.userSelect = 'none';
+                    this.counterEl.innerText = this.hitsRemaining;
+                    this.gameEnv.container.appendChild(this.counterEl);
+                }
+
+                // reposition each frame
+                const rect = this.canvas.getBoundingClientRect();
+                this.counterEl.style.left = `${rect.left}px`;
+                this.counterEl.style.top = `${rect.bottom + 2}px`;
+                this.counterEl.innerText = this.hitsRemaining;
+
+                for (const obj of this.gameEnv.gameObjects) {
+                    if (obj.constructor.name === 'Projectile' && obj.type === 'ARROW') {
+                        this.isCollision(obj);
+                        if (this.collisionData.hit) {
+                            obj.destroy();
+
+                            this.hitsRemaining -= 1;
+                            if (this.hitsRemaining <= 0) {
+                                // show win message and remove target
+                                alert('You won!');
+                                if (this.counterEl && this.counterEl.parentNode) {
+                                    this.counterEl.parentNode.removeChild(this.counterEl);
+                                }
+                                this.destroy();
+                            }
+
+                            break;
+                        }
                     }
                 }
-            ]);
-        }
-    };
+            }
+        };
+
+        this.classes = [
+            {class: GameEnvBackground, data: image_data_floor},
+            {class: FightingPlayer, data: sprite_data_mc},
+            {class: Npc, data: sprite_data_villager},
+            {class: Barrier, data: barrier_data},
+            {class: Enemy, data: target_data},
+        ];
     }
 }
 
