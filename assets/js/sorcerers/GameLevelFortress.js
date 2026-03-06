@@ -1,6 +1,6 @@
-import GameEnvBackground  from "./MansionLogic/GameEnvBackground.js";
-import Player from "./MansionLogic/Player.js";
-import Npc from './MansionLogic/Npc.js';
+import GameEnvBackground  from "./essentials/GameEnvBackground.js";
+import Player from "./essentials/Player.js";
+import Npc from './essentials/Npc.js';
 
 class GameLevelFortress {
    constructor(gameEnv){
@@ -43,7 +43,7 @@ class GameLevelFortress {
             pixels: {height: 580, width: 1038},
             mode: 'stretch'
         };
-        
+
         // This is the data for the player
         const sprite_src_mc = path + "/images/mansionGame/spookMcWalk.png"; // be sure to include the path
         const MC_SCALE_FACTOR = 6;
@@ -139,7 +139,7 @@ class GameLevelFortress {
                 // Replace with actual dialogue system when needed
             }
         }; 
-        
+
 
         // invisible sprite for door collision that handles going to lv6 battle room
         const sprite_src_bossdoor = path + "/images/mansionGame/invisDoorCollisionSprite.png";
