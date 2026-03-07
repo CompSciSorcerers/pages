@@ -1,3 +1,8 @@
+
+/**
+ * Shows the end screen when the player wins the archery game
+ * @param gameEnv - The game environment object
+ */
 export default function showEndScreen(gameEnv) {
     if (typeof document === 'undefined') return;
 
