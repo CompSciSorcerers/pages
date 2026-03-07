@@ -14,7 +14,7 @@ class GameLevelArchery {
         window.archeryGameStarted = false;
 
         // --- Floor ---
-        const image_src_floor = path + "/images/sorcerers/stoneFloor.png";
+        const image_src_floor = path + "/images/sorcerers/grassBackground.png";
         const image_data_floor = {
             name: 'floor',
             src: image_src_floor,
@@ -109,6 +109,9 @@ class GameLevelArchery {
                                 target.velocity = { x: 2, y: 0 }; // Start moving right
                             }
 
+                            // Make the NPC disappear after interaction
+                            this.destroy();
+
                             window.archeryGameStarted = true;
                         }
                     },
@@ -189,16 +192,22 @@ class GameLevelArchery {
                 this.counterEl.style.top = `${rect.bottom + 2}px`;
                 this.counterEl.innerText = this.hitsRemaining;
 
-                for (const obj of this.gameEnv.gameObjects) {
-                    if (obj.constructor.name === 'Projectile' && (obj.type === 'ARROW' || obj.type === 'PLAYER')) {
-                        // Simple distance-based collision detection
-                        const dx = (this.position.x + this.width/2) - (obj.position.x + obj.width/2);
-                        const dy = (this.position.y + this.height/2) - (obj.position.y + obj.height/2);
-                        const distance = Math.sqrt(dx * dx + dy * dy);
-                        const minDistance = (this.width + obj.width) / 4; // Quarter the sum of widths for reasonable collision
+                // console.log(`target x: (${this.position.x.toFixed(1)}`)
 
-                        if (distance < minDistance) {
-                            console.log('Projectile hit target! Distance collision detected.');
+                for (const obj of this.gameEnv.gameObjects) {
+                    
+                    if (obj.constructor.name === 'Projectile') {
+                        const xDiff = Math.abs((this.position.x + this.width/2) - (obj.position.x + obj.width/2));
+                        const yDiff = Math.abs((this.position.y + this.height/2) - (obj.position.y + obj.height/2));
+                        const HIT_X = this.width * 0.5;
+                        const HIT_Y = this.height * 0.5;
+
+                        console.log(`Target @(${this.position.x.toFixed(1)},${this.position.y.toFixed(1)}) ` +
+                                    `Proj @(${obj.position.x.toFixed(1)},${obj.position.y.toFixed(1)}) ` +
+                                    `xDiff=${xDiff.toFixed(1)}, yDiff=${yDiff.toFixed(1)}, hit=${xDiff<=HIT_X&&yDiff<=HIT_Y}`);
+
+                        if (xDiff <= HIT_X && yDiff <= HIT_Y) {
+                            console.log('Projectile hit target!');
                             obj.destroy();
 
                             this.hitsRemaining -= 1;

@@ -1,4 +1,5 @@
 import Character from '../essentials/Character.js';
+import showEndScreen from './EndScreen.js';
 
 /*
 Projectile code reused from the Mansion Game boss fight from CSSE Tri 1
@@ -16,7 +17,7 @@ class Projectile extends Character {
         const path = gameEnv.path;
 
         // Calculate angle and velocity to move in a straight line
-        this.speed = 5; // adjust as needed
+        this.speed = 10; // adjust as needed
         this.velocity = {
             x: 0,
             y: -this.speed  // Always move upwards
@@ -24,27 +25,13 @@ class Projectile extends Character {
 
         this.revComplete = false;
 
-        // Load sprite/image based on type
-        if (type === "ARROW" || type === "PLAYER") {
-            this.spriteSheet = new Image();
-            this.frameIndex = 0;
-            this.frameCount = 1; // single frame
-            this.width = 60; // scale down if needed
-            this.height = 70;  // Made even taller to fix vertical squashing
-            this.spriteSheet.onload = () => this.imageLoaded = true;
-            this.spriteSheet.src = path + "/images/mansionGame/arrow.png";
-        } else if (type === "FIREBALL") {
-            // Fireball is a single-frame static image (178x123 source). Use a scaled size preserving aspect ratio.
-            this.spriteSheet = new Image();
-            this.frameIndex = 0;
-            this.frameCount = 1; // single frame
-            // source aspect ~ 178 / 123 => width is larger; scale to a reasonable in-game size
-            this.width = 64;
-            this.height = 44; // keep aspect roughly (64 * 123 / 178 ≈ 44)
-            this.spriteSheet.onload = () => this.imageLoaded = true;
-            this.spriteSheet.src = path + "/images/mansionGame/staticfireball.png";
-        }
-        this.isAnimated = false;
+        this.spriteSheet = new Image();
+        this.frameIndex = 0;
+        this.frameCount = 1; // single frame
+        this.width = 60; // scale down if needed
+        this.height = 70;  // Made even taller to fix vertical squashing
+        this.spriteSheet.onload = () => this.imageLoaded = true;
+        this.spriteSheet.src = path + "/images/sorcerers/arrow.png";
 
         // Start at source position
         this.position = { x: sourcex, y: sourcey };
@@ -70,7 +57,7 @@ class Projectile extends Character {
         // Update canvas position after drawing
         this.setupCanvas();
 
-        // Check if we are close enouph to the player
+        // Check if we are close enouph to the target to damag eit
         this.execDamage();
     }
 
@@ -79,7 +66,7 @@ class Projectile extends Character {
         this.clearCanvas();
 
         if (!this.imageLoaded) {
-            return;  // Don't try to draw until image is loaded
+            return;
         }
 
         const travelAngle = Math.atan2(this.velocity.y, this.velocity.x); // radians
@@ -92,148 +79,71 @@ class Projectile extends Character {
         // Angle to rotate the sprite so it faces travel direction
         const drawAngle = travelAngle - baseAngle;
 
-        if (this.isAnimated && this.spriteSheet.complete) {
-            const frameWidth = Math.floor(this.spriteSheet.width / this.frameCols);
-            const frameHeight = Math.floor(this.spriteSheet.height / this.frameRows);
-            const col = this.frameIndex % this.frameCols;
-            const row = Math.floor(this.frameIndex / this.frameRows);
+        const srcW = this.spriteSheet.naturalWidth || this.spriteSheet.width;
+        const srcH = this.spriteSheet.naturalHeight || this.spriteSheet.height;
+        const dstW = Math.max(1, Math.floor(this.width));
+        const dstH = Math.max(1, Math.floor(this.height));
 
-            const dstW = Math.max(1, Math.floor(this.width));
-            const dstH = Math.max(1, Math.floor(this.height));
+        // Make canvas large enough to handle rotation (even larger for arrows)
+        const maxDim = Math.ceil(Math.sqrt(dstW * dstW + dstH * dstH)) + 10;
+        this.canvas.width = maxDim;
+        this.canvas.height = maxDim;
 
-            this.canvas.width = dstW;
-            this.canvas.height = dstH;
-
-            ctx.save();
-            ctx.translate(this.canvas.width / 2, this.canvas.height / 2);
-            ctx.rotate(drawAngle);
-            ctx.drawImage(
-                this.spriteSheet,
-                col * frameWidth, row * frameHeight, frameWidth, frameHeight,
-                -dstW / 2, -dstH / 2, dstW, dstH
-            );
-            ctx.restore();
-
-            // Advance frame
-            this.frameIndex = (this.frameIndex + 1) % this.frameCount;
-
-        } else if (this.spriteSheet.complete) {
-            const srcW = this.spriteSheet.naturalWidth || this.spriteSheet.width;
-            const srcH = this.spriteSheet.naturalHeight || this.spriteSheet.height;
-            const dstW = Math.max(1, Math.floor(this.width));
-            const dstH = Math.max(1, Math.floor(this.height));
-
-            // Make canvas large enough to handle rotation (even larger for arrows)
-            const maxDim = Math.ceil(Math.sqrt(dstW * dstW + dstH * dstH)) + 10;
-            this.canvas.width = maxDim;
-            this.canvas.height = maxDim;
-
-            // draw
-            ctx.save();
-            ctx.translate(this.canvas.width / 2, this.canvas.height / 2);
-            ctx.rotate(drawAngle);
-            ctx.drawImage(
-                this.spriteSheet,
-                0, 0, srcW, srcH,
-                -dstW / 2, -dstH / 2, dstW, dstH
-            );
-            ctx.restore();
-        }
-
+        // draw
+        ctx.save();
+        ctx.translate(this.canvas.width / 2, this.canvas.height / 2);
+        ctx.rotate(drawAngle);
+        ctx.drawImage(
+            this.spriteSheet,
+            0, 0, srcW, srcH,
+            -dstW / 2, -dstH / 2, dstW, dstH
+        );
+        ctx.restore();
+    
         // Draw to screen
         this.setupCanvas();
     }
 
-    // Deal damage to the player
+    // Deal damage to the target
     execDamage() {
-        if (typeof window !== 'undefined' && window.__battleRoomFadeComplete === false) {
-            return;
+            
+        const targets = this.gameEnv.gameObjects.filter(obj => obj.constructor.name === 'Enemy');
+        if (targets.length === 0) return null;
+        let nearestTarget = targets[0];
+        let minDist = Infinity;
+
+        // Find the closest target (this is taken from the mansion game but if i decide to add more targets later this makes it easier)
+        for (const target of targets) {
+            const dx = target.position.x - this.position.x;
+            const dy = target.position.y - this.position.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < minDist) {
+                minDist = dist;
+                nearestTarget = target;
+            }
         }
+        const TARGET_SIZE = 160; // 160x100
 
-        // If the player is too close...
-        const PLAYER_HIT_DISTANCE = 50;
-        const REAPER_HORIZONTAL_HIT_DISTANCE = 75;
-        const REAPER_VERTICAL_HIT_DISTANCE = 100;
+        const xDiff = Math.abs((nearestTarget.position.x + TARGET_SIZE / 2) - this.position.x);
+        const yDiff = Math.abs((nearestTarget.position.y) - this.position.y);
 
-        const ARROW_DAMAGE = 10;
-        const PLAYER_DAMAGE = 75;  // Control how much damage per hit the player does
-        const FIREBALL_DAMAGE = 15;
-        const DAMAGE_DEALT = this.type == "FIREBALL" ? FIREBALL_DAMAGE : this.type == "ARROW" ? ARROW_DAMAGE : PLAYER_DAMAGE;
-        if (this.type === 'PLAYER') {
-            const reapers = this.gameEnv.gameObjects.filter(obj => obj.constructor.name === 'Boss');
-            if (reapers.length === 0) return null;
-            let nearestBoss = reapers[0];
-            let minDist = Infinity;
 
-            // Find the closest boss
-            for (const reaper of reapers) {
-                const dx = reaper.position.x - this.position.x;
-                const dy = reaper.position.y - this.position.y;
-                const dist = Math.sqrt(dx * dx + dy * dy);
-                if (dist < minDist) {
-                    minDist = dist;
-                    nearestBoss = reaper;
-                }
+        if (xDiff <= TARGET_SIZE/2.0 && yDiff <= TARGET_SIZE/2.0) {
+            this.revComplete = true;
+            this.destroy();
+            nearestTarget.hitsRemaining -= 1;
+            console.log(`Target hit, now has ${nearestTarget.hitsRemaining} health`);
+
+            if (nearestTarget.hitsRemaining <= 0){
+                try { showEndScreen(this.gameEnv); } catch (e) { console.warn('Error showing victory screen:', e); }
+                
             }
 
-            // Do distance formula calculation and return
-            const xDiff = Math.abs(nearestBoss.position.x - this.position.x);
-            const yDiff = Math.abs((nearestBoss.position.y + 85) - this.position.y); // +50 accounts for the center of the boss being offset
-            // console.log(`Boss Y: ${nearestBoss.position.y}, Projectile Y: ${this.position.y}, YDiff: ${yDiff}`);
-
-            if (xDiff <= REAPER_HORIZONTAL_HIT_DISTANCE && yDiff <= REAPER_VERTICAL_HIT_DISTANCE) {
-                this.revComplete = true;
-                this.destroy();
-                nearestBoss.healthPoints -= DAMAGE_DEALT;
-                console.log("Reaper Health:", nearestBoss.healthPoints);
-                if (nearestBoss.data.health <= 0) {
-                    console.log("Game over -- the player has won!");
-                    // Show victory screen
-                    try { showEndScreen(this.gameEnv); } catch (e) { console.warn('Error showing victory screen:', e); }
-                }
-            }
-
-        } else {
-            const players = this.gameEnv.gameObjects.filter(obj => obj.constructor.name === 'Player' || obj.constructor.name === 'FightingPlayer');
-            if (players.length === 0) return null;
-
-            let nearest = players[0];
-            let minDist = Infinity;
-
-            // Find the closest player
-            for (const player of players) {
-                const dx = player.position.x - this.position.x;
-                const dy = player.position.y - this.position.y;
-                const dist = Math.sqrt(dx * dx + dy * dy);
-                if (dist < minDist) {
-                    minDist = dist;
-                    nearest = player;
-                }
-            }
-
-            // Do distance formula calculation
-            const xDiff = nearest.position.x - this.position.x;
-            const yDiff = nearest.position.y - this.position.y;
-            const distanceFromPlayer = Math.sqrt(xDiff * xDiff + yDiff * yDiff);
-
-            if (distanceFromPlayer <= PLAYER_HIT_DISTANCE) {
-                this.revComplete = true;
-                this.destroy();
-                if (!nearest.data) nearest.data = { health: 100 }; // Initialize health if not exists
-                nearest.data.health -= DAMAGE_DEALT;
-                console.log("Player Health:", nearest.data.health);
-                if (nearest.data.health <= 0) {
-                    console.log("Game over -- the player has been defeated!");
-                    // no death screen in archery version
-                }
-            }
-
-            // Update the player health bar to accurately show the new health (if available)
         }
+        
     }
 
-    // Optional helper called when projectile should 'die'.
-    // In this simplified sorcerers version it just removes itself.
+    // Removes the projectile
     die() {
         this.destroy();
     }
