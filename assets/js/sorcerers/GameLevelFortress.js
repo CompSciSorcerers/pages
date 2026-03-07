@@ -6,8 +6,8 @@ import DialogueSystem from './essentials/DialogueSystem.js';
 import Scythe from './custom/Scythe.js';
 
 class GameLevelFortress {
-   static friendlyName = "Level 6: Fortress";
-   
+   static friendlyName = "Level 3: Fortress";
+
    constructor(gameEnv){
 
         // keep reference to gameEnv for lifecycle methods
@@ -75,7 +75,7 @@ class GameLevelFortress {
         };
 
         // This is the panicked npc
-        const paniced_npc_src = path + "/images/mansionGame/zombieNpc.png";
+        const paniced_npc_src = path + "/images/sorcerers/snowman.png";
         const PANICED_NPC_SCALE_FACTOR = 4;
         const sprite_data_panic_npc = {
             id: 'Panicked NPC',
@@ -83,10 +83,10 @@ class GameLevelFortress {
             src: paniced_npc_src,
             SCALE_FACTOR: PANICED_NPC_SCALE_FACTOR,
             ANIMATION_RATE: 30,
-            pixels: {width: 3600, height: 1200},
+            pixels: {width: 840, height: 1221},
             INIT_POSITION: {x: (width * 9 / 16), y: height - (height / PANICED_NPC_SCALE_FACTOR)},
-            orientation: {rows: 1, columns: 3 },
-            down: {row: 0, start: 0, columns: 3 },
+            orientation: {rows: 1, columns: 1 },
+            down: {row: 0, start: 0, columns: 1 },
             hitbox: {widthPercentage: 0.2, heightPercentage: 0.5},
             // Add dialogues array for random messages
             dialogues: [
