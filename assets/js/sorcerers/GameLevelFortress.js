@@ -145,30 +145,33 @@ class GameLevelFortress {
 
         // Start spawning scythes
         this.startScytheSpawning();
+
+        // Log
+        console.log("GameLevelFortress initialized");
+    }
+
+    update() {
+        // Spawn scythes at intervals
+        this.scytheSpawnTimer++;
+        if (this.scytheSpawnTimer >= this.scytheSpawnInterval) {
+            console.log("Scythe spawn timer reached, spawning scythe...");
+            this.spawnScythe();
+            this.scytheSpawnTimer = 0;
+        }
     }
 
     startScytheSpawning() {
-        // Override the game loop to add scythe spawning logic
-        const originalUpdate = this.gameEnv.gameLoop;
-        const self = this;
-        
-        this.gameEnv.gameLoop = function() {
-            // Call original game loop
-            originalUpdate.call(this);
-            
-            // Spawn scythes at intervals
-            self.scytheSpawnTimer++;
-            if (self.scytheSpawnTimer >= self.scytheSpawnInterval) {
-                self.spawnScythe();
-                self.scytheSpawnTimer = 0;
-            }
-        };
+        console.log("Scythe spawning system initialized - will spawn in update method");
     }
 
     spawnScythe() {
+        console.log("Attempting to spawn scythe...");
         const scythe = new Scythe(this.gameEnv);
+        console.log("Scythe created:", scythe);
         this.gameEnv.gameObjects.push(scythe);
+        console.log("Scythe added to gameObjects. Total objects:", this.gameEnv.gameObjects.length);
         this.gameEnv.container.appendChild(scythe.canvas);
+        console.log("Scythe canvas added to container");
     }
 }
 
