@@ -29,7 +29,7 @@ class GameLevelArchery {
             greeting: "Hi, I am Spook.",
             src: sprite_src_mc,
             SCALE_FACTOR: MC_SCALE_FACTOR,
-            STEP_FACTOR: 1500,
+            STEP_FACTOR: 500,
             ANIMATION_RATE: 100,
             INIT_POSITION: { 
                 x: (width / 2 - width / (5 * MC_SCALE_FACTOR)), 
@@ -59,8 +59,8 @@ class GameLevelArchery {
             src: sprite_src_villager,
             SCALE_FACTOR: 6,
             ANIMATION_RATE: 100,
-            pixels: {width: 2029, height: 2025},
-            INIT_POSITION: {x: (width * 37 / 80), y: (height / 8)},
+            pixels: {width: 181, height: 272},
+            INIT_POSITION: {x: (width * 55 / 80), y: (height - height / 6)},
             orientation: {rows: 1, columns: 1},
             down: {row: 0, start: 0, columns: 1},
             hitbox: {widthPercentage: 0.1, heightPercentage: 0.2},
@@ -84,7 +84,7 @@ class GameLevelArchery {
                 
                 // Show portal dialogue with buttons
                 this.dialogueSystem.showDialogue(
-                    "",
+                    "Would you like to start the game?",
                     "Villager",
                     this.spriteData.src
                 );
@@ -103,10 +103,10 @@ class GameLevelArchery {
                                 barrier.destroy();
                             }
 
-                            // Start the target moving
+                            // Start the target moving continuously left/right
                             const target = this.gameEnv.gameObjects.find(obj => obj.canvas && obj.canvas.id === 'archery_target');
                             if (target) {
-                                target.velocity.x = 2; // move right
+                                target.velocity = { x: 2, y: 0 }; // Start moving right
                             }
 
                             window.archeryGameStarted = true;
@@ -131,7 +131,7 @@ class GameLevelArchery {
             height: 20,
             color: 'rgba(0, 0, 0, 0.8)',
             visible: true,
-            hitbox: { widthPercentage: 1.0, heightPercentage: 0.05 }
+            hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 }
         };
 
         // --- Target ---
@@ -141,14 +141,36 @@ class GameLevelArchery {
             src: path + "/images/sorcerers/target.png",
             SCALE_FACTOR: 5,
             ANIMATION_RATE: 100,
-            pixels: {width: 100, height: 100},
+            pixels: {width: 178, height: 169},
             INIT_POSITION: {x: (width / 2), y: (height / 4)},
             orientation: {rows: 1, columns: 1},
             down: {row: 0, start: 0, columns: 1},
-            hitbox: {widthPercentage: 0.1, heightPercentage: 0.2},
+            hitbox: {widthPercentage: 0.0, heightPercentage: 0.0},
             // custom stuff for my archery game
             hitsRemaining: 10,
+            // Override stayWithinCanvas to prevent default boundary checking
+            stayWithinCanvas: function() {
+                // Custom boundary handling in update function
+            },
             update: function() {
+                // Initialize hitsRemaining if not set
+                if (this.hitsRemaining === undefined) {
+                    this.hitsRemaining = 10;
+                }
+
+                // Move the target left/right only if game has started
+                if (window.archeryGameStarted) {
+                    if (!this.velocity) {
+                        this.velocity = { x: 2, y: 0 }; // Start moving right
+                    }
+                    this.position.x += this.velocity.x;
+                    
+                    // Bounce off edges - check position boundaries
+                    if (this.position.x <= 0 || this.position.x + this.width >= this.gameEnv.innerWidth) {
+                        this.velocity.x = -this.velocity.x; // Reverse direction
+                    }
+                }
+
                 // counter element
                 if (!this.counterEl) {
                     this.counterEl = document.createElement('div');
@@ -158,7 +180,6 @@ class GameLevelArchery {
                     this.counterEl.style.textAlign = 'center';
                     this.counterEl.style.pointerEvents = 'none';
                     this.counterEl.style.userSelect = 'none';
-                    this.counterEl.innerText = this.hitsRemaining;
                     this.gameEnv.container.appendChild(this.counterEl);
                 }
 
@@ -169,9 +190,15 @@ class GameLevelArchery {
                 this.counterEl.innerText = this.hitsRemaining;
 
                 for (const obj of this.gameEnv.gameObjects) {
-                    if (obj.constructor.name === 'Projectile' && obj.type === 'ARROW') {
-                        this.isCollision(obj);
-                        if (this.collisionData.hit) {
+                    if (obj.constructor.name === 'Projectile' && (obj.type === 'ARROW' || obj.type === 'PLAYER')) {
+                        // Simple distance-based collision detection
+                        const dx = (this.position.x + this.width/2) - (obj.position.x + obj.width/2);
+                        const dy = (this.position.y + this.height/2) - (obj.position.y + obj.height/2);
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        const minDistance = (this.width + obj.width) / 4; // Quarter the sum of widths for reasonable collision
+
+                        if (distance < minDistance) {
+                            console.log('Projectile hit target! Distance collision detected.');
                             obj.destroy();
 
                             this.hitsRemaining -= 1;

@@ -16,13 +16,10 @@ class Projectile extends Character {
         const path = gameEnv.path;
 
         // Calculate angle and velocity to move in a straight line
-        const dx = targetx - sourcex;
-        const dy = targety - sourcey;
-        const distance = Math.sqrt(dx * dx + dy * dy);
         this.speed = 5; // adjust as needed
         this.velocity = {
-            x: (dx / distance) * this.speed,
-            y: (dy / distance) * this.speed
+            x: 0,
+            y: -this.speed  // Always move upwards
         };
 
         this.revComplete = false;
@@ -33,7 +30,7 @@ class Projectile extends Character {
             this.frameIndex = 0;
             this.frameCount = 1; // single frame
             this.width = 60; // scale down if needed
-            this.height = 25;
+            this.height = 70;  // Made even taller to fix vertical squashing
             this.spriteSheet.onload = () => this.imageLoaded = true;
             this.spriteSheet.src = path + "/images/mansionGame/arrow.png";
         } else if (type === "FIREBALL") {
@@ -67,8 +64,11 @@ class Projectile extends Character {
             this.destroy();
         }
 
-        // Draw
+        // Draw (this sets canvas dimensions)
         this.draw();
+
+        // Update canvas position after drawing
+        this.setupCanvas();
 
         // Check if we are close enouph to the player
         this.execDamage();
@@ -123,9 +123,10 @@ class Projectile extends Character {
             const dstW = Math.max(1, Math.floor(this.width));
             const dstH = Math.max(1, Math.floor(this.height));
 
-            // Resize canvas to destination size
-            this.canvas.width = dstW;
-            this.canvas.height = dstH;
+            // Make canvas large enough to handle rotation (even larger for arrows)
+            const maxDim = Math.ceil(Math.sqrt(dstW * dstW + dstH * dstH)) + 10;
+            this.canvas.width = maxDim;
+            this.canvas.height = maxDim;
 
             // draw
             ctx.save();

@@ -36,6 +36,11 @@ class FightingPlayer extends Player {
 
     // Execute an attack
     attack() {
+        // Don't allow shooting until the game has started
+        if (typeof window !== 'undefined' && !window.archeryGameStarted) {
+            return;
+        }
+        
         const now = Date.now();
         if (now - this.lastAttackTime < this.attackCooldown) return;
         
