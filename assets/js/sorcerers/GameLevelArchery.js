@@ -161,8 +161,13 @@ class GameLevelArchery {
 
                 // Move the target left/right only if game has started
                 if (window.archeryGameStarted) {
+
+                    if (!this.speed){
+                        this.speed = 3;
+                    }
+
                     if (!this.velocity) {
-                        this.velocity = { x: 6, y: 0 }; // Start moving right
+                        this.velocity = { x: this.speed, y: 0 }; // Start moving right
                     }
 
                     this.position.x += this.velocity.x;
@@ -171,9 +176,15 @@ class GameLevelArchery {
                     console.log(`Position: ${this.position.x}, Velocity: ${this.velocity.x}, Canvas width: ${this.gameEnv.innerWidth}, Target width: ${this.width}`);
                     
                     if (this.position.x <= 0){
-                        this.velocity.x = 6;
+                        this.velocity.x = this.speed;
+                        this.speed += 0.5;
                     } else if (this.position.x + this.width >= this.gameEnv.innerWidth) {
-                        this.velocity.x = -6;
+                        this.velocity.x = -this.speed;
+                        this.speed += 0.5;
+                    }
+
+                    if (this.speed > 10){
+                        this.speed = 10; // cap the speed
                     }
                 }
 
