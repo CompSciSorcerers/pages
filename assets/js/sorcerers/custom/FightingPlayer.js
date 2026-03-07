@@ -1,6 +1,13 @@
 import Player from '../essentials/Player.js';
 import Projectile from './Projectile.js';
 
+/**
+ * A version of the Player class with added functionality for shooting projectiles (arrows).
+ * @param data - Initial data for the player character.
+ * @param gameEnv - The game environment object, providing access to game state and resources.
+ * 
+ * This class extends the basic Player class to allow for SPACE to create arrows
+ */
 class FightingPlayer extends Player {
     // Construct the class, with a list of stored projectiles
     constructor(data = null, gameEnv = null) {

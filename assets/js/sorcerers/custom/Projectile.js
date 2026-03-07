@@ -2,9 +2,9 @@ import Character from '../essentials/Character.js';
 import showEndScreen from './EndScreen.js';
 
 /*
-Projectile code reused from the Mansion Game boss fight from CSSE Tri 1
-*/
-
+ * Projectile code reused from the Mansion Game boss fight from CSSE Tri 1.
+ * This class represents the arrows that the player shoots.
+ */
 class Projectile extends Character {
     constructor(gameEnv = null, targetx, targety, sourcex, sourcey, type) {
         super({id: type}, gameEnv);

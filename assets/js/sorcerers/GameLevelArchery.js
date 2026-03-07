@@ -5,7 +5,23 @@ import Npc  from './essentials//Npc.js';
 import Barrier from './essentials/Barrier.js';
 import Enemy from './essentials/Enemy.js';
 
+/**
+ * GameLevelArchery
+ * 
+ * Defines the configuration for the Archery mini-game level.
+ * This class constructs the objects that will exist in the level,
+ * including the background, player, NPC, barrier, and moving target.
+ * 
+ * Each object is described with a configuration object that determines
+ * sprite properties, positioning, animations, and gameplay behavior.
+ */
 class GameLevelArchery {
+
+    /**
+     * Creates a new Archery level configuration.
+     *
+     * @param {GameEnvironment} gameEnv - The main game env object
+     */
     constructor(gameEnv) {
         const width = gameEnv.innerWidth;
         const height = gameEnv.innerHeight;
@@ -21,7 +37,12 @@ class GameLevelArchery {
             pixels: {height: 341, width: 498}
         };
 
-        // --- Player ---
+        /**
+         * Player character sprite configuration.
+         *
+         * Represents the main controllable character (Spook)
+         * The player can move around the map and interact with NPCs. It can also shoot arrows.
+         */
         const sprite_src_mc = path + "/images/sorcerers/spookMcWalk.png";
         const MC_SCALE_FACTOR = 7;
         const sprite_data_mc = {
@@ -50,7 +71,12 @@ class GameLevelArchery {
         };
     
 
-
+        /**
+         * Villager NPC configuration:
+         *
+         * Acts as the  trigger to start the archery mini-game.
+         * When the player interacts (presses E), a dialogue appears allowing the player to start or cancel the game.
+         */
         const sprite_src_villager = path + "/images/sorcerers/villager.png";
         const sprite_greet_villager = "Start the game? Press E";
         const sprite_data_villager = {
@@ -125,7 +151,10 @@ class GameLevelArchery {
             }
         };
 
-        // --- Barrier ---
+        /**
+         * Invisible barrier preventing the player from accessing the
+         * archery range before the game begins.
+         */        
         const barrier_data = {
             id: 'archery_barrier',
             x: 0,
@@ -137,7 +166,15 @@ class GameLevelArchery {
             hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 }
         };
 
-        // --- Target ---
+        /**
+         * Moving archery target.
+         * The object the player must hit with projectiles.
+         *
+         * - Moves horizontally once the game begins.
+         * - Bounces off screen edges.
+         * - Gradually increases speed tom ake the challenge harder.
+         * - Displays a counter showing remaining hits needed.
+         */
         const target_data = {
             id: 'archery_target',
             greeting: "Target",
