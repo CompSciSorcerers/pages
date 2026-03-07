@@ -1,4 +1,5 @@
 import Enemy from '../essentials/Enemy.js';
+import Player from '../essentials/Player.js';
 
 class Scythe extends Enemy {
     constructor(gameEnv, spawnX = null) {
@@ -7,12 +8,18 @@ class Scythe extends Enemy {
         const width = gameEnv.innerWidth;
 
         // Random spawn position at top of screen
-        const spawnXPos = spawnX !== null ? spawnX : Math.random() * (width - 64);
-        const spawnYPos = -64;
+        // Get the player position
+        const players = gameEnv.gameObjects.filter(obj => obj instanceof Player);
+        if (players.length === 0) {
+            console.error("No player found in game environment");
+            return;
+        }
+        const player = players[0];
+        const spawnXPos = player.position.x;
+        const spawnYPos = player.position.y;
 
-        // Target position (bottom of screen)
-        const targetXPos = Math.random() * (width - 64);
-        const targetYPos = gameEnv.innerHeight + 64;
+        const targetXPos = spawnX !== null ? spawnX : Math.random() * (width - 64);
+        const targetYPos = -64;
 
         console.log("Scythe spawn positions - from:", spawnXPos, spawnYPos, "to:", targetXPos, targetYPos);
 
@@ -112,13 +119,20 @@ class Scythe extends Enemy {
         // Check for collisions with player
         this.checkPlayerCollision();
 
-        // Call parent update to handle drawing and collision checks
-        super.update();
+        // Only call parent update if coordinates are set up
+        if (this.source_coords && this.target_coords) {
+            // Call parent update to handle drawing and collision checks
+            super.update();
+        } else {
+            // Debug: check if parent update calls our draw
+            console.log("Scythe: coordinates not set, calling super.update() anyway");
+            super.update();
+        }
     }
 
     checkPlayerCollision() {
         // Find all player objects
-        const players = this.gameEnv.gameObjects.filter(obj => 
+        const players = this.gameEnv.gameObjects.filter(obj =>
             obj.constructor.name === 'Player' || 
             (obj.isPlayer !== undefined && obj.isPlayer)
         );
@@ -134,34 +148,24 @@ class Scythe extends Enemy {
             const distance = Math.sqrt(dx * dx + dy * dy);
 
             if (distance <= HIT_DISTANCE) {
-                this.handleCollisionWithPlayer(player);
+                this.handleCollisionWithPlayer();
                 break;
             }
         }
     }
 
-    handleCollisionWithPlayer(player) {
+    handleCollisionWithPlayer() {
         console.log("Player hit by scythe!");
 
         // Mark scythe as complete and destroy it
         this.revComplete = true;
         this.destroy();
 
-        // Handle player damage/game over
-        if (player.takeDamage) {
-            player.takeDamage(20); // Deal 20 damage
-        } else if (player.data && player.data.health !== undefined) {
-            player.data.health -= 20;
-            if (player.data.health <= 0) {
-                console.log("Player defeated by scythe!");
-                if (player.gameOver) {
-                    player.gameOver();
-                }
-            }
-        } else {
-            // Fallback - just log the hit
-            console.log("Scythe hit player but no damage system available");
-        }
+        // Handle player game over
+        // Alert user that game is over
+        alert("Game Over! You were defeated by a scythe!");
+        // End the game
+        document.writeln("<h1>Game Over! You were defeated by a scythe!</h1>");
     }
 
     draw() {
