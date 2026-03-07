@@ -133,7 +133,7 @@ class GameLevelArchery {
             width: width,
             height: 20,
             color: 'rgba(0, 0, 0, 0.8)',
-            visible: true,
+            visible: false,
             hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 }
         };
 
@@ -149,8 +149,6 @@ class GameLevelArchery {
             orientation: {rows: 1, columns: 1},
             down: {row: 0, start: 0, columns: 1},
             hitbox: {widthPercentage: 0.0, heightPercentage: 0.0},
-            // custom stuff for my archery game
-            hitsRemaining: 10,
             // Override stayWithinCanvas to prevent default boundary checking
             stayWithinCanvas: function() {
                 // Custom boundary handling in update function
@@ -158,19 +156,24 @@ class GameLevelArchery {
             update: function() {
                 // Initialize hitsRemaining if not set
                 if (this.hitsRemaining === undefined) {
-                    this.hitsRemaining = 10;
+                    this.hitsRemaining = 20;
                 }
 
                 // Move the target left/right only if game has started
                 if (window.archeryGameStarted) {
                     if (!this.velocity) {
-                        this.velocity = { x: 2, y: 0 }; // Start moving right
+                        this.velocity = { x: 6, y: 0 }; // Start moving right
                     }
+
                     this.position.x += this.velocity.x;
                     
                     // Bounce off edges - check position boundaries
-                    if (this.position.x <= 0 || this.position.x + this.width >= this.gameEnv.innerWidth) {
-                        this.velocity.x = -this.velocity.x; // Reverse direction
+                    console.log(`Position: ${this.position.x}, Velocity: ${this.velocity.x}, Canvas width: ${this.gameEnv.innerWidth}, Target width: ${this.width}`);
+                    
+                    if (this.position.x <= 0){
+                        this.velocity.x = 6;
+                    } else if (this.position.x + this.width >= this.gameEnv.innerWidth) {
+                        this.velocity.x = -6;
                     }
                 }
 
