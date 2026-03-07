@@ -97,6 +97,8 @@ class GameLevelArchery {
                 // Don't show any reaction dialogue - this prevents the first alert
                 // The interact function will handle all dialogue instead
             },
+            
+            // This is where the interactions for starting the game are handled
             interact: function() {
                 // Clear any existing dialogue first to prevent duplicates
                 if (this.dialogueSystem && this.dialogueSystem.isDialogueOpen()) {
@@ -190,6 +192,8 @@ class GameLevelArchery {
             stayWithinCanvas: function() {
                 // Custom boundary handling in update function
             },
+
+            // This is where interactions between the target and projectiles are handled!
             update: function() {
                 // Initialize hitsRemaining if not set
                 if (this.hitsRemaining === undefined) {
