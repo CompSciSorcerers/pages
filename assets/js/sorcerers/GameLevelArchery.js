@@ -156,7 +156,7 @@ class GameLevelArchery {
             update: function() {
                 // Initialize hitsRemaining if not set
                 if (this.hitsRemaining === undefined) {
-                    this.hitsRemaining = 20;
+                    this.hitsRemaining = 30;
                 }
 
                 // Move the target left/right only if game has started
@@ -173,7 +173,7 @@ class GameLevelArchery {
                     this.position.x += this.velocity.x;
                     
                     // Bounce off edges - check position boundaries
-                    console.log(`Position: ${this.position.x}, Velocity: ${this.velocity.x}, Canvas width: ${this.gameEnv.innerWidth}, Target width: ${this.width}`);
+                    // console.log(`Position: ${this.position.x}, Velocity: ${this.velocity.x}, Canvas width: ${this.gameEnv.innerWidth}, Target width: ${this.width}`);
                     
                     if (this.position.x <= 0){
                         this.velocity.x = this.speed;
