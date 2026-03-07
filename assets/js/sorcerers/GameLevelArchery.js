@@ -191,39 +191,6 @@ class GameLevelArchery {
                 this.counterEl.style.left = `${rect.left}px`;
                 this.counterEl.style.top = `${rect.bottom + 2}px`;
                 this.counterEl.innerText = this.hitsRemaining;
-
-                // console.log(`target x: (${this.position.x.toFixed(1)}`)
-
-                for (const obj of this.gameEnv.gameObjects) {
-                    
-                    if (obj.constructor.name === 'Projectile') {
-                        const xDiff = Math.abs((this.position.x + this.width/2) - (obj.position.x + obj.width/2));
-                        const yDiff = Math.abs((this.position.y + this.height/2) - (obj.position.y + obj.height/2));
-                        const HIT_X = this.width * 0.5;
-                        const HIT_Y = this.height * 0.5;
-
-                        console.log(`Target @(${this.position.x.toFixed(1)},${this.position.y.toFixed(1)}) ` +
-                                    `Proj @(${obj.position.x.toFixed(1)},${obj.position.y.toFixed(1)}) ` +
-                                    `xDiff=${xDiff.toFixed(1)}, yDiff=${yDiff.toFixed(1)}, hit=${xDiff<=HIT_X&&yDiff<=HIT_Y}`);
-
-                        if (xDiff <= HIT_X && yDiff <= HIT_Y) {
-                            console.log('Projectile hit target!');
-                            obj.destroy();
-
-                            this.hitsRemaining -= 1;
-                            if (this.hitsRemaining <= 0) {
-                                // show win message and remove target
-                                alert('You won!');
-                                if (this.counterEl && this.counterEl.parentNode) {
-                                    this.counterEl.parentNode.removeChild(this.counterEl);
-                                }
-                                this.destroy();
-                            }
-
-                            break;
-                        }
-                    }
-                }
             }
         };
 
