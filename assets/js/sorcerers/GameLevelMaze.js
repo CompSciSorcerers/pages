@@ -14,10 +14,14 @@ class GameLevelMaze {
         const refWidth = width;
         const refHeight = height;
         
-
+        // Original design dimensions (from background image)
+        const designWidth = 1134;
+        const designHeight = 772;
+        
         // Calculate scale factors
-        const scaleX = refWidth 
-        const scaleY = refHeight
+        const scaleX = refWidth / designWidth;
+        const scaleY = refHeight / designHeight;
+
         const bgData = {
             name: "custom_bg",
             src: path + "/images/gamebuilder/bg/alien_planet.jpg",
