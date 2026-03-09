@@ -53,8 +53,8 @@ class GameLevelArchery {
             STEP_FACTOR: 500,
             ANIMATION_RATE: 100,
             INIT_POSITION: { 
-                x: (width / 2 - width / (5 * MC_SCALE_FACTOR)), 
-                y: height - (height / MC_SCALE_FACTOR)
+                x: 0.5, 
+                y: 0.75
             },
             pixels: {height: 2400, width: 3600},
             orientation: {rows: 2, columns: 3},
@@ -86,7 +86,7 @@ class GameLevelArchery {
             SCALE_FACTOR: 6,
             ANIMATION_RATE: 100,
             pixels: {width: 181, height: 272},
-            INIT_POSITION: {x: (width * 55 / 80), y: (height - height / 6)},
+            INIT_POSITION: {x: 0.75, y: 0.75},
             orientation: {rows: 1, columns: 1},
             down: {row: 0, start: 0, columns: 1},
             hitbox: {widthPercentage: 0.1, heightPercentage: 0.2},
@@ -160,7 +160,7 @@ class GameLevelArchery {
         const barrier_data = {
             id: 'archery_barrier',
             x: 0,
-            y: height / 2,
+            y: 0.5,
             width: width,
             height: 20,
             color: 'rgba(0, 0, 0, 0.8)',
@@ -184,7 +184,7 @@ class GameLevelArchery {
             SCALE_FACTOR: 5,
             ANIMATION_RATE: 100,
             pixels: {width: 178, height: 169},
-            INIT_POSITION: {x: (width / 2), y: (height / 4)},
+            INIT_POSITION: {x: 0.5, y: 0.25},
             orientation: {rows: 1, columns: 1},
             down: {row: 0, start: 0, columns: 1},
             hitbox: {widthPercentage: 0.0, heightPercentage: 0.0},
