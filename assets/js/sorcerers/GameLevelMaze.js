@@ -43,7 +43,7 @@ class GameLevelMaze {
             src: path + "/images/gamify/tux.png",
             SCALE_FACTOR: 8,
             ANIMATION_RATE: 50,
-            INIT_POSITION: { x: 159, y: 283 },
+            INIT_POSITION: { x: 0.67, y: 0.67 },
             pixels: { height: 256, width: 352 },
             orientation: { rows: 8, columns: 11 },
             down: { row: 0, start: 0, columns: 3 },
