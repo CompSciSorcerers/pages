@@ -115,7 +115,7 @@ class GameLevelFortress {
          * Panicked NPC sprite data - interactive character with dialogue system
          * Single-frame sprite with randomized dialogue messages
          */
-        const paniced_npc_src = path + "/images/sorcerers/snowman.png";
+        const paniced_npc_src = path + "/images/castleGame/snowman.png";
         const PANICED_NPC_SCALE_FACTOR = 4; // Medium-sized NPC
         const sprite_data_panic_npc = {
             id: 'Panicked NPC',

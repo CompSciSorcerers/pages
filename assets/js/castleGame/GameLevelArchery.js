@@ -30,7 +30,7 @@ class GameLevelArchery {
         window.archeryGameStarted = false;
 
         // --- Floor ---
-        const image_src_floor = path + "/images/sorcerers/grassBackground.png";
+        const image_src_floor = path + "/images/castleGame/grassBackground.png";
         const image_data_floor = {
             name: 'floor',
             src: image_src_floor,
@@ -43,7 +43,7 @@ class GameLevelArchery {
          * Represents the main controllable character (Spook)
          * The player can move around the map and interact with NPCs. It can also shoot arrows.
          */
-        const sprite_src_mc = path + "/images/sorcerers/spookMcWalk.png";
+        const sprite_src_mc = path + "/images/castleGame/spookMcWalk.png";
         const MC_SCALE_FACTOR = 7;
         const sprite_data_mc = {
             id: 'Spook',
@@ -77,7 +77,7 @@ class GameLevelArchery {
          * Acts as the  trigger to start the archery mini-game.
          * When the player interacts (presses E), a dialogue appears allowing the player to start or cancel the game.
          */
-        const sprite_src_villager = path + "/images/sorcerers/villager.png";
+        const sprite_src_villager = path + "/images/castleGame/villager.png";
         const sprite_greet_villager = "Start the game? Press E";
         const sprite_data_villager = {
             id: 'Villager',
@@ -180,7 +180,7 @@ class GameLevelArchery {
         const target_data = {
             id: 'archery_target',
             greeting: "Target",
-            src: path + "/images/sorcerers/target.png",
+            src: path + "/images/castleGame/target.png",
             SCALE_FACTOR: 5,
             ANIMATION_RATE: 100,
             pixels: {width: 178, height: 169},
