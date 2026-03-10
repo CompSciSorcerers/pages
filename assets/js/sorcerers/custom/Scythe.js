@@ -56,7 +56,7 @@ class Scythe extends Enemy {
 
         // Motion properties
         this.radian_prog = 0;
-        this.radian_limit = Math.PI; // Half ellipse (top to bottom)
+        this.radian_limit = 2 * Math.PI; // Full ellipse
         this.projectileSpeed = 0.03; // Radians per update
 
         // State tracking
