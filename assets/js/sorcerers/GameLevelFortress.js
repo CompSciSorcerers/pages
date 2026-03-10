@@ -95,20 +95,20 @@ class GameLevelFortress {
             SCALE_FACTOR: MC_SCALE_FACTOR,
             STEP_FACTOR: 300, // Movement speed multiplier
             ANIMATION_RATE: 10, // Frames between animation updates
-            INIT_POSITION: { x: (width / 2 - width / (5 * MC_SCALE_FACTOR)), y: height - (height / MC_SCALE_FACTOR)}, // Center-bottom spawn
-            pixels: {height: 2400, width: 3600}, // Large sprite sheet (2 rows x 3 columns)
-            orientation: {rows: 2, columns: 3}, // 6 total frames
+            INIT_POSITION: { x: 0.5 * width, y: 0.8 * height }, // Center-bottom spawn
+            pixels: { height: 2400, width: 3600 }, // Large sprite sheet (2 rows x 3 columns)
+            orientation: { rows: 2, columns: 3 }, // 6 total frames
             // Directional animation mappings
-            down: {row: 1, start: 0, columns: 3},
-            downRight: {row: 1, start: 0, columns: 3, rotate: Math.PI/16},
-            downLeft: {row: 0, start: 0, columns: 3, rotate: -Math.PI/16},
-            left: {row: 0, start: 0, columns: 3},
-            right: {row: 1, start: 0, columns: 3},
-            up: {row: 1, start: 0, columns: 3},
-            upLeft: {row: 0, start: 0, columns: 3, rotate: Math.PI/16},
-            upRight: {row: 1, start: 0, columns: 3, rotate: -Math.PI/16},
-            hitbox: {widthPercentage: 0.45, heightPercentage: 0.2}, // Narrow hitbox for precise collision
-            keypress: {up: 87, left: 65, down: 83, right: 68} // WASD controls
+            down: { row: 1, start: 0, columns: 3 },
+            downRight: { row: 1, start: 0, columns: 3, rotate: Math.PI/16 },
+            downLeft: { row: 0, start: 0, columns: 3, rotate: -Math.PI/16 },
+            left: { row: 0, start: 0, columns: 3 },
+            right: { row: 1, start: 0, columns: 3 },
+            up: { row: 1, start: 0, columns: 3 },
+            upLeft: { row: 0, start: 0, columns: 3, rotate: Math.PI/16 },
+            upRight: { row: 1, start: 0, columns: 3, rotate: -Math.PI/16 },
+            hitbox: { widthPercentage: 0.45, heightPercentage: 0.2 }, // Narrow hitbox for precise collision
+            keypress: { up: 87, left: 65, down: 83, right: 68 } // WASD controls
         };
 
         /**
@@ -123,11 +123,11 @@ class GameLevelFortress {
             src: paniced_npc_src,
             SCALE_FACTOR: PANICED_NPC_SCALE_FACTOR,
             ANIMATION_RATE: 30, // Slower animation for static sprite
-            pixels: {width: 840, height: 1221}, // Large single sprite image
-            INIT_POSITION: {x: (width * 9 / 16), y: height - (height / PANICED_NPC_SCALE_FACTOR)}, // Right side positioning
-            orientation: {rows: 1, columns: 1 }, // Single frame sprite
-            down: {row: 0, start: 0, columns: 1 }, // Only one animation state
-            hitbox: {widthPercentage: 0.2, heightPercentage: 0.5}, // Tall narrow hitbox
+            pixels: { width: 840, height: 1221 }, // Large single sprite image
+            INIT_POSITION: { x: 0.5625 * width, y: 0.8 * height }, // Right side positioning
+            orientation: { rows: 1, columns: 1 }, // Single frame sprite
+            down: { row: 0, start: 0, columns: 1 }, // Only one animation state
+            hitbox: { widthPercentage: 0.2, heightPercentage: 0.5 }, // Tall narrow hitbox
             /**
              * Randomized dialogue messages for NPC interaction
              * Provides story context and hints about game mechanics
@@ -173,7 +173,7 @@ class GameLevelFortress {
 
                 // Select random dialogue message - provides variety for repeated interactions
                 const whattosay = this.data.dialogues[Math.floor(Math.random() * this.data.dialogues.length)];
-                
+
                 // Display dialogue with NPC sprite - shows entire sprite sheet as background
                 this.dialogueSystem.showDialogue(
                     whattosay,
@@ -203,10 +203,10 @@ class GameLevelFortress {
          * Defines rendering order: background -> player -> NPC -> barrier
          */
         this.classes = [
-            {class: GameEnvBackground, data: image_data_chamber}, // Atmospheric background
-            {class: Player, data: sprite_data_mc}, // Playable character
-            {class: Npc, data: sprite_data_panic_npc}, // Interactive NPC
-            {class: Barrier, data: barrier_data} // Collision boundary
+            { class: GameEnvBackground, data: image_data_chamber }, // Atmospheric background
+            { class: Player, data: sprite_data_mc }, // Playable character
+            { class: Npc, data: sprite_data_panic_npc }, // Interactive NPC
+            { class: Barrier, data: barrier_data } // Collision boundary
         ];
 
         /**
@@ -236,7 +236,7 @@ class GameLevelFortress {
     update() {
         // Increment spawn timer - tracks elapsed frames since last scythe
         this.scytheSpawnTimer++;
-        
+
         // Check spawn condition - compares timer against configured interval
         if (this.scytheSpawnTimer >= this.scytheSpawnInterval) {
             console.log("Scythe spawn timer reached, spawning scythe...");
@@ -279,11 +279,11 @@ class GameLevelFortress {
         console.log("Attempting to spawn scythe...");
         const scythe = new Scythe(this.gameEnv); // Create with environment context
         console.log("Scythe created:", scythe);
-        
+
         // Add to active game objects - enables update/render cycle participation
         this.gameEnv.gameObjects.push(scythe);
         console.log("Scythe added to gameObjects. Total objects:", this.gameEnv.gameObjects.length);
-        
+
         // Add to visual container - enables rendering in game viewport
         this.gameEnv.container.appendChild(scythe.canvas);
         console.log("Scythe canvas added to container");

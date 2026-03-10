@@ -61,7 +61,7 @@ class Character extends GameObject {
         this.canvas.height = data.pixels?.height || PIXELS.height;
         this.hitbox = data?.hitbox || {};
         this.ctx = this.canvas.getContext('2d', { willReadFrequently: true });
-        this.gameEnv.container.appendChild(this.canvas);
+        document.getElementById("gameContainer").appendChild(this.canvas);
         this.canvas.style = "image-rendering: pixelated;";
 
         // Set initial object properties 
@@ -389,7 +389,7 @@ class Character extends GameObject {
         this.gameEnv.gameObjects.splice(index, 1)
       }
     }
-    
+
 }
 
 export default Character;
