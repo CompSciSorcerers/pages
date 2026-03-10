@@ -238,9 +238,13 @@ class GameLevelFortress {
         this.scytheSpawnTimer++;
 
         // Check spawn condition - compares timer against configured interval
+        const MAX_SCYTHES = 10;
         if (this.scytheSpawnTimer >= this.scytheSpawnInterval) {
-            console.log("Scythe spawn timer reached, spawning scythe...");
-            this.spawnScythe(); // Execute spawn logic
+            console.log("Scythe spawn timer reached, spawning scythe(s)...");
+            const numScythes = Math.floor(Math.random() * MAX_SCYTHES) + 1;
+            for (let i = 0; i < numScythes; i++) {
+                this.spawnScythe(); // Execute spawn logic
+            }
             this.scytheSpawnTimer = 0; // Reset timer for next cycle
         }
     }
