@@ -24,6 +24,9 @@ class Projectile extends Character {
         };
 
         this.revComplete = false;
+        this.stuck = false;
+        this.stuckTarget = null;
+        this.offset = {x: 0, y: 0};
 
         this.spriteSheet = new Image();
         this.frameIndex = 0;
@@ -42,11 +45,17 @@ class Projectile extends Character {
         this.position.x += this.velocity.x;
         this.position.y += this.velocity.y;
 
-        // Check if offscreen
-        if (
+        // If stuck to target, update position to follow target
+        if (this.stuck && this.stuckTarget) {
+            this.position.x = this.stuckTarget.position.x + this.offset.x;
+            this.position.y = this.stuckTarget.position.y + this.offset.y;
+        }
+
+        // Check if offscreen (only if not stuck)
+        if (!this.stuck && (
             this.position.x < 0 || this.position.x > this.gameEnv.innerWidth ||
             this.position.y < 0 || this.position.y > this.gameEnv.innerHeight
-        ) {
+        )) {
             this.revComplete = true;
             this.destroy();
         }
@@ -57,7 +66,7 @@ class Projectile extends Character {
         // Update canvas position after drawing
         this.setupCanvas();
 
-        // Check if we are close enouph to the target to damag eit
+        // Check if we are close enough to the target to damage it
         this.execDamage();
     }
 
@@ -71,20 +80,19 @@ class Projectile extends Character {
 
         const travelAngle = Math.atan2(this.velocity.y, this.velocity.x); // radians
 
-        // Base angle depends on how the sprite image faces by default
-        // Arrow image faces left -> baseAngle = PI
-        // Fireball image faces right -> baseAngle = 0
         const baseAngle = (this.type === 'ARROW' || this.type === 'PLAYER') ? Math.PI : 0;
 
-        // Angle to rotate the sprite so it faces travel direction
-        const drawAngle = travelAngle - baseAngle;
+        let drawAngle = travelAngle - baseAngle;
+
+        if (this.stuck) {
+            drawAngle = Math.PI / 2;
+        }
 
         const srcW = this.spriteSheet.naturalWidth || this.spriteSheet.width;
         const srcH = this.spriteSheet.naturalHeight || this.spriteSheet.height;
         const dstW = Math.max(1, Math.floor(this.width));
         const dstH = Math.max(1, Math.floor(this.height));
 
-        // Make canvas large enough to handle rotation (even larger for arrows)
         const maxDim = Math.ceil(Math.sqrt(dstW * dstW + dstH * dstH)) + 10;
         this.canvas.width = maxDim;
         this.canvas.height = maxDim;
@@ -128,9 +136,12 @@ class Projectile extends Character {
         const yDiff = Math.abs((nearestTarget.position.y) - this.position.y);
 
 
-        if (xDiff <= TARGET_SIZE/2.0 && yDiff <= TARGET_SIZE/2.0) {
-            this.revComplete = true;
-            this.destroy();
+        if (!this.stuck && xDiff <= TARGET_SIZE/2.0 && yDiff <= TARGET_SIZE/2.0) {
+            this.stuck = true;
+            this.stuckTarget = nearestTarget;
+            this.offset.x = this.position.x - nearestTarget.position.x;
+            this.offset.y = this.position.y - nearestTarget.position.y;
+            this.velocity = {x: 0, y: 0}; // stop moving
             nearestTarget.hitsRemaining -= 1;
             console.log(`Target hit, now has ${nearestTarget.hitsRemaining} health`);
 
