@@ -12,8 +12,8 @@ permalink: /gamify/castle/archery
 <script type="module">
 
     // Adventure Game assets locations
-    import Game from "{{site.baseurl}}/assets/js/sorcerers/essentials/Game.js";
-    import GameLevelArchery from "{{site.baseurl}}/assets/js/sorcerers/GameLevelArchery.js";
+    import Game from "{{site.baseurl}}/assets/js/castleGame/essentials/Game.js";
+    import GameLevelArchery from "{{site.baseurl}}/assets/js/castleGame/GameLevelArchery.js";
     import { pythonURI, javaURI, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js';
 
     const gameLevelClasses = [GameLevelArchery];
