@@ -1,5 +1,5 @@
-import Enemy from '../essentials/Enemy.js';
-import Player from '../essentials/Player.js';
+import Enemy from '../../GameEnginev1/essentials/Enemy.js';
+import Player from '../../GameEnginev1/essentials/Player.js';
 
 class Scythe extends Enemy {
     constructor(gameEnv, spawnX = null) {
@@ -56,7 +56,7 @@ class Scythe extends Enemy {
 
         // Motion properties
         this.radian_prog = 0;
-        this.radian_limit = Math.PI; // Half ellipse (top to bottom)
+        this.radian_limit = 2 * Math.PI; // Full ellipse (top to bottom)
         this.projectileSpeed = 0.03; // Radians per update
 
         // State tracking

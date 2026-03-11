@@ -1,8 +1,8 @@
 
-import GameEnvBackground from './essentials/GameEnvBackground.js';
-import Player from './essentials/Player.js';
-import Npc from './essentials/Npc.js';
-import Barrier from './essentials/Barrier.js';
+import GameEnvBackground from '../GameEnginev1/essentials/GameEnvBackground.js';
+import Player from '../GameEnginev1/essentials/Player.js';
+import Npc from '../GameEnginev1/essentials/Npc.js';
+import Barrier from '../GameEnginev1/essentials/Barrier.js';
 
 class GameLevelMaze {
     constructor(gameEnv) {

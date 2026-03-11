@@ -1,4 +1,4 @@
-import Character from '../essentials/Character.js';
+import Character from '../../GameEnginev1/essentials/Character.js';
 import showEndScreen from './EndScreen.js';
 
 /*

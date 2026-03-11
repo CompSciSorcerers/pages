@@ -1,4 +1,4 @@
-import Player from '../essentials/Player.js';
+import Player from '../../GameEnginev1/essentials/Player.js';
 import Projectile from './Projectile.js';
 
 /**
