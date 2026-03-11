@@ -86,29 +86,28 @@ class GameLevelFortress {
          * Player character sprite data for Spook character
          * Multi-directional sprite sheet with walking animations
          */
-        const sprite_src_mc = path + "/images/mansionGame/spookMcWalk.png";
-        const MC_SCALE_FACTOR = 6; // Large character for visibility
+        const sprite_src_mc = path + "/images/castleGame/playerSpritesheet.png";
+        const MC_SCALE_FACTOR = 7;
         const sprite_data_mc = {
-            id: 'Spook',
-            greeting: "Hi, I am Spook.",
+            id: 'Knight',
+            greeting: "Hi, I am a Knight.",
             src: sprite_src_mc,
             SCALE_FACTOR: MC_SCALE_FACTOR,
-            STEP_FACTOR: 300, // Movement speed multiplier
-            ANIMATION_RATE: 10, // Frames between animation updates
-            INIT_POSITION: { x: 0.5, y: 0.8 }, // Center-bottom spawn
-            pixels: { height: 2400, width: 3600 }, // Large sprite sheet (2 rows x 3 columns)
-            orientation: { rows: 2, columns: 3 }, // 6 total frames
-            // Directional animation mappings
-            down: { row: 1, start: 0, columns: 3 },
-            downRight: { row: 1, start: 0, columns: 3, rotate: Math.PI/16 },
-            downLeft: { row: 0, start: 0, columns: 3, rotate: -Math.PI/16 },
-            left: { row: 0, start: 0, columns: 3 },
-            right: { row: 1, start: 0, columns: 3 },
-            up: { row: 1, start: 0, columns: 3 },
-            upLeft: { row: 0, start: 0, columns: 3, rotate: Math.PI/16 },
-            upRight: { row: 1, start: 0, columns: 3, rotate: -Math.PI/16 },
-            hitbox: { widthPercentage: 0.45, heightPercentage: 0.2 }, // Narrow hitbox for precise collision
-            keypress: { up: 87, left: 65, down: 83, right: 68 } // WASD controls
+            STEP_FACTOR: 500,
+            ANIMATION_RATE: 100,
+            INIT_POSITION: { x: 0.5, y: 0.8 },  // Relative positioning (0-1 scale)
+            pixels: {height: 432, width: 234},
+            orientation: {rows: 4, columns: 3},
+            down: {row: 0, start: 0, columns: 3},
+            downRight: {row: 2, start: 0, columns: 3, rotate: Math.PI/16},
+            downLeft: {row: 1, start: 0, columns: 3, rotate: -Math.PI/16},
+            left: {row: 1, start: 0, columns: 3},
+            right: {row: 2, start: 0, columns: 3},
+            up: {row: 3, start: 0, columns: 3},
+            upLeft: {row: 1, start: 0, columns: 3, rotate: Math.PI/16},
+            upRight: {row: 2, start: 0, columns: 3, rotate: -Math.PI/16},
+            hitbox: {widthPercentage: 0.1, heightPercentage: 0.15},
+            keypress: {up: 87, left: 65, down: 83, right: 68}, // W, A, S, D
         };
 
         /**
