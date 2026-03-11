@@ -2,7 +2,7 @@ import GameEnvBackground  from "../GameEnginev1/essentials/GameEnvBackground.js"
 import Player from "../GameEnginev1/essentials/Player.js";
 import Npc from '../GameEnginev1/essentials/Npc.js';
 import Barrier from '../GameEnginev1/essentials/Barrier.js';
-import DialogueSystem from '../GameEnginev1/essentials/DialogueSystem.js';
+import DialogueSystem from './custom/DialogueSystem.js';
 import Scythe from './custom/Scythe.js';
 
 /**
@@ -95,7 +95,7 @@ class GameLevelFortress {
             SCALE_FACTOR: MC_SCALE_FACTOR,
             STEP_FACTOR: 500,
             ANIMATION_RATE: 100,
-            INIT_POSITION: { x: 0.5, y: 0.8 },  // Relative positioning (0-1 scale)
+            INIT_POSITION: { x: 0.5 * width, y: 0.8 * height },  // Relative positioning (0-1 scale)
             pixels: {height: 432, width: 234},
             orientation: {rows: 4, columns: 3},
             down: {row: 0, start: 0, columns: 3},
