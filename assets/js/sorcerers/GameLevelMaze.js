@@ -80,163 +80,163 @@ class GameLevelMaze {
             }
         };
         const dbarrier_1 = {
-            id: 'dbarrier_1', x: 18 * scaleX, y: 726  * scaleY, width: 163 * scaleX, height: 7 * scaleY, visible: true /* BUILDER_DEFAULT */,
+            id: 'dbarrier_1', x: 0.0047, y: 0.3922, width: 163 * scaleX, height: 7 * scaleY, visible: true /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0 * scaleX, heightPercentage: 0.0 * scaleY },
             fromOverlay: true
         };
 
         const dbarrier_2 = {
-            id: 'dbarrier_2', x: 507 * scaleX, y: 558 * scaleY, width: 10 * scaleX, height: 60 * scaleY, visible: true /* BUILDER_DEFAULT */,
+            id: 'dbarrier_2', x: 0.1320, y: 0.3014, width: 10 * scaleX, height: 60 * scaleY, visible: true /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0 * scaleX, heightPercentage: 0.0 * scaleY },
             fromOverlay: true
         };
 
         const dbarrier_3 = {
-            id: 'dbarrier_3', x: 534 * scaleX, y: 558 * scaleY, width: 48 * scaleX, height: 7 * scaleY, visible: true /* BUILDER_DEFAULT */,
+            id: 'dbarrier_3', x: 0.1391, y: 0.3014, width: 48 * scaleX, height: 7 * scaleY, visible: true /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0 * scaleX, heightPercentage: 0.0 * scaleY },
             fromOverlay: true
         };
 
         const dbarrier_4 = {
-            id: 'dbarrier_4', x: 651 * scaleX, y: 567 * scaleY, width: 7 * scaleX, height: 54 * scaleY, visible: true /* BUILDER_DEFAULT */,
+            id: 'dbarrier_4', x: 0.1695, y: 0.3061, width: 7 * scaleX, height: 54 * scaleY, visible: true /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0 * scaleX, heightPercentage: 0.0 * scaleY },
             fromOverlay: true
         };
 
         const dbarrier_5 = {
-            id: 'dbarrier_5', x: 651 * scaleX, y: 696 * scaleY, width: 84 * scaleX, height: 8 * scaleY, visible: true /* BUILDER_DEFAULT */,
+            id: 'dbarrier_5', x: 0.1695, y: 0.3759, width: 84 * scaleX, height: 8 * scaleY, visible: true /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0 * scaleX, heightPercentage: 0.0 * scaleY },
             fromOverlay: true
         };
 
         const dbarrier_6 = {
-            id: 'dbarrier_6', x: 897 * scaleX, y: 579 * scaleY, width: 10 * scaleX, height: 41 * scaleY, visible: true /* BUILDER_DEFAULT */,
+            id: 'dbarrier_6', x: 0.2336, y: 0.3128, width: 10 * scaleX, height: 41 * scaleY, visible: true /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0 * scaleX, heightPercentage: 0.0 * scaleY },
             fromOverlay: true
         };
 
         const dbarrier_7 = {
-            id: 'dbarrier_7', x: 927 * scaleX, y: 579 * scaleY, width: 80 * scaleX, height: 7 * scaleY, visible: true /* BUILDER_DEFAULT */,
+            id: 'dbarrier_7', x: 0.2414, y: 0.3128, width: 80 * scaleX, height: 7 * scaleY, visible: true /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0 * scaleX, heightPercentage: 0.0 * scaleY },
             fromOverlay: true
         };
 
         const dbarrier_8 = {
-            id: 'dbarrier_8', x: 1137 * scaleX, y: 600 * scaleY, width: 8 * scaleX, height: 34 * scaleY, visible: true /* BUILDER_DEFAULT */,
+            id: 'dbarrier_8', x: 0.2961, y: 0.3242, width: 8 * scaleX, height: 34 * scaleY, visible: true /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0 * scaleX, heightPercentage: 0.0 * scaleY },
             fromOverlay: true
         };
 
         const dbarrier_9 = {
-            id: 'dbarrier_9', x: 1050 * scaleX, y: 690 * scaleY, width: 33 * scaleX, height: 4 * scaleY, visible: true /* BUILDER_DEFAULT */,
+            id: 'dbarrier_9', x: 0.2734, y: 0.3729, width: 33 * scaleX, height: 4 * scaleY, visible: true /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0 * scaleX, heightPercentage: 0.0 * scaleY },
             fromOverlay: true
         };
 
         const dbarrier_10 = {
-            id: 'dbarrier_10', x: 1158 * scaleX, y: 582 * scaleY, width: 59 * scaleX, height: 8 * scaleY, visible: true /* BUILDER_DEFAULT */,
+            id: 'dbarrier_10', x: 0.3016, y: 0.3143, width: 59 * scaleX, height: 8 * scaleY, visible: true /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0 * scaleX, heightPercentage: 0.0 * scaleY },
             fromOverlay: true
         };
 
         const dbarrier_11 = {
-            id: 'dbarrier_11', x: 1299 * scaleX, y: 294 * scaleY, width: 10 * scaleX, height: 98 * scaleY, visible: true /* BUILDER_DEFAULT */,
+            id: 'dbarrier_11', x: 0.3383, y: 0.1588, width: 10 * scaleX, height: 98 * scaleY, visible: true /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0 * scaleX, heightPercentage: 0.0 * scaleY },
             fromOverlay: true
         };
 
         const dbarrier_12 = {
-            id: 'dbarrier_12', x: 528 * scaleX, y: 114 * scaleY, width: 320 * scaleX, height: 8 * scaleY, visible: true /* BUILDER_DEFAULT */,
+            id: 'dbarrier_12', x: 0.1375, y: 0.0616, width: 320 * scaleX, height: 8 * scaleY, visible: true /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0 * scaleX, heightPercentage: 0.0 * scaleY },
             fromOverlay: true
         };
 
         const dbarrier_13 = {
-            id: 'dbarrier_13', x: 1059 * scaleX, y: 126 * scaleY, width: 6 * scaleX, height: 86 * scaleY, visible: true /* BUILDER_DEFAULT */,
+            id: 'dbarrier_13', x: 0.2758, y: 0.0681, width: 6 * scaleX, height: 86 * scaleY, visible: true /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0 * scaleX, heightPercentage: 0.0 * scaleY },
             fromOverlay: true
         };
 
         const dbarrier_14 = {
-            id: 'dbarrier_14', x: 627 * scaleX, y: 297 * scaleY, width: 81 * scaleX, height: 9 * scaleY, visible: true /* BUILDER_DEFAULT */,
+            id: 'dbarrier_14', x: 0.1633, y: 0.1605, width: 81 * scaleX, height: 9 * scaleY, visible: true /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0 * scaleX, heightPercentage: 0.0 * scaleY },
             fromOverlay: true
         };
 
         const dbarrier_15 = {
-            id: 'dbarrier_15', x: 630 * scaleX, y: 312 * scaleY, width: 10 * scaleX, height: 82 * scaleY, visible: true /* BUILDER_DEFAULT */,
+            id: 'dbarrier_15', x: 0.1641, y: 0.1686, width: 10 * scaleX, height: 82 * scaleY, visible: true /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0 * scaleX, heightPercentage: 0.0 * scaleY },
             fromOverlay: true
         };
 
         const dbarrier_16 = {
-            id: 'dbarrier_16', x: 249 * scaleX, y: 129 * scaleY, width: 92 * scaleX, height: 11 * scaleY, visible: true /* BUILDER_DEFAULT */,
+            id: 'dbarrier_16', x: 0.0648, y: 0.0697, width: 92 * scaleX, height: 11 * scaleY, visible: true /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0 * scaleX, heightPercentage: 0.0 * scaleY },
             fromOverlay: true
         };
 
         const dbarrier_17 = {
-            id: 'dbarrier_17', x: 327 * scaleX, y: 156 * scaleY, width: 10 * scaleX, height: 129 * scaleY, visible: true /* BUILDER_DEFAULT */,
+            id: 'dbarrier_17', x: 0.0852, y: 0.0843, width: 10 * scaleX, height: 129 * scaleY, visible: true /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0 * scaleX, heightPercentage: 0.0 * scaleY },
             fromOverlay: true
         };
 
         const dbarrier_18 = {
-            id: 'dbarrier_18', x: 189 * scaleX, y: 336 * scaleY, width: 41 * scaleX, height: 14 * scaleY, visible: true /* BUILDER_DEFAULT */,
+            id: 'dbarrier_18', x: 0.0492, y: 0.1815, width: 41 * scaleX, height: 14 * scaleY, visible: true /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0 * scaleX, heightPercentage: 0.0 * scaleY },
             fromOverlay: true
         };
 
         const dbarrier_19 = {
-            id: 'dbarrier_19', x: 225 * scaleX, y: 0 * scaleY, width: 10 * scaleX, height: 52 * scaleY, visible: true /* BUILDER_DEFAULT */,
+            id: 'dbarrier_19', x: 0.0586, y: 0.0, width: 10 * scaleX, height: 52 * scaleY, visible: true /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0 * scaleX, heightPercentage: 0.0 * scaleY },
             fromOverlay: true
         };
 
         const dbarrier_20 = {
-            id: 'dbarrier_20', x: 42 * scaleX, y: 1077 * scaleY, width: 233 * scaleX, height: 11 * scaleY, visible: true /* BUILDER_DEFAULT */,
+            id: 'dbarrier_20', x: 0.0109, y: 0.5820, width: 233 * scaleX, height: 11 * scaleY, visible: true /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0 * scaleX, heightPercentage: 0.0 * scaleY },
             fromOverlay: true
         };
 
         const dbarrier_21 = {
-            id: 'dbarrier_21', x: 723 * scaleX, y: 1083 * scaleY, width: 14 * scaleX, height: 60 * scaleY, visible: true /* BUILDER_DEFAULT */,
+            id: 'dbarrier_21', x: 0.1883, y: 0.5850, width: 14 * scaleX, height: 60 * scaleY, visible: true /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0 * scaleX, heightPercentage: 0.0 * scaleY },
             fromOverlay: true
         };
 
         const dbarrier_22 = {
-            id: 'dbarrier_22', x: 933 * scaleX, y: 1074 * scaleY, width: 22 * scaleX, height: 58 * scaleY, visible: true /* BUILDER_DEFAULT */,
+            id: 'dbarrier_22', x: 0.2430, y: 0.5803, width: 22 * scaleX, height: 58 * scaleY, visible: true /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0 * scaleX, heightPercentage: 0.0 * scaleY },
             fromOverlay: true
         };
 
         const dbarrier_23 = {
-            id: 'dbarrier_23', x: 78 * scaleX, y: 849 * scaleY, width: 225 * scaleX, height: 10 * scaleY, visible: true /* BUILDER_DEFAULT */,
+            id: 'dbarrier_23', x: 0.0203, y: 0.4587, width: 225 * scaleX, height: 10 * scaleY, visible: true /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0 * scaleX, heightPercentage: 0.0 * scaleY },
             fromOverlay: true
         };
 
         const dbarrier_24 = {
-            id: 'dbarrier_24', x: 735 * scaleX, y: 702 * scaleY, width: 8 * scaleX, height: 55 * scaleY, visible: true /* BUILDER_DEFAULT */,
+            id: 'dbarrier_24', x: 0.1914, y: 0.3792, width: 8 * scaleX, height: 55 * scaleY, visible: true /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0 * scaleX, heightPercentage: 0.0 * scaleY },
             fromOverlay: true
         };
 
         const dbarrier_25 = {
-            id: 'dbarrier_25', x: 1038 * scaleX, y: 693 * scaleY, width: 16 * scaleX, height: 55 * scaleY, visible: true /* BUILDER_DEFAULT */,
+            id: 'dbarrier_25', x: 0.2703, y: 0.3744, width: 16 * scaleX, height: 55 * scaleY, visible: true /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0 * scaleX, heightPercentage: 0.0 * scaleY },
             fromOverlay: true
         };
 
         const dbarrier_26 = {
-            id: 'dbarrier_26', x: 936 * scaleX, y: 843 * scaleY, width: 37 * scaleX, height: 9 * scaleY, visible: true /* BUILDER_DEFAULT */,
+            id: 'dbarrier_26', x: 0.2438, y: 0.4555, width: 37 * scaleX, height: 9 * scaleY, visible: true /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0 * scaleX, heightPercentage: 0.0 * scaleY },
             fromOverlay: true
         };
 
         const dbarrier_27 = {
-            id: 'dbarrier_27', x: 999 * scaleX, y: 1083 * scaleY, width: 168 * scaleX, height: 6 * scaleY, visible: true /* BUILDER_DEFAULT */,
+            id: 'dbarrier_27', x: 0.2602, y: 0.5850, width: 168 * scaleX, height: 6 * scaleY, visible: true /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0 * scaleX, heightPercentage: 0.0 * scaleY },
             fromOverlay: true
         };
