@@ -32,9 +32,9 @@ permalink: /gamify/castle/maze
             showNavigation: true,
             showLevelSelect: true,
             showInfo: true,
-            homeUrl: "/gamify/sorcerers",
+            homeUrl: "/gamify/sorcerers/maze",
             gameInfo: {
-                title: "Murder Mystery Game",
+                title: "Castle Game",
                 version: "1.0",
                 developer: "DNHS CSSE March 2026",
                 controls: "Use WASD keys to move your character."
