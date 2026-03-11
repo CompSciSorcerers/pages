@@ -12,8 +12,8 @@ permalink: /gamify/castle/fortress
 <script type="module">
 
     // Adventure Game assets locations
-    import Game from "{{site.baseurl}}/assets/js/sorcerers/essentials/Game.js";
-    import GameLevelFortress from "{{site.baseurl}}/assets/js/sorcerers/GameLevelFortress.js";
+    import Game from "{{site.baseurl}}/assets/js/castleGame/essentials/Game.js";
+    import GameLevelFortress from "{{site.baseurl}}/assets/js/castleGame/GameLevelFortress.js";
     import { pythonURI, javaURI, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js';
 
     const gameLevelClasses = [GameLevelFortress];
