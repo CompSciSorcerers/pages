@@ -95,7 +95,7 @@ class GameLevelFortress {
             SCALE_FACTOR: MC_SCALE_FACTOR,
             STEP_FACTOR: 300, // Movement speed multiplier
             ANIMATION_RATE: 10, // Frames between animation updates
-            INIT_POSITION: { x: 0.5 * width, y: 0.8 * height }, // Center-bottom spawn
+            INIT_POSITION: { x: 0.5, y: 0.8 }, // Center-bottom spawn
             pixels: { height: 2400, width: 3600 }, // Large sprite sheet (2 rows x 3 columns)
             orientation: { rows: 2, columns: 3 }, // 6 total frames
             // Directional animation mappings
@@ -115,7 +115,7 @@ class GameLevelFortress {
          * Panicked NPC sprite data - interactive character with dialogue system
          * Single-frame sprite with randomized dialogue messages
          */
-        const paniced_npc_src = path + "/images/castleGame/snowman.png";
+        const paniced_npc_src = path + "/images/sorcerers/snowman.png";
         const PANICED_NPC_SCALE_FACTOR = 4; // Medium-sized NPC
         const sprite_data_panic_npc = {
             id: 'Panicked NPC',
@@ -124,7 +124,7 @@ class GameLevelFortress {
             SCALE_FACTOR: PANICED_NPC_SCALE_FACTOR,
             ANIMATION_RATE: 30, // Slower animation for static sprite
             pixels: { width: 840, height: 1221 }, // Large single sprite image
-            INIT_POSITION: { x: 0.5625 * width, y: 0.8 * height }, // Right side positioning
+            INIT_POSITION: { x: 0.5625, y: 0.8 }, // Right side positioning
             orientation: { rows: 1, columns: 1 }, // Single frame sprite
             down: { row: 0, start: 0, columns: 1 }, // Only one animation state
             hitbox: { widthPercentage: 0.2, heightPercentage: 0.5 }, // Tall narrow hitbox
@@ -238,9 +238,13 @@ class GameLevelFortress {
         this.scytheSpawnTimer++;
 
         // Check spawn condition - compares timer against configured interval
+        const MAX_SCYTHES = 10;
         if (this.scytheSpawnTimer >= this.scytheSpawnInterval) {
-            console.log("Scythe spawn timer reached, spawning scythe...");
-            this.spawnScythe(); // Execute spawn logic
+            console.log("Scythe spawn timer reached, spawning scythe(s)...");
+            const numScythes = Math.floor(Math.random() * MAX_SCYTHES) + 1;
+            for (let i = 0; i < numScythes; i++) {
+                this.spawnScythe(); // Execute spawn logic
+            }
             this.scytheSpawnTimer = 0; // Reset timer for next cycle
         }
     }
