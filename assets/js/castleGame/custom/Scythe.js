@@ -147,13 +147,21 @@ class Scythe extends Enemy {
 
         if (players.length === 0) return;
 
-        // Check collision with each player
-        const HIT_DISTANCE = 40;
-
+        // Check collision with each player using relative hit distance
         for (const player of players) {
-            const dx = player.position.x - this.position.x;
-            const dy = player.position.y - this.position.y;
+            // Calculate center points of both sprites
+            const scytheCenterX = this.position.x + this.width / 2;
+            const scytheCenterY = this.position.y + this.height / 2;
+            const playerCenterX = player.position.x + player.width / 2;
+            const playerCenterY = player.position.y + player.height / 2;
+
+            // Calculate distance between center points
+            const dx = playerCenterX - scytheCenterX;
+            const dy = playerCenterY - scytheCenterY;
             const distance = Math.sqrt(dx * dx + dy * dy);
+
+            // Use relative hit distance based on sprite sizes
+            const HIT_DISTANCE = (this.width + player.width) / 3; // One-third of combined width
 
             if (distance <= HIT_DISTANCE) {
                 this.handleCollisionWithPlayer();
@@ -171,13 +179,21 @@ class Scythe extends Enemy {
 
         if (npcs.length === 0) return;
 
-        // Check collision with each NPC
-        const HIT_DISTANCE = 40;
-
+        // Check collision with each NPC using relative hit distance
         for (const npc of npcs) {
-            const dx = npc.position.x - this.position.x;
-            const dy = npc.position.y - this.position.y;
+            // Calculate center points of both sprites
+            const scytheCenterX = this.position.x + this.width / 2;
+            const scytheCenterY = this.position.y + this.height / 2;
+            const npcCenterX = npc.position.x + npc.width / 2;
+            const npcCenterY = npc.position.y + npc.height / 2;
+
+            // Calculate distance between center points
+            const dx = npcCenterX - scytheCenterX;
+            const dy = npcCenterY - scytheCenterY;
             const distance = Math.sqrt(dx * dx + dy * dy);
+
+            // Use relative hit distance based on sprite sizes
+            const HIT_DISTANCE = (this.width + npc.width) / 3; // One-third of combined width
 
             if (distance <= HIT_DISTANCE) {
                 console.log("Scythe collision with NPC detected!");
