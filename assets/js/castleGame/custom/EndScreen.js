@@ -2,8 +2,9 @@
 /**
  * Shows the end screen when the player wins the archery game
  * @param gameEnv - The game environment object
+ * @param filepath - The path to the end screen image (default: '/images/sorcerers/archeryWinScreen.png')
  */
-export default function showEndScreen(gameEnv) {
+export default function showEndScreen(gameEnv, filepath='/images/sorcerers/archeryWinScreen.png') {
     if (typeof document === 'undefined') return;
 
     // Prevent adding multiple overlays
@@ -26,7 +27,7 @@ export default function showEndScreen(gameEnv) {
 
     const img = document.createElement('img');
     // use previously computed `path` variable
-    img.src = path + '/images/sorcerers/archeryWinScreen.png';
+    img.src = path + filepath;
     img.alt = 'Victory';
     img.style.maxWidth = '95%';
     img.style.maxHeight = '95%';
