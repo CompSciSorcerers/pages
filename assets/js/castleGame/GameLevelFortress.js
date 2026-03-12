@@ -183,13 +183,13 @@ class GameLevelFortress {
         };
 
         /**
-         * Invisible barrier object at one-third height from bottom
+         * Invisible barrier object at one-sixth height from top
          * Creates gameplay boundary and collision detection zone
          */
         const barrier_data = {
             id: 'bottom_barrier',
             x: 0, // Spans full width
-            y: height - (height / 3), // Positioned at 1/3 from bottom
+            y: (height / 6), // Positioned at 1/6 from top
             width: width, // Full viewport width
             height: 20, // Thin barrier
             color: 'rgba(139, 69, 19, 0.8)', // Semi-transparent brown
