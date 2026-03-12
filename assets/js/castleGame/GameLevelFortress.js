@@ -1,4 +1,4 @@
-import GameEnvBackground  from "../GameEnginev1/essentials/GameEnvBackground.js";
+import GameEnvBackground from "../GameEnginev1/essentials/GameEnvBackground.js";
 import Player from "../GameEnginev1/essentials/Player.js";
 import Npc from '../GameEnginev1/essentials/Npc.js';
 import Barrier from '../GameEnginev1/essentials/Barrier.js';
@@ -10,18 +10,18 @@ import Scythe from './custom/Scythe.js';
  * @class GameLevelFortress
  */
 class GameLevelFortress {
-   /**
-    * Friendly name of the game level
-    * @static
-    * @type {string}
-    */
-   static friendlyName = "Level 3: Fortress";
+    /**
+     * Friendly name of the game level
+     * @static
+     * @type {string}
+     */
+    static friendlyName = "Level 3: Fortress";
 
     /**
      * Constructs the Fortress game level with all game objects and systems
      * @param {Object} gameEnv - The game environment containing width, height, path, and other properties
      */
-    constructor(gameEnv){
+    constructor(gameEnv) {
 
         // keep reference to gameEnv for lifecycle methods
         /**
@@ -49,7 +49,7 @@ class GameLevelFortress {
         try {
             const audioElements = document.querySelectorAll('audio'); // Selects all <audio> elements
             audioElements.forEach(audio => {
-                try { if (!audio.paused) audio.pause(); } catch (e) {}
+                try { if (!audio.paused) audio.pause(); } catch (e) { }
             });
         } catch (e) { /* ignore */ }
 
@@ -67,7 +67,7 @@ class GameLevelFortress {
         levelMusic.volume = 0.3; // Moderate volume level
         levelMusic.play().catch(err => console.warn('Level music failed to play:', err));
         // Expose the level music so other modules (end screen, etc.) can stop it
-        try { if (typeof window !== 'undefined') window._levelMusic = levelMusic; } catch (e) {}
+        try { if (typeof window !== 'undefined') window._levelMusic = levelMusic; } catch (e) { }
 
         /**
          * Background image data for the boss intro chamber
@@ -78,7 +78,7 @@ class GameLevelFortress {
             name: 'bossintro',
             greeting: "You hear a faint echo from behind the ebony doors.",
             src: image_src_chamber,
-            pixels: {height: 580, width: 1038}, // Original image dimensions
+            pixels: { height: 580, width: 1038 }, // Original image dimensions
             mode: 'stretch' // Stretch to fit game viewport
         };
 
@@ -96,18 +96,18 @@ class GameLevelFortress {
             STEP_FACTOR: 500,
             ANIMATION_RATE: 100,
             INIT_POSITION: { x: 0.5 * width, y: 0.8 * height },  // Relative positioning (0-1 scale)
-            pixels: {height: 432, width: 234},
-            orientation: {rows: 4, columns: 3},
-            down: {row: 0, start: 0, columns: 3},
-            downRight: {row: 2, start: 0, columns: 3, rotate: Math.PI/16},
-            downLeft: {row: 1, start: 0, columns: 3, rotate: -Math.PI/16},
-            left: {row: 1, start: 0, columns: 3},
-            right: {row: 2, start: 0, columns: 3},
-            up: {row: 3, start: 0, columns: 3},
-            upLeft: {row: 1, start: 0, columns: 3, rotate: Math.PI/16},
-            upRight: {row: 2, start: 0, columns: 3, rotate: -Math.PI/16},
-            hitbox: {widthPercentage: 0.1, heightPercentage: 0.15},
-            keypress: {up: 87, left: 65, down: 83, right: 68}, // W, A, S, D
+            pixels: { height: 432, width: 234 },
+            orientation: { rows: 4, columns: 3 },
+            down: { row: 0, start: 0, columns: 3 },
+            downRight: { row: 2, start: 0, columns: 3, rotate: Math.PI / 16 },
+            downLeft: { row: 1, start: 0, columns: 3, rotate: -Math.PI / 16 },
+            left: { row: 1, start: 0, columns: 3 },
+            right: { row: 2, start: 0, columns: 3 },
+            up: { row: 3, start: 0, columns: 3 },
+            upLeft: { row: 1, start: 0, columns: 3, rotate: Math.PI / 16 },
+            upRight: { row: 2, start: 0, columns: 3, rotate: -Math.PI / 16 },
+            hitbox: { widthPercentage: 0.1, heightPercentage: 0.15 },
+            keypress: { up: 87, left: 65, down: 83, right: 68 }, // W, A, S, D
         };
 
         /**
@@ -123,7 +123,7 @@ class GameLevelFortress {
             SCALE_FACTOR: PANICED_NPC_SCALE_FACTOR,
             ANIMATION_RATE: 30, // Slower animation for static sprite
             pixels: { width: 840, height: 1221 }, // Large single sprite image
-            INIT_POSITION: { x: 0.5625, y: 0.8 }, // Right side positioning
+            INIT_POSITION: { x: 0.5625 * width, y: 0.8 * height }, // Right side positioning
             orientation: { rows: 1, columns: 1 }, // Single frame sprite
             down: { row: 0, start: 0, columns: 1 }, // Only one animation state
             hitbox: { widthPercentage: 0.2, heightPercentage: 0.5 }, // Tall narrow hitbox
@@ -140,7 +140,7 @@ class GameLevelFortress {
                 "I'm trapped! Please help me!"
             ],
 
-            reaction: function() {}, // No visual reaction to interaction
+            reaction: function () { }, // No visual reaction to interaction
 
             /**
              * NPC interaction handler - triggered when player collides with NPC
@@ -159,7 +159,7 @@ class GameLevelFortress {
              * 
              * @returns {void} - Creates UI elements for player interaction
              */
-            interact: function() {
+            interact: function () {
                 // Clear any existing dialogue first to prevent duplicates
                 if (this.dialogueSystem && this.dialogueSystem.isDialogueOpen()) {
                     this.dialogueSystem.closeDialogue();

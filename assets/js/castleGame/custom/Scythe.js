@@ -28,18 +28,25 @@ class Scythe extends Enemy {
             src: path + "/images/mansionGame/scythe.png",
             SCALE_FACTOR: 10,
             ANIMATION_RATE: 10,
-            pixels: {width: 64, height: 64},
-            INIT_POSITION: { 
-                x: spawnXPos, 
-                y: spawnYPos 
+            pixels: { width: 64, height: 64 },
+            INIT_POSITION: {
+                x: spawnXPos,
+                y: spawnYPos
             },
-            orientation: {rows: 1, columns: 1},
-            down: {row: 0, start: 0, columns: 1},
-            hitbox: {widthPercentage: 0.3, heightPercentage: 0.3}
+            orientation: { rows: 1, columns: 1 },
+            down: { row: 0, start: 0, columns: 1 },
+            hitbox: { widthPercentage: 0.3, heightPercentage: 0.3 }
         };
 
         super(scytheData, gameEnv);
 
+        // Initialize hittingNPC flag
+        this._hittingNPC ??= false;
+
+        // Check for NPC collision
+        this.checkNPCCollision();
+
+        // All the logic to update the NPC position and rotation
         // Ellipse motion properties (similar to Mansion game's Boomerang)
         this.source_coords = { x: spawnXPos, y: spawnYPos };
         this.target_coords = { x: targetXPos, y: targetYPos };
@@ -81,43 +88,44 @@ class Scythe extends Enemy {
     update() {
         if (this.revComplete) return;
 
-        // Debug: log that update is being called
-        if (Math.random() < 0.01) { // Only log occasionally to avoid spam
-            console.log("Scythe update called, position:", this.position.x, this.position.y);
+        // Update whether we are hitting the NPC
+        this.checkNPCCollision();
+
+        // Update positioning logic is only necisary when we aren't stuck
+        if (!this._hittingNPC) {
+            // Check if scythe has completed its path
+            if (this.radian_prog >= this.radian_limit) {
+                this.revComplete = true;
+                console.log("Scythe completed path, destroying...");
+                this.destroy();
+                return;
+            }
+
+            // Update position along elliptical path
+            this.radian_prog += this.projectileSpeed;
+
+            const cosProg = Math.cos(this.radian_prog);
+            const sinProg = Math.sin(this.radian_prog);
+            const cosTilt = Math.cos(this.ellipse_tilt);
+            const sinTilt = Math.sin(this.ellipse_tilt);
+
+            const x_coord = this.ellipse_center.x +
+                (this.ellipse_width / 2) * cosProg * cosTilt -
+                this.ellipse_height * sinProg * sinTilt;
+
+            const y_coord = this.ellipse_center.y +
+                (this.ellipse_width / 2) * cosProg * sinTilt +
+                this.ellipse_height * sinProg * cosTilt;
+
+            this.position.x = x_coord;
+            this.position.y = y_coord;
+
+            // Update rotation for spinning effect
+            this.rotationAngle += this.rotationSpeed;
+
+            // Check for collisions with player
+            this.checkPlayerCollision();
         }
-
-        // Check if scythe has completed its path
-        if (this.radian_prog >= this.radian_limit) {
-            this.revComplete = true;
-            console.log("Scythe completed path, destroying...");
-            this.destroy();
-            return;
-        }
-
-        // Update position along elliptical path
-        this.radian_prog += this.projectileSpeed;
-
-        const cosProg = Math.cos(this.radian_prog);
-        const sinProg = Math.sin(this.radian_prog);
-        const cosTilt = Math.cos(this.ellipse_tilt);
-        const sinTilt = Math.sin(this.ellipse_tilt);
-
-        const x_coord = this.ellipse_center.x + 
-                        (this.ellipse_width / 2) * cosProg * cosTilt - 
-                        this.ellipse_height * sinProg * sinTilt;
-
-        const y_coord = this.ellipse_center.y + 
-                        (this.ellipse_width / 2) * cosProg * sinTilt + 
-                        this.ellipse_height * sinProg * cosTilt;
-
-        this.position.x = x_coord;
-        this.position.y = y_coord;
-
-        // Update rotation for spinning effect
-        this.rotationAngle += this.rotationSpeed;
-
-        // Check for collisions with player
-        this.checkPlayerCollision();
 
         // Only call parent update if coordinates are set up
         if (this.source_coords && this.target_coords) {
@@ -133,7 +141,7 @@ class Scythe extends Enemy {
     checkPlayerCollision() {
         // Find all player objects
         const players = this.gameEnv.gameObjects.filter(obj =>
-            obj.constructor.name === 'Player' || 
+            obj.constructor.name === 'Player' ||
             (obj.isPlayer !== undefined && obj.isPlayer)
         );
 
@@ -149,6 +157,31 @@ class Scythe extends Enemy {
 
             if (distance <= HIT_DISTANCE) {
                 this.handleCollisionWithPlayer();
+                break;
+            }
+        }
+    }
+
+    checkNPCCollision() {
+        // Find all NPC objects
+        const npcs = this.gameEnv.gameObjects.filter(obj =>
+            obj.constructor.name === 'Npc' ||
+            (obj.isNpc !== undefined && obj.isNpc)
+        );
+
+        if (npcs.length === 0) return;
+
+        // Check collision with each NPC
+        const HIT_DISTANCE = 40;
+
+        for (const npc of npcs) {
+            const dx = npc.position.x - this.position.x;
+            const dy = npc.position.y - this.position.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance <= HIT_DISTANCE) {
+                console.log("Scythe collision with NPC detected!");
+                this._hittingNPC = true;
                 break;
             }
         }
@@ -191,7 +224,7 @@ class Scythe extends Enemy {
         this.ctx.drawImage(
             this.spriteSheet,
             0, 0, this.spriteSheet.naturalWidth, this.spriteSheet.naturalHeight,
-            -this.width/2, -this.height/2, this.width, this.height
+            -this.width / 2, -this.height / 2, this.width, this.height
         );
 
         this.ctx.restore();
@@ -230,3 +263,4 @@ class Scythe extends Enemy {
 }
 
 export default Scythe;
+
