@@ -73,12 +73,12 @@ class GameLevelFortress {
          * Background image data for the boss intro chamber
          * Creates atmospheric setting with stretched background image
          */
-        const image_src_chamber = path + "/images/mansionGame/bgBossIntroChamber.png"
+        const image_src_chamber = path + "/images/castleGame/dungeon.jpg"
         const image_data_chamber = {
             name: 'bossintro',
             greeting: "You hear a faint echo from behind the ebony doors.",
             src: image_src_chamber,
-            pixels: { height: 580, width: 1038 }, // Original image dimensions
+            pixels: { height: 426, width: 240 }, // Original image dimensions
             mode: 'stretch' // Stretch to fit game viewport
         };
 
