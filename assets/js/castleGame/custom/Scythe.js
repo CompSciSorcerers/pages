@@ -128,15 +128,7 @@ class Scythe extends Enemy {
             this.checkPlayerCollision();
         }
 
-        // Only call parent update if coordinates are set up
-        if (this.source_coords && this.target_coords) {
-            // Call parent update to handle drawing and collision checks
-            super.update();
-        } else {
-            // Debug: check if parent update calls our draw
-            console.log("Scythe: coordinates not set, calling super.update() anyway");
-            super.update();
-        }
+        super.update();
     }
 
     checkPlayerCollision() {
@@ -218,11 +210,6 @@ class Scythe extends Enemy {
     draw() {
         if (!this.imageLoaded) {
             return;
-        }
-
-        // Debug: log drawing occasionally
-        if (Math.random() < 0.01) {
-            console.log("Scythe draw: position", this.position.x, this.position.y, "image loaded:", this.imageLoaded);
         }
 
         // Use parent's canvas system like Character class

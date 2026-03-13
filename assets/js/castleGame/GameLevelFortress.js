@@ -215,9 +215,6 @@ class GameLevelFortress {
          */
         // Start spawning scythes - initializes projectile spawning system
         this.startScytheSpawning();
-
-        // Log initialization completion for debugging
-        console.log("GameLevelFortress initialized");
     }
 
     /**
@@ -253,12 +250,11 @@ class GameLevelFortress {
      * Called once during level construction to prepare spawning mechanics
      * 
      * System Behavior:
-     * - Logs initialization for debugging purposes
      * - Prepares timer-based spawning for continuous threat generation
      * - Actual spawning occurs in update() method based on timing
      */
     startScytheSpawning() {
-        console.log("Scythe spawning system initialized - will spawn in update method");
+        // System is ready - spawning will occur in update() method
     }
 
     /**
@@ -269,7 +265,6 @@ class GameLevelFortress {
      * 1. Instantiates new Scythe object with current game environment
      * 2. Adds scythe to active game objects array for update/render cycle
      * 3. Appends scythe canvas to DOM container for visual rendering
-     * 4. Logs creation for debugging and monitoring
      * 
      * Property Updates During Execution:
      * - gameEnv.gameObjects array grows with each new scythe
@@ -279,17 +274,13 @@ class GameLevelFortress {
      * @returns {void} - Modifies game state by adding new projectile
      */
     spawnScythe() {
-        console.log("Attempting to spawn scythe...");
         const scythe = new Scythe(this.gameEnv); // Create with environment context
-        console.log("Scythe created:", scythe);
 
         // Add to active game objects - enables update/render cycle participation
         this.gameEnv.gameObjects.push(scythe);
-        console.log("Scythe added to gameObjects. Total objects:", this.gameEnv.gameObjects.length);
 
         // Add to visual container - enables rendering in game viewport
         this.gameEnv.container.appendChild(scythe.canvas);
-        console.log("Scythe canvas added to container");
     }
 }
 
