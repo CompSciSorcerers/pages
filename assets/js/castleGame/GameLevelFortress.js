@@ -114,18 +114,18 @@ class GameLevelFortress {
          * Panicked NPC sprite data - interactive character with dialogue system
          * Single-frame sprite with randomized dialogue messages
          */
-        const paniced_npc_src = path + "/images/sorcerers/snowman.png";
+        const paniced_npc_src = path + "/images/castleGame/kingSprite.png";
         const PANICED_NPC_SCALE_FACTOR = 4; // Medium-sized NPC
         const sprite_data_panic_npc = {
-            id: 'Panicked NPC',
+            id: 'King',
             greeting: "Help!",
             src: paniced_npc_src,
             SCALE_FACTOR: PANICED_NPC_SCALE_FACTOR,
             ANIMATION_RATE: 30, // Slower animation for static sprite
-            pixels: { width: 840, height: 1221 }, // Large single sprite image
+            pixels: { width: 234, height: 432 }, // Large single sprite image
             INIT_POSITION: { x: 0.5625 * width, y: 0.8 * height }, // Right side positioning
-            orientation: { rows: 1, columns: 1 }, // Single frame sprite
-            down: { row: 0, start: 0, columns: 1 }, // Only one animation state
+            orientation: { rows: 4, columns: 3 }, // Multiple frames for animation
+            down: { row: 0, start: 0, columns: 3 }, // Animation state
             hitbox: { widthPercentage: 0.2, heightPercentage: 0.5 }, // Tall narrow hitbox
             /**
              * Randomized dialogue messages for NPC interaction
