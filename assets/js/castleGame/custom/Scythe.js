@@ -1,5 +1,6 @@
 import Enemy from '../../GameEnginev1/essentials/Enemy.js';
 import Player from '../../GameEnginev1/essentials/Player.js';
+import showEndScreen from './EndScreen.js';
 
 class Scythe extends Enemy {
     constructor(gameEnv, spawnX = null) {
@@ -210,11 +211,8 @@ class Scythe extends Enemy {
         this.revComplete = true;
         this.destroy();
 
-        // Handle player game over
-        // Alert user that game is over
-        alert("Game Over! You were defeated by a scythe!");
         // End the game
-        document.writeln("<h1>Game Over! You were defeated by a scythe!</h1>");
+        try { showEndScreen(this.gameEnv, '/images/castleGame/castleGameEndScreen.png'); } catch (e) { console.warn('Error showing end screen:', e); }
     }
 
     draw() {
@@ -279,4 +277,3 @@ class Scythe extends Enemy {
 }
 
 export default Scythe;
-
