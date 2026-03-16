@@ -137,7 +137,9 @@ class DialogueSystem {
   }
 
   // Show a specific dialogue message
-  showDialogue(message, speaker = "", avatarSrc = null) {
+  showDialogue(message, speaker = "", avatarSrc = null, spriteConfig = null) {
+    console.log('showDialogue called with:', { message, speaker, avatarSrc, spriteConfig });
+    
     // Set the content (with unique element IDs)
     const speakerElement = document.getElementById("dialogue-speaker-" + this.id);
     if (speakerElement) {
@@ -149,11 +151,50 @@ class DialogueSystem {
     const avatarElement = document.getElementById("dialogue-avatar-" + this.id);
     if (avatarElement) {
       if (avatarSrc) {
+        console.log('Setting avatar image:', avatarSrc);
         avatarElement.style.backgroundImage = `url('${avatarSrc}')`;
+        
+        // If sprite config is provided, use proper sprite sheet positioning
+        if (spriteConfig) {
+          const columns = spriteConfig.columns || 3;
+          const rows = spriteConfig.rows || 4;
+          const frameX = spriteConfig.frameX || 0; // column index
+          const frameY = spriteConfig.frameY || 0; // row index
+          const frameWidth = spriteConfig.frameWidth || 78;
+          const frameHeight = spriteConfig.frameHeight || 108;
+
+          console.log('Sprite config:', { columns, rows, frameX, frameY, frameWidth, frameHeight });
+          console.log('Background position calculation:', `-${frameX * frameWidth}px -${frameY * frameHeight}px`);
+
+          // Override initial styles with !important flags
+          avatarElement.style.setProperty('background-size', `${columns * 100}% ${rows * 100}%`, 'important');
+          avatarElement.style.setProperty('background-position', `-${frameX * frameWidth}px -${frameY * frameHeight}px`, 'important');
+          avatarElement.style.setProperty('background-repeat', 'no-repeat', 'important');
+          avatarElement.style.setProperty('width', frameWidth + "px", 'important');
+          avatarElement.style.setProperty('height', frameHeight + "px", 'important');
+          
+          console.log('Applied sprite styles:', {
+            backgroundSize: avatarElement.style.backgroundSize,
+            backgroundPosition: avatarElement.style.backgroundPosition,
+            width: avatarElement.style.width,
+            height: avatarElement.style.height
+          });
+        } else {
+          console.log('Using fallback sprite positioning');
+          // Override initial styles with !important flags
+          avatarElement.style.setProperty('background-size', "300% 400%", 'important');
+          avatarElement.style.setProperty('background-position', "0px 0px", 'important');
+          avatarElement.style.setProperty('background-repeat', 'no-repeat', 'important');
+          avatarElement.style.setProperty('width', "78px", 'important');
+          avatarElement.style.setProperty('height', "108px", 'important');
+        }
+        
         avatarElement.style.display = "block";
       } else {
         avatarElement.style.display = "none";
       }
+    } else {
+      console.error('Avatar element not found:', 'dialogue-avatar-' + this.id);
     }
     
     // Set the dialogue text directly
@@ -175,7 +216,7 @@ class DialogueSystem {
   }
 
   // Show a random dialogue from the dialogues array
-  showRandomDialogue(speaker = "", avatarSrc = null) {
+  showRandomDialogue(speaker = "", avatarSrc = null, spriteConfig = null) {
     if (this.dialogues.length === 0) return;
     
     // Pick a random index that's different from the last one
@@ -193,7 +234,7 @@ class DialogueSystem {
     
     // Show the dialogue
     const randomDialogue = this.dialogues[randomIndex];
-    return this.showDialogue(randomDialogue, speaker, avatarSrc);
+    return this.showDialogue(randomDialogue, speaker, avatarSrc, spriteConfig);
   }
 
   // Close the dialogue box

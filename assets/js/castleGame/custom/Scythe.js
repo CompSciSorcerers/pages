@@ -4,7 +4,6 @@ import showEndScreen from './EndScreen.js';
 
 class Scythe extends Enemy {
     constructor(gameEnv, spawnX = null) {
-        console.log("Scythe constructor called with gameEnv:", gameEnv);
         const path = gameEnv.path;
         const width = gameEnv.innerWidth;
 
@@ -21,8 +20,6 @@ class Scythe extends Enemy {
 
         const targetXPos = spawnX !== null ? spawnX : Math.random() * (width - 64);
         const targetYPos = -64;
-
-        console.log("Scythe spawn positions - from:", spawnXPos, spawnYPos, "to:", targetXPos, targetYPos);
 
         const scytheData = {
             id: `scythe_${Math.random().toString(36).substr(2, 9)}`,
@@ -81,7 +78,6 @@ class Scythe extends Enemy {
         this.imageLoaded = false;
         this.spriteSheet.onload = () => {
             this.imageLoaded = true;
-            console.log("Scythe image loaded successfully");
         };
         this.spriteSheet.src = path + "/images/mansionGame/scythe.png";
     }
@@ -97,7 +93,6 @@ class Scythe extends Enemy {
             // Check if scythe has completed its path
             if (this.radian_prog >= this.radian_limit) {
                 this.revComplete = true;
-                console.log("Scythe completed path, destroying...");
                 this.destroy();
                 return;
             }
@@ -189,7 +184,6 @@ class Scythe extends Enemy {
             const HIT_DISTANCE = (this.width + npc.width) / 3; // One-third of combined width
 
             if (distance <= HIT_DISTANCE) {
-                console.log("Scythe collision with NPC detected!");
                 this._hittingNPC = true;
                 break;
             }
@@ -197,8 +191,6 @@ class Scythe extends Enemy {
     }
 
     handleCollisionWithPlayer() {
-        console.log("Player hit by scythe!");
-
         // Mark scythe as complete and destroy it
         this.revComplete = true;
         this.destroy();
@@ -237,23 +229,18 @@ class Scythe extends Enemy {
     handleCollisionEvent() {
         // This method is called by the collision system
         // We'll handle collisions in our own checkPlayerCollision method
-        console.log("Scythe collision detected");
     }
 
     destroy() {
-        console.log("Scythe destroy called, removing from game...");
-
         // Remove from gameObjects array
         const index = this.gameEnv.gameObjects.indexOf(this);
         if (index > -1) {
             this.gameEnv.gameObjects.splice(index, 1);
-            console.log("Scythe removed from gameObjects. Total objects:", this.gameEnv.gameObjects.length);
         }
 
         // Remove canvas from container
         if (this.canvas && this.canvas.parentNode) {
             this.canvas.parentNode.removeChild(this.canvas);
-            console.log("Scythe canvas removed from container");
         }
 
         // Call parent destroy if it exists
