@@ -31,7 +31,8 @@ class GameLevelMaze {
 
         const playerData = {
             id: 'playerData',
-            src: path + "/images/castleGame/darkKnight.png",
+            src: path + "/images/castleGame/playerSpritesheet.png",
+
             SCALE_FACTOR: 20,
             STEP_FACTOR: 1000,
             ANIMATION_RATE: 50,
