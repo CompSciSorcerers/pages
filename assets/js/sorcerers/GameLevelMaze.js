@@ -250,6 +250,47 @@ this.classes = [      { class: GameEnvBackground, data: bgData },
             console.log("you won");
         }
     }
+
+    checkCollision(playerX, playerY) {
+        const barriers = [
+            { x: 6, y: 242, width: 163, height: 7 },
+            { x: 169, y: 186, width: 10, height: 60 },
+            { x: 178, y: 186, width: 48, height: 7 },
+            { x: 217, y: 189, width: 7, height: 54 },
+            { x: 217, y: 232, width: 84, height: 8 },
+            { x: 299, y: 193, width: 10, height: 41 },
+            { x: 309, y: 193, width: 80, height: 7 },
+            { x: 379, y: 200, width: 8, height: 34 },
+            { x: 350, y: 230, width: 33, height: 4 },
+            { x: 386, y: 194, width: 59, height: 8 },
+            { x: 433, y: 98, width: 10, height: 98 },
+            { x: 176, y: 38, width: 320, height: 8 },
+            { x: 353, y: 42, width: 6, height: 86 },
+            { x: 209, y: 99, width: 81, height: 9 },
+            { x: 210, y: 104, width: 10, height: 82 },
+            { x: 83, y: 43, width: 92, height: 11 },
+            { x: 109, y: 52, width: 10, height: 129 },
+            { x: 63, y: 112, width: 41, height: 14 },
+            { x: 75, y: 0, width: 10, height: 52 },
+            { x: 14, y: 359, width: 233, height: 11 },
+            { x: 241, y: 361, width: 14, height: 60 },
+            { x: 311, y: 358, width: 22, height: 58 },
+            { x: 26, y: 283, width: 225, height: 10 },
+            { x: 245, y: 234, width: 8, height: 55 },
+            { x: 346, y: 231, width: 16, height: 55 },
+            { x: 312, y: 281, width: 37, height: 9 },
+            { x: 333, y: 361, width: 168, height: 6 }
+        ];
+
+        for (let barrier of barriers) {
+            if (playerX >= barrier.x && playerX <= barrier.x + barrier.width &&
+                playerY >= barrier.y && playerY <= barrier.y + barrier.height) {
+                console.log("you lost, reload the page or press esc");
+                return true;
+            }
+        }
+        return false;
+    }
 }
 
 export default GameLevelMaze;
