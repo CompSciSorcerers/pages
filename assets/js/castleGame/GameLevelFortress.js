@@ -4,6 +4,7 @@ import Npc from '../GameEnginev1/essentials/Npc.js';
 import Barrier from '../GameEnginev1/essentials/Barrier.js';
 import DialogueSystem from './custom/DialogueSystem.js';
 import Scythe from './custom/Scythe.js';
+import showEndScreen from "./custom/EndScreen.js";
 
 /**
  * Represents the Fortress game level with all game objects and systems
@@ -213,6 +214,30 @@ class GameLevelFortress {
             }
         };
 
+        const target_npc_src = path + "/images/castleGame/kingSprite.png";
+        const TARGET_NPC_SCALE_FACTOR = 4; // Medium-sized NPC
+        const sprite_data_target_npc = {
+            id: 'Target',
+            greeting: "Help!",
+            src: target_npc_src,
+            SCALE_FACTOR: TARGET_NPC_SCALE_FACTOR,
+            ANIMATION_RATE: 30, // Slower animation for static sprite
+            pixels: { width: 234, height: 432 }, // Large single sprite image
+            INIT_POSITION: { x: 0.1 * width, y: 0.1 * height }, // Right side positioning
+            orientation: { rows: 4, columns: 3 }, // Multiple frames for animation
+            down: { row: 0, start: 0, columns: 3 }, // Animation state
+            hitbox: { widthPercentage: 0.2, heightPercentage: 0.5 }, // Tall narrow hitbox
+            dialogues: [],
+
+            reaction: function() {
+                // No reaction needed for target NPC
+            },
+
+            interact: function() {
+                try { showEndScreen(this.gameEnv, '/images/castleGame/castleGameEndScreen.png'); } catch (e) { console.warn('Error showing end screen:', e); }
+            }
+        };
+
         /**
          * Invisible barrier object at one-sixth height from top
          * Creates gameplay boundary and collision detection zone
@@ -236,6 +261,7 @@ class GameLevelFortress {
             { class: GameEnvBackground, data: image_data_chamber }, // Atmospheric background
             { class: Player, data: sprite_data_mc }, // Playable character
             { class: Npc, data: sprite_data_panic_npc }, // Interactive NPC
+            { class: Npc, data: sprite_data_target_npc }, // Target NPC
             { class: Barrier, data: barrier_data } // Collision boundary
         ];
 

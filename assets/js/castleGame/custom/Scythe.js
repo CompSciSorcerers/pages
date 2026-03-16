@@ -195,8 +195,9 @@ class Scythe extends Enemy {
         this.revComplete = true;
         this.destroy();
 
-        // End the game
-        try { showEndScreen(this.gameEnv, '/images/castleGame/castleGameEndScreen.png'); } catch (e) { console.warn('Error showing end screen:', e); }
+        // Display that the user has failed the game
+        alert("You lost the game :(");
+        location.reload();
     }
 
     draw() {
