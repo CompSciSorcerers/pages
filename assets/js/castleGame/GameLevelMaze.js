@@ -274,6 +274,8 @@ this.classes = [      { class: GameEnvBackground, data: bgData },
 
         
     }
+        
+    }
 
     checkWin(playerX, playerY) {
         if (playerX > (this.width * 0.8) && playerY < (this.height * 0.2)) {
