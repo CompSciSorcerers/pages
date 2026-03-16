@@ -244,6 +244,7 @@ class GameLevelMaze {
         };
 this.classes = [      { class: GameEnvBackground, data: bgData },
       { class: Player, data: playerData },
+      { class: Npc, data: npcData1 },
       { class: Barrier, data: dbarrier_1 },
       { class: Barrier, data: dbarrier_2 },
       { class: Barrier, data: dbarrier_3 },
