@@ -272,9 +272,6 @@ this.classes = [      { class: GameEnvBackground, data: bgData },
       { class: Barrier, data: dbarrier_27 }
 ];
 
-        
-    }
-        
     }
 
     checkWin(playerX, playerY) {
