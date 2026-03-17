@@ -25,8 +25,8 @@ class GameLevelMaze {
 
         const bgData = {
             name: "custom_bg",
-            src: path + "/images/gamebuilder/bg/cornfield.jpg",
-            pixels: { height: 772, width: 1134 }
+            src: path + "/images/gamebuilder/bg/maze.jpg",
+            pixels: { height: 2048, width: 2048 }
         };
 
  const sprite_src_mc = path + "/images/castleGame/playerSpritesheet.png";
