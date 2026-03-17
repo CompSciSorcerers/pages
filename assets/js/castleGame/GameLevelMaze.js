@@ -29,28 +29,32 @@ class GameLevelMaze {
             pixels: { height: 772, width: 1134 }
         };
 
-        const playerData = {
-            id: 'playerData',
-            src: path + "/images/castleGame/playerSpritesheet.png",
-
-            SCALE_FACTOR: 20,
-            STEP_FACTOR: 1000,
-            ANIMATION_RATE: 50,
-            INIT_POSITION: { x: 0, y: 300 },
-            pixels: { height: 770, width: 513 },
-            orientation: { rows: 4, columns: 4 },
-            down: { row: 0, start: 0, columns: 3 },
-            downRight: { row: 1, start: 0, columns: 3, rotate: Math.PI/16 },
-            downLeft: { row: 0, start: 0, columns: 3, rotate: -Math.PI/16 },
-            left: { row: 2, start: 0, columns: 3 },
-            right: { row: 1, start: 0, columns: 3 },
-            up: { row: 3, start: 0, columns: 3 },
-            upLeft: { row: 2, start: 0, columns: 3, rotate: Math.PI/16 },
-            upRight: { row: 3, start: 0, columns: 3, rotate: -Math.PI/16 },
-            hitbox: { widthPercentage: 0.04, heightPercentage: 0 },
-            keypress: { up: 87, left: 65, down: 83, right: 68 }
-            };
-
+ const sprite_src_mc = path + "/images/castleGame/playerSpritesheet.png";
+        const MC_SCALE_FACTOR = 7;
+        const sprite_data_mc = {
+            id: 'Knight',
+            greeting: "Hi, I am a Knight.",
+            src: sprite_src_mc,
+            SCALE_FACTOR: MC_SCALE_FACTOR,
+            STEP_FACTOR: 500,
+            ANIMATION_RATE: 100,
+            INIT_POSITION: { 
+                x: 0.5 * width, 
+                y: 0.75 * height
+            },
+            pixels: {height: 432, width: 234},
+            orientation: {rows: 4, columns: 3},
+            down: {row: 0, start: 0, columns: 3},
+            downRight: {row: 2, start: 0, columns: 3, rotate: Math.PI/16},
+            downLeft: {row: 1, start: 0, columns: 3, rotate: -Math.PI/16},
+            left: {row: 1, start: 0, columns: 3},
+            right: {row: 2, start: 0, columns: 3},
+            up: {row: 3, start: 0, columns: 3},
+            upLeft: {row: 1, start: 0, columns: 3, rotate: Math.PI/16},
+            upRight: {row: 2, start: 0, columns: 3, rotate: -Math.PI/16},
+            hitbox: {widthPercentage: 0.1, heightPercentage: 0.15},
+            keypress: {up: 87, left: 65, down: 83, right: 68}, // W, A, S, D
+        };
          const npcData1 = {
             id: 'hey',
             greeting: 'Hey there!',
