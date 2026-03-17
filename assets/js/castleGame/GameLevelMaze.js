@@ -247,7 +247,8 @@ const sprite_src_mc = path + "/images/castleGame/playerSpritesheet.png";
             fromOverlay: true
         };
 this.classes = [      { class: GameEnvBackground, data: bgData },
-      { class: Player, data: playerData },
+      { class: Player, data: sprite_data_mc },
+      { class: Npc, data: npcData1 },
       { class: Barrier, data: dbarrier_1 },
       { class: Barrier, data: dbarrier_2 },
       { class: Barrier, data: dbarrier_3 },
