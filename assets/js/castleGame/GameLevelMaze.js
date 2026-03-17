@@ -29,7 +29,7 @@ class GameLevelMaze {
             pixels: { height: 772, width: 1134 }
         };
 
-const sprite_src_mc = path + "/images/castleGame/playerSpritesheet.png";
+ const sprite_src_mc = path + "/images/castleGame/playerSpritesheet.png";
         const MC_SCALE_FACTOR = 7;
         const sprite_data_mc = {
             id: 'Knight',
@@ -38,15 +38,18 @@ const sprite_src_mc = path + "/images/castleGame/playerSpritesheet.png";
             SCALE_FACTOR: MC_SCALE_FACTOR,
             STEP_FACTOR: 500,
             ANIMATION_RATE: 100,
-            INIT_POSITION: { x: 0, y: 300 },
-            pixels: { height: 770, width: 513 },
+            INIT_POSITION: { 
+                x: 0.5 * width, 
+                y: 0.75 * height
+            },
+            pixels: {height: 432, width: 234},
             orientation: {rows: 4, columns: 3},
             down: {row: 0, start: 0, columns: 3},
             downRight: {row: 2, start: 0, columns: 3, rotate: Math.PI/16},
             downLeft: {row: 1, start: 0, columns: 3, rotate: -Math.PI/16},
-            left: { row: 2, start: 0, columns: 3 },
-            right: { row: 1, start: 0, columns: 3 },
-            up: { row: 3, start: 0, columns: 3 },
+            left: {row: 1, start: 0, columns: 3},
+            right: {row: 2, start: 0, columns: 3},
+            up: {row: 3, start: 0, columns: 3},
             upLeft: {row: 1, start: 0, columns: 3, rotate: Math.PI/16},
             upRight: {row: 2, start: 0, columns: 3, rotate: -Math.PI/16},
             hitbox: {widthPercentage: 0.1, heightPercentage: 0.15},
@@ -243,8 +246,9 @@ const sprite_src_mc = path + "/images/castleGame/playerSpritesheet.png";
             hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
             fromOverlay: true
         };
-this.classes = [      { class: GameEnvBackground, data: bgData },
-      { class: Player, data: sprite_data_mc },
+
+        this.classes = [      { class: GameEnvBackground, data: bgData },
+      { class: Player, data: playerData },
       { class: Npc, data: npcData1 },
       { class: Barrier, data: dbarrier_1 },
       { class: Barrier, data: dbarrier_2 },
