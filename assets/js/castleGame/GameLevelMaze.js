@@ -29,7 +29,7 @@ class GameLevelMaze {
             pixels: { height: 772, width: 1134 }
         };
 
- const sprite_src_mc = path + "/images/castleGame/playerSpritesheet.png";
+const sprite_src_mc = path + "/images/castleGame/playerSpritesheet.png";
         const MC_SCALE_FACTOR = 7;
         const sprite_data_mc = {
             id: 'Knight',
@@ -246,10 +246,8 @@ class GameLevelMaze {
             hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
             fromOverlay: true
         };
-
-        this.classes = [      { class: GameEnvBackground, data: bgData },
+this.classes = [      { class: GameEnvBackground, data: bgData },
       { class: Player, data: playerData },
-      { class: Npc, data: npcData1 },
       { class: Barrier, data: dbarrier_1 },
       { class: Barrier, data: dbarrier_2 },
       { class: Barrier, data: dbarrier_3 },
