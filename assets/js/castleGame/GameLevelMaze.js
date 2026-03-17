@@ -321,7 +321,7 @@ class GameLevelMaze {
         for (let barrier of barriers) {
             if (playerX >= barrier.x && playerX <= barrier.x + barrier.width &&
                 playerY >= barrier.y && playerY <= barrier.y + barrier.height) {
-                console.log("you lost, reload the page or press esc");
+                console.log("You lost, reload the page or press esc");
                 return true;
             }
         }
