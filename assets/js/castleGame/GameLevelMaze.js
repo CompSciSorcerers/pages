@@ -242,7 +242,8 @@ class GameLevelMaze {
             hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
             fromOverlay: true
         };
-this.classes = [      { class: GameEnvBackground, data: bgData },
+
+        this.classes = [      { class: GameEnvBackground, data: bgData },
       { class: Player, data: playerData },
       { class: Npc, data: npcData1 },
       { class: Barrier, data: dbarrier_1 },
