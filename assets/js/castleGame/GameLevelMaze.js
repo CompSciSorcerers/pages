@@ -55,6 +55,7 @@ class GameLevelMaze {
             hitbox: {widthPercentage: 0.1, heightPercentage: 0.15},
             keypress: {up: 87, left: 65, down: 83, right: 68}, // W, A, S, D
         };
+        
          const npcData1 = {
             id: 'hey',
             greeting: 'Hey there!',
