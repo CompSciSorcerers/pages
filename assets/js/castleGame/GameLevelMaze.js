@@ -75,14 +75,9 @@ class GameLevelMaze {
             downLeft: { row: 0, start: 0, columns: 3 },
             hitbox: { widthPercentage: 0.1, heightPercentage: 0.2 },
             dialogues: ['Hello!'],
-            interacted: false,
-            reaction: function() { if (this.dialogueSystem) { this.showReactionDialogue(); } else { console.log(this.greeting); } },
+            reaction: function() { console.log(this.greeting); },
             interact: function() { 
-                if (!this.interacted) {
-                    this.interacted = true;
-                    if (this.dialogueSystem) { this.showRandomDialogue(); }
-                    this.destroy();
-                }
+                console.log(this.greeting);
             }
         };
 
