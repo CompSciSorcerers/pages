@@ -64,15 +64,11 @@ class GameLevelMaze {
             ANIMATION_RATE: 50,
             INIT_POSITION: { x: 500, y: 300 },
             pixels: { height: 512, width: 384 },
-            orientation: { rows: 1, columns: 1 },
+            orientation: { rows: 4, columns: 3 },
             down: { row: 0, start: 0, columns: 3 },
-            right: { row: Math.min(1, 1 - 1), start: 0, columns: 3 },
-            left: { row: Math.min(2, 1 - 1), start: 0, columns: 3 },
-            up: { row: Math.min(3, 1 - 1), start: 0, columns: 3 },
-            upRight: { row: Math.min(3, 1 - 1), start: 0, columns: 3 },
-            downRight: { row: Math.min(1, 1 - 1), start: 0, columns: 3 },
-            upLeft: { row: Math.min(2, 1 - 1), start: 0, columns: 3 },
-            downLeft: { row: 0, start: 0, columns: 3 },
+            right: { row: 1, start: 0, columns: 3 },
+            left: { row: 2, start: 0, columns: 3 },
+            up: { row: 3, start: 0, columns: 3 },
             hitbox: { widthPercentage: 0.1, heightPercentage: 0.2 },
             dialogues: ['Hello!'],
             reaction: function() { console.log(this.greeting); },
@@ -80,6 +76,7 @@ class GameLevelMaze {
                 console.log(this.greeting);
             }
         };
+
 
         const dbarrier_1 = {
             id: 'dbarrier_1', x: 6, y: 242, width: 163, height: 7, visible: true,
