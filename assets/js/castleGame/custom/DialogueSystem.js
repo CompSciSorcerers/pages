@@ -138,7 +138,6 @@ class DialogueSystem {
 
   // Show a specific dialogue message
   showDialogue(message, speaker = "", avatarSrc = null, spriteConfig = null) {
-    console.log('showDialogue called with:', { message, speaker, avatarSrc, spriteConfig });
     
     // Set the content (with unique element IDs)
     const speakerElement = document.getElementById("dialogue-speaker-" + this.id);
@@ -151,7 +150,6 @@ class DialogueSystem {
     const avatarElement = document.getElementById("dialogue-avatar-" + this.id);
     if (avatarElement) {
       if (avatarSrc) {
-        console.log('Setting avatar image:', avatarSrc);
         avatarElement.style.backgroundImage = `url('${avatarSrc}')`;
         
         // If sprite config is provided, use proper sprite sheet positioning
@@ -163,24 +161,14 @@ class DialogueSystem {
           const frameWidth = spriteConfig.frameWidth || 78;
           const frameHeight = spriteConfig.frameHeight || 108;
 
-          console.log('Sprite config:', { columns, rows, frameX, frameY, frameWidth, frameHeight });
-          console.log('Background position calculation:', `-${frameX * frameWidth}px -${frameY * frameHeight}px`);
-
           // Override initial styles with !important flags
           avatarElement.style.setProperty('background-size', `${columns * 100}% ${rows * 100}%`, 'important');
           avatarElement.style.setProperty('background-position', `-${frameX * frameWidth}px -${frameY * frameHeight}px`, 'important');
           avatarElement.style.setProperty('background-repeat', 'no-repeat', 'important');
           avatarElement.style.setProperty('width', frameWidth + "px", 'important');
           avatarElement.style.setProperty('height', frameHeight + "px", 'important');
-          
-          console.log('Applied sprite styles:', {
-            backgroundSize: avatarElement.style.backgroundSize,
-            backgroundPosition: avatarElement.style.backgroundPosition,
-            width: avatarElement.style.width,
-            height: avatarElement.style.height
-          });
+
         } else {
-          console.log('Using fallback sprite positioning');
           // Override initial styles with !important flags
           avatarElement.style.setProperty('background-size', "300% 400%", 'important');
           avatarElement.style.setProperty('background-position', "0px 0px", 'important');
@@ -206,7 +194,7 @@ class DialogueSystem {
     // Play sound effect if enabled
     if (this.sound) {
       this.sound.currentTime = 0;
-      this.sound.play().catch(e => console.log("Sound play error:", e));
+      this.sound.play().catch(e => console.error("Sound play error:", e));
     }
     
     this.isOpen = true;

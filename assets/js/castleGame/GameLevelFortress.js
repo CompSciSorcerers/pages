@@ -161,22 +161,15 @@ class GameLevelFortress {
              * @returns {void} - Creates UI elements for player interaction
              */
             interact: function () {
-                console.log('NPC interact function called');
-                console.log('NPC spriteData.src:', this.spriteData.src);
-                console.log('this.dialogueSystem exists:', !!this.dialogueSystem);
-                
                 // Clear any existing dialogue first to prevent duplicates
                 if (this.dialogueSystem && this.dialogueSystem.isDialogueOpen()) {
-                    console.log('Closing existing dialogue');
                     this.dialogueSystem.closeDialogue();
                 }
 
                 // Create a new dialogue system if needed - lazy initialization
                 if (!this.dialogueSystem) {
-                    console.log('Creating new DialogueSystem...');
                     try {
                         this.dialogueSystem = new DialogueSystem();
-                        console.log('DialogueSystem created successfully');
                     } catch (error) {
                         console.error('Error creating DialogueSystem:', error);
                         return;
@@ -185,15 +178,9 @@ class GameLevelFortress {
 
                 // Select random dialogue message - provides variety for repeated interactions
                 const whattosay = this.data.dialogues[Math.floor(Math.random() * this.data.dialogues.length)];
-                console.log('Selected dialogue:', whattosay);
 
                 // Display dialogue with NPC sprite - shows entire sprite sheet as background
                 try {
-                    console.log('About to call showDialogue...');
-                    console.log('dialogueSystem type:', typeof this.dialogueSystem);
-                    console.log('dialogueSystem showDialogue type:', typeof this.dialogueSystem.showDialogue);
-                    console.log('dialogueSystem constructor name:', this.dialogueSystem.constructor.name);
-                    
                     this.dialogueSystem.showDialogue(
                         whattosay,
                         "Panicked NPC",
@@ -207,7 +194,6 @@ class GameLevelFortress {
                             frameHeight: 108
                         }
                     );
-                    console.log('showDialogue call completed');
                 } catch (error) {
                     console.error('Error calling showDialogue:', error);
                 }
@@ -275,20 +261,12 @@ class GameLevelFortress {
         
         // Replace NPC's dialogueSystem with our custom version (after objects are created)
         setTimeout(() => {
-            console.log('Looking for NPCs to replace dialogueSystem...');
-            console.log('Total game objects:', this.gameEnv.gameObjects.length);
-            
             const npcs = this.gameEnv.gameObjects.filter(obj => 
                 obj.constructor.name === 'Npc'
             );
-            console.log('Found NPCs:', npcs.length);
             npcs.forEach((npc, index) => {
-                console.log(`NPC ${index}: id=${npc.id}, constructor=${npc.constructor.name}`);
                 if (npc.id === 'King') {
-                    console.log('Replacing King NPC dialogueSystem with custom version');
-                    console.log('Old dialogueSystem constructor:', npc.dialogueSystem.constructor.name);
                     npc.dialogueSystem = new DialogueSystem();
-                    console.log('New dialogueSystem constructor:', npc.dialogueSystem.constructor.name);
                 }
             });
         }, 100);
