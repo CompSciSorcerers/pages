@@ -1,6 +1,14 @@
 // Define the death screen
 function showDeathScreen(player) {
 
+    // === FREEZE THE GAME ===
+    // Access the game control through the player's game environment
+    const gameControl = player.gameEnv.gameControl;
+    if (gameControl) {
+        console.log('Freezing game due to player death');
+        gameControl.isPaused = true;
+    }
+
     // === PLAYER DEATH: ALL FUNCTIONALITY INLINE ===
                         
                         // 1. Play death animation - particle effect
@@ -66,7 +74,7 @@ function showDeathScreen(player) {
     deathMessage.style.width = '400px';
     deathMessage.innerHTML = `
         <div style="margin-bottom: 20px;">☠️ YOU DIED ☠️</div>
-        <div style="font-size: 16px; margin-bottom: 20px;">The Reaper has taken another victim!</div>
+        <div style="font-size: 16px; margin-bottom: 20px;">The Scythes have claimed another soul!</div>
         <div style="font-size: 14px;">Respawning in 3 seconds...</div>
     `;
     
