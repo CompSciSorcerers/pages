@@ -70,7 +70,7 @@ class GameLevelMaze {
             left: { row: 2, start: 0, columns: 3 },
             up: { row: 3, start: 0, columns: 3 },
             hitbox: { widthPercentage: 0.1, heightPercentage: 0.2 },
-            dialogues: ['Hello!'],
+            dialogues: ['alskdmalksmslaksmdlaksm'],
             reaction: function() { console.log(this.greeting); },
             interact: function() { 
                 console.log(this.greeting);
