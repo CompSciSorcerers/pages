@@ -1,6 +1,6 @@
 import Enemy from '../../GameEnginev1/essentials/Enemy.js';
 import Player from '../../GameEnginev1/essentials/Player.js';
-import showEndScreen from './EndScreen.js';
+import showDeathScreen from './DeathScreen.js';
 
 class Scythe extends Enemy {
     constructor(gameEnv, spawnX = null) {
@@ -195,9 +195,11 @@ class Scythe extends Enemy {
         this.revComplete = true;
         this.destroy();
 
+        // Find the player object
+        const player = this.gameEnv.gameObjects.find(obj => obj.constructor.name === 'Player');
+
         // Display that the user has failed the game
-        alert("You lost the game :(");
-        location.reload();
+        showDeathScreen(player);
     }
 
     draw() {
@@ -252,3 +254,4 @@ class Scythe extends Enemy {
 }
 
 export default Scythe;
+

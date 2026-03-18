@@ -200,11 +200,11 @@ class GameLevelFortress {
             }
         };
 
-        const target_npc_src = path + "/images/castleGame/kingSprite.png";
+        const target_npc_src = path + "/images/castleGame/greenKnight.png";
         const TARGET_NPC_SCALE_FACTOR = 4; // Medium-sized NPC
         const sprite_data_target_npc = {
             id: 'Target',
-            greeting: "Help!",
+            greeting: "Come to me to end the game!",
             src: target_npc_src,
             SCALE_FACTOR: TARGET_NPC_SCALE_FACTOR,
             ANIMATION_RATE: 30, // Slower animation for static sprite
