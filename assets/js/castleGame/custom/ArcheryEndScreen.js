@@ -56,6 +56,43 @@ export default function showEndScreen(gameEnv) {
     timeLabel.style.textAlign = 'center';
     overlay.appendChild(timeLabel);
 
+    // commentary label
+
+    var commentary;
+    if (timeTaken < 10){
+        commentary = "You're literally hacking lol";
+    } else if (timeTaken < 20){
+        commentary = "Good stuff, marksman...";
+    } else if (timeTaken < 30){
+        commentary = "Seems average, I guess...";
+    } else if (timeTaken < 40){
+        commentary = "Come on, you can do better than that...";
+    } else if (timeTaken < 50){
+        commentary = "Might want to practice just a liiiiiiiiiitle bit more";
+    } else if (timeTaken < 60){
+        commentary = "I've seen glaciers move with more urgency than this.";
+    } else if (timeTaken < 70) {
+        commentary = "Oof. Is your mouse made of lead, or are you just like this?";
+    } else {
+        commentary = "I could train my pet rock to do better than this.";
+    }
+    const commentaryLabel = document.createElement('div');
+    commentaryLabel.textContent = commentary;
+    commentaryLabel.style.position = 'absolute';
+    commentaryLabel.style.left = '50%';
+    commentaryLabel.style.bottom = '20%';
+    commentaryLabel.style.transform = 'translateX(-50%)';
+    commentaryLabel.style.color = '#ffe354';
+    commentaryLabel.style.fontSize = '1.1rem';
+    commentaryLabel.style.fontWeight = '700';
+    commentaryLabel.style.fontFamily = "'Press Start 2P', monospace";
+    commentaryLabel.style.letterSpacing = '0.08em';
+    commentaryLabel.style.lineHeight = '1.4';
+    commentaryLabel.style.textShadow = '0 2px 12px rgba(0,0,0,0.9)';
+    commentaryLabel.style.pointerEvents = 'none';
+    commentaryLabel.style.textAlign = 'center';
+    overlay.appendChild(commentaryLabel);
+
     // Disable click-to-close: keep overlay visible until game control/timeout handles the transition.
     // This prevents accidental dismissal when the player clicks the screen.
     overlay.addEventListener('click', (e) => {
