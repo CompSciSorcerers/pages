@@ -51,7 +51,7 @@ class GameLevelArchery {
             src: sprite_src_mc,
             SCALE_FACTOR: MC_SCALE_FACTOR,
             STEP_FACTOR: 500,
-            ANIMATION_RATE: 100,
+            ANIMATION_RATE: 40,
             INIT_POSITION: { 
                 x: 0.5 * width, 
                 y: 0.75 * height
@@ -141,6 +141,7 @@ class GameLevelArchery {
                             this.destroy();
 
                             window.archeryGameStarted = true;
+                            window.timeStarted = Date.now() / 1000.0;
                         }
                     },
                     {
