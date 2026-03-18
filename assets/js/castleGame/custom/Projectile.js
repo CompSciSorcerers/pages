@@ -1,5 +1,5 @@
 import Character from '../../GameEnginev1/essentials/Character.js';
-import showEndScreen from './EndScreen.js';
+import showEndScreen from './ArcheryEndScreen.js';
 
 /*
  * Projectile code reused from the Mansion Game boss fight from CSSE Tri 1.
