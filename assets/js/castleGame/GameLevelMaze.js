@@ -25,8 +25,8 @@ class GameLevelMaze {
 
         const bgData = {
             name: "custom_bg",
-            src: path + "/images/gamebuilder/bg/maze.jpg",
-            pixels: { height: 2048, width: 2048 }
+            src: compscisorcerers.github.io/pages/images/castleGame/dungeonMaze.png,
+            pixels: { height: 772, width: 1134 }
         };
 
  const sprite_src_mc = path + "/images/castleGame/playerSpritesheet.png";
@@ -70,175 +70,129 @@ class GameLevelMaze {
             left: { row: 2, start: 0, columns: 3 },
             up: { row: 3, start: 0, columns: 3 },
             hitbox: { widthPercentage: 0.1, heightPercentage: 0.2 },
-            dialogues: ['alskdmalksmslaksmdlaksm'],
-            reaction: function() { console.log(this.greeting); },
+            dialogues: ["a"],
+            reaction: function() { console.log('test (reaction)'); },
             interact: function() { 
-                console.log(this.greeting);
+                console.log("Hello traveler, be wary of the maze ahead...");
             }
         };
 
-
         const dbarrier_1 = {
-            id: 'dbarrier_1', x: 6, y: 242, width: 163, height: 7, visible: true,
+            id: 'dbarrier_1', x: 498, y: 0, width: 6, height: 295, visible: true /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
             fromOverlay: true
         };
 
         const dbarrier_2 = {
-            id: 'dbarrier_2', x: 169, y: 186, width: 10, height: 60, visible: true,
+            id: 'dbarrier_2', x: 0, y: 0, width: 7, height: 296, visible: true /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
             fromOverlay: true
         };
 
         const dbarrier_3 = {
-            id: 'dbarrier_3', x: 178, y: 186, width: 48, height: 7, visible: true,
+            id: 'dbarrier_3', x: 7, y: 71, width: 14, height: 225, visible: true /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
             fromOverlay: true
         };
 
         const dbarrier_4 = {
-            id: 'dbarrier_4', x: 217, y: 189, width: 7, height: 54, visible: true,
+            id: 'dbarrier_4', x: 20, y: 72, width: 13, height: 188, visible: true /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
             fromOverlay: true
         };
 
         const dbarrier_5 = {
-            id: 'dbarrier_5', x: 217, y: 232, width: 84, height: 8, visible: true,
+            id: 'dbarrier_5', x: 33, y: 200, width: 56, height: 60, visible: true /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
             fromOverlay: true
         };
 
         const dbarrier_6 = {
-            id: 'dbarrier_6', x: 299, y: 193, width: 10, height: 41, visible: true,
+            id: 'dbarrier_6', x: 63, y: 71, width: 26, height: 129, visible: true /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
             fromOverlay: true
         };
 
         const dbarrier_7 = {
-            id: 'dbarrier_7', x: 309, y: 193, width: 80, height: 7, visible: true,
+            id: 'dbarrier_7', x: 88, y: 71, width: 191, height: 64, visible: true /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
             fromOverlay: true
         };
 
         const dbarrier_8 = {
-            id: 'dbarrier_8', x: 379, y: 200, width: 8, height: 34, visible: true,
+            id: 'dbarrier_8', x: 117, y: 156, width: 54, height: 64, visible: true /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
             fromOverlay: true
         };
 
         const dbarrier_9 = {
-            id: 'dbarrier_9', x: 350, y: 230, width: 33, height: 4, visible: true,
+            id: 'dbarrier_9', x: 144, y: 220, width: 27, height: 38, visible: true /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
             fromOverlay: true
         };
 
         const dbarrier_10 = {
-            id: 'dbarrier_10', x: 386, y: 194, width: 59, height: 8, visible: true,
+            id: 'dbarrier_10', x: 199, y: 134, width: 27, height: 125, visible: true /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
             fromOverlay: true
         };
 
         const dbarrier_11 = {
-            id: 'dbarrier_11', x: 433, y: 98, width: 10, height: 98, visible: true,
+            id: 'dbarrier_11', x: 226, y: 199, width: 162, height: 60, visible: true /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
             fromOverlay: true
         };
 
         const dbarrier_12 = {
-            id: 'dbarrier_12', x: 176, y: 38, width: 320, height: 8, visible: true,
+            id: 'dbarrier_12', x: 444, y: 71, width: 54, height: 81, visible: true /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
             fromOverlay: true
         };
 
         const dbarrier_13 = {
-            id: 'dbarrier_13', x: 353, y: 42, width: 6, height: 86, visible: true,
+            id: 'dbarrier_13', x: 444, y: 152, width: 28, height: 108, visible: true /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
             fromOverlay: true
         };
 
         const dbarrier_14 = {
-            id: 'dbarrier_14', x: 209, y: 99, width: 81, height: 9, visible: true,
+            id: 'dbarrier_14', x: 418, y: 201, width: 24, height: 58, visible: true /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
             fromOverlay: true
         };
 
         const dbarrier_15 = {
-            id: 'dbarrier_15', x: 210, y: 104, width: 10, height: 82, visible: true,
+            id: 'dbarrier_15', x: 20, y: 286, width: 476, height: 10, visible: true /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
             fromOverlay: true
         };
 
         const dbarrier_16 = {
-            id: 'dbarrier_16', x: 83, y: 43, width: 92, height: 11, visible: true,
+            id: 'dbarrier_16', x: 7, y: 1, width: 437, height: 38, visible: true /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
             fromOverlay: true
         };
 
         const dbarrier_17 = {
-            id: 'dbarrier_17', x: 109, y: 52, width: 10, height: 129, visible: true,
+            id: 'dbarrier_17', x: 472, y: 0, width: 27, height: 37, visible: true /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
             fromOverlay: true
         };
 
         const dbarrier_18 = {
-            id: 'dbarrier_18', x: 63, y: 112, width: 41, height: 14, visible: true,
+            id: 'dbarrier_18', x: 308, y: 40, width: 26, height: 131, visible: true /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
             fromOverlay: true
         };
 
         const dbarrier_19 = {
-            id: 'dbarrier_19', x: 75, y: 0, width: 10, height: 52, visible: true,
+            id: 'dbarrier_19', x: 391, y: 39, width: 25, height: 133, visible: true /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
             fromOverlay: true
         };
 
-        const dbarrier_20 = {
-            id: 'dbarrier_20', x: 14, y: 359, width: 233, height: 11, visible: true,
-            hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
-            fromOverlay: true
-        };
 
-        const dbarrier_21 = {
-            id: 'dbarrier_21', x: 241, y: 361, width: 14, height: 60, visible: true,
-            hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
-            fromOverlay: true
-        };
 
-        const dbarrier_22 = {
-            id: 'dbarrier_22', x: 311, y: 358, width: 22, height: 58, visible: true,
-            hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
-            fromOverlay: true
-        };
-
-        const dbarrier_23 = {
-            id: 'dbarrier_23', x: 26, y: 283, width: 225, height: 10, visible: true,
-            hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
-            fromOverlay: true
-        };
-
-        const dbarrier_24 = {
-            id: 'dbarrier_24', x: 245, y: 234, width: 8, height: 55, visible: true,
-            hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
-            fromOverlay: true
-        };
-
-        const dbarrier_25 = {
-            id: 'dbarrier_25', x: 346, y: 231, width: 16, height: 55, visible: true,
-            hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
-            fromOverlay: true
-        };
-
-        const dbarrier_26 = {
-            id: 'dbarrier_26', x: 312, y: 281, width: 37, height: 9, visible: true,
-            hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
-            fromOverlay: true
-        };
-
-        const dbarrier_27 = {
-            id: 'dbarrier_27', x: 333, y: 361, width: 168, height: 6, visible: true,
-            hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
-            fromOverlay: true
-        };
 
         this.classes = [      { class: GameEnvBackground, data: bgData },
       { class: Player, data: sprite_data_mc },
@@ -261,65 +215,13 @@ class GameLevelMaze {
       { class: Barrier, data: dbarrier_16 },
       { class: Barrier, data: dbarrier_17 },
       { class: Barrier, data: dbarrier_18 },
-      { class: Barrier, data: dbarrier_19 },
-      { class: Barrier, data: dbarrier_20 },
-      { class: Barrier, data: dbarrier_21 },
-      { class: Barrier, data: dbarrier_22 },
-      { class: Barrier, data: dbarrier_23 },
-      { class: Barrier, data: dbarrier_24 },
-      { class: Barrier, data: dbarrier_25 },
-      { class: Barrier, data: dbarrier_26 },
-      { class: Barrier, data: dbarrier_27 }
-];
+      { class: Barrier, data: dbarrier_19 }
+
+
+    ];
 
     }
 
-    checkWin(playerX, playerY) {
-        if (playerX > (this.width * 0.8) && playerY < (this.height * 0.2)) {
-            console.log("You won!");
-        }
-    }
-
-    checkCollision(playerX, playerY) {
-        const barriers = [
-            { x: 6, y: 242, width: 163, height: 7 },
-            { x: 169, y: 186, width: 10, height: 60 },
-            { x: 178, y: 186, width: 48, height: 7 },
-            { x: 217, y: 189, width: 7, height: 54 },
-            { x: 217, y: 232, width: 84, height: 8 },
-            { x: 299, y: 193, width: 10, height: 41 },
-            { x: 309, y: 193, width: 80, height: 7 },
-            { x: 379, y: 200, width: 8, height: 34 },
-            { x: 350, y: 230, width: 33, height: 4 },
-            { x: 386, y: 194, width: 59, height: 8 },
-            { x: 433, y: 98, width: 10, height: 98 },
-            { x: 176, y: 38, width: 320, height: 8 },
-            { x: 353, y: 42, width: 6, height: 86 },
-            { x: 209, y: 99, width: 81, height: 9 },
-            { x: 210, y: 104, width: 10, height: 82 },
-            { x: 83, y: 43, width: 92, height: 11 },
-            { x: 109, y: 52, width: 10, height: 129 },
-            { x: 63, y: 112, width: 41, height: 14 },
-            { x: 75, y: 0, width: 10, height: 52 },
-            { x: 14, y: 359, width: 233, height: 11 },
-            { x: 241, y: 361, width: 14, height: 60 },
-            { x: 311, y: 358, width: 22, height: 58 },
-            { x: 26, y: 283, width: 225, height: 10 },
-            { x: 245, y: 234, width: 8, height: 55 },
-            { x: 346, y: 231, width: 16, height: 55 },
-            { x: 312, y: 281, width: 37, height: 9 },
-            { x: 333, y: 361, width: 168, height: 6 }
-        ];
-
-        for (let barrier of barriers) {
-            if (playerX >= barrier.x && playerX <= barrier.x + barrier.width &&
-                playerY >= barrier.y && playerY <= barrier.y + barrier.height) {
-                console.log("You lost, reload the page or press esc");
-                return true;
-            }
-        }
-        return false;
-    }
 }
 
 export default GameLevelMaze;
