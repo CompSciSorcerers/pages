@@ -16,11 +16,26 @@ class FightingPlayer extends Player {
         this.lastAttackTime = Date.now();
         this.attackCooldown = 500; // 500ms between shots
         this.currentDirection = 'right'; // track facing direction
+        this.requireRunnerFocus = false;
+        this.isRunnerFocused = true;
+        this.focusContainer = null;
 
         // Bind attack to spacebar
         if (typeof window !== 'undefined') {
+            this.setupRunnerFocusMode();
+
             this._attackHandler = (event) => {
                 if (event.code === 'Space' || event.key === ' ') {
+                    // In GameRunner/embed contexts, only accept space when game area is focused.
+                    if (this.requireRunnerFocus && !this.isRunnerFocused) {
+                        return;
+                    }
+
+                    // Prevent the browser from scrolling while playing in GameRunner.
+                    if (this.requireRunnerFocus) {
+                        event.preventDefault();
+                    }
+
                     this.attack();
                 }
             };
@@ -73,10 +88,57 @@ class FightingPlayer extends Player {
         this.lastAttackTime = now;
     }
 
+    resolveInteractionContainer() {
+        return this.gameEnv?.container || this.gameEnv?.gameContainer || this.canvas?.parentElement || null;
+    }
+
+    isInRunnerContext(container) {
+        if (!container || typeof container.closest !== 'function') {
+            return false;
+        }
+
+        return Boolean(
+            container.closest('[data-code-runner], .code-runner, .code-editor, .CodeMirror-container')
+        );
+    }
+
+    setupRunnerFocusMode() {
+        this.focusContainer = this.resolveInteractionContainer();
+        this.requireRunnerFocus = this.isInRunnerContext(this.focusContainer);
+
+        if (!this.requireRunnerFocus) {
+            this.isRunnerFocused = true;
+            return;
+        }
+
+        this.isRunnerFocused = false;
+
+        this._focusPointerHandler = (event) => {
+            if (!this.focusContainer) {
+                return;
+            }
+            this.isRunnerFocused = this.focusContainer.contains(event.target);
+        };
+
+        this._windowBlurHandler = () => {
+            this.isRunnerFocused = false;
+        };
+
+        // Capture phase ensures focus state updates before keydown handling.
+        document.addEventListener('pointerdown', this._focusPointerHandler, true);
+        window.addEventListener('blur', this._windowBlurHandler);
+    }
+
     // Clean up event listeners when destroyed
     destroy() {
         if (typeof window !== 'undefined' && this._attackHandler) {
             window.removeEventListener('keydown', this._attackHandler);
+        }
+        if (typeof document !== 'undefined' && this._focusPointerHandler) {
+            document.removeEventListener('pointerdown', this._focusPointerHandler, true);
+        }
+        if (typeof window !== 'undefined' && this._windowBlurHandler) {
+            window.removeEventListener('blur', this._windowBlurHandler);
         }
         super.destroy();
     }

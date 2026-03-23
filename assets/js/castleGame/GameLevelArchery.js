@@ -239,7 +239,14 @@ class GameLevelArchery {
                     this.counterEl.style.textAlign = 'center';
                     this.counterEl.style.pointerEvents = 'none';
                     this.counterEl.style.userSelect = 'none';
-                    this.gameEnv.container.appendChild(this.counterEl);
+                    const container =
+                        this.gameEnv?.container ||
+                        this.gameEnv?.gameContainer ||
+                        document.getElementById('gameContainer') ||
+                        document.body;
+                    if (container) {
+                        container.appendChild(this.counterEl);
+                    }
                 }
 
                 // reposition each frame
