@@ -4,6 +4,7 @@ import Npc from '../GameEnginev1/essentials/Npc.js';
 import Barrier from '../GameEnginev1/essentials/Barrier.js';
 import DialogueSystem from './custom/DialogueSystem.js';
 import Scythe from './custom/Scythe.js';
+import Interceptor from './custom/Interceptor.js';
 import showEndScreen from "./custom/EndScreen.js";
 
 /**
@@ -259,6 +260,9 @@ class GameLevelFortress {
         // Start spawning scythes - initializes projectile spawning system
         this.startScytheSpawning();
         
+        // Set up Space key event listener for interceptor firing
+        this.setupInterceptorControls();
+        
         // Replace NPC's dialogueSystem with our custom version (after objects are created)
         setTimeout(() => {
             const npcs = this.gameEnv.gameObjects.filter(obj => 
@@ -312,6 +316,54 @@ class GameLevelFortress {
     }
 
     /**
+     * Sets up interceptor controls - Space key event listener for firing interceptors
+     * Handles player input for defensive interceptor projectiles
+     */
+    setupInterceptorControls() {
+        // Bind the fireInterceptor method to maintain context
+        this.boundFireInterceptor = this.fireInterceptor.bind(this);
+        
+        // Add Space key event listener
+        document.addEventListener('keydown', this.boundFireInterceptor);
+    }
+
+    /**
+     * Fires an interceptor from the player's position upward
+     * Triggered when player presses the Space key
+     * 
+     * @param {KeyboardEvent} event - The keyboard event object
+     */
+    fireInterceptor(event) {
+        // Check if Space key was pressed (keyCode 32 or key ' ')
+        if (event.code === 'Space' || event.keyCode === 32) {
+            event.preventDefault(); // Prevent default Space key behavior
+            
+            // Find the player object
+            const players = this.gameEnv.gameObjects.filter(obj => 
+                obj.constructor.name === 'Player'
+            );
+            
+            if (players.length === 0) {
+                console.warn('No player found for interceptor firing');
+                return;
+            }
+            
+            const player = players[0];
+            
+            // Calculate spawn position (center of player, slightly above)
+            const spawnX = player.position.x + player.width / 2 - 20; // Center interceptor on player
+            const spawnY = player.position.y - 20; // Spawn slightly above player
+            
+            // Create new interceptor
+            const interceptor = new Interceptor(this.gameEnv, spawnX, spawnY);
+            
+            // Add to game objects and container
+            this.gameEnv.gameObjects.push(interceptor);
+            this.gameEnv.container.appendChild(interceptor.canvas);
+        }
+    }
+
+    /**
      * Scythe projectile spawning - creates new scythe objects in game world
      * Dynamically adds threats to increase gameplay difficulty
      * 
@@ -335,6 +387,17 @@ class GameLevelFortress {
 
         // Add to visual container - enables rendering in game viewport
         this.gameEnv.container.appendChild(scythe.canvas);
+    }
+
+    /**
+     * Cleanup method - removes event listeners and performs cleanup
+     * Called when level is destroyed or transitioned away from
+     */
+    cleanup() {
+        // Remove Space key event listener
+        if (this.boundFireInterceptor) {
+            document.removeEventListener('keydown', this.boundFireInterceptor);
+        }
     }
 }
 
