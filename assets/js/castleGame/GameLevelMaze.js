@@ -76,7 +76,62 @@ class GameLevelMaze {
             dialogues: ["a"],
             reaction: function() { console.log('test (reaction)'); },
             interact: function() { 
-                console.log("Hello traveler, be wary of the maze ahead...");
+
+                // Clear any existing dialogue first to prevent duplicates
+                if (this.dialogueSystem && this.dialogueSystem.isDialogueOpen()) {
+                    this.dialogueSystem.closeDialogue();
+                }
+
+                // Create a new dialogue system if needed - lazy initialization
+                if (!this.dialogueSystem) {
+                    try {
+                        this.dialogueSystem = new DialogueSystem();
+                    } catch (error) {
+                        console.error('Error creating DialogueSystem:', error);
+                        return;
+                    }
+                }
+
+                // Select random dialogue message - provides variety for repeated interactions
+                const whattosay = "Welcome to the coolest maze this side of the atlantic ocean, escape or get rekt lol"
+
+                // Display dialogue with NPC sprite - shows entire sprite sheet as background
+                try {
+                    this.dialogueSystem.showDialogue(
+                        whattosay,
+                        "Mysterious Stranger",
+                        this.spriteData.src, // Full sprite sheet displayed (legacy behavior),
+                        {
+                            columns: 3,
+                            rows: 4,
+                            frameX: 0,
+                            frameY: 0,
+                            frameWidth: 78,
+                            frameHeight: 108
+                        }
+                    );
+
+                    this.dialogueSystem.addButtons([
+                    {
+                        text: "Enter the maze",
+                        primary: true,
+                        action: () => {
+                            this.dialogueSystem.closeDialogue();
+                            
+                            this.destroy();
+                        }
+                    },
+                    {
+                        text: "no i am scared and want to leave",
+                        action: () => {
+                            this.dialogueSystem.closeDialogue();
+                        }
+                    }]);
+
+
+                } catch (error) {
+                    console.error('Error calling showDialogue:', error);
+                }
             }
         };
 
