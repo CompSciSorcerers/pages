@@ -63,8 +63,8 @@ const player = this.gameEnv.gameObjects.find(obj => obj.constructor.name === 'Pl
                 if (this.collisionDetected === true)
                 {
                 const player = this.gameEnv.gameObjects.find(obj => obj.constructor.name === 'Player');
-                showDeathScreen(player)
-                console.log("im a big boy")
+                showDeathScreen(player, "intelligence has tried to catch up to you, but you were always faster");
+                console.log("im a big boy");
             }
                 }
             }
