@@ -54,6 +54,14 @@ class GameLevelMaze {
             upRight: {row: 2, start: 0, columns: 3, rotate: -Math.PI/16},
             hitbox: {widthPercentage: 0.1, heightPercentage: 0.15},
             keypress: {up: 87, left: 65, down: 83, right: 68}, // W, A, S, D
+            update: function() {
+                for (let i = 0; i < this.gameEnv.gameObjects.length; i++) {
+                if (this.collisionDetected === true)
+                {
+                console.log("You lost! Try again.")
+                }
+                }
+            }
         };
         
          const npcData1 = {
