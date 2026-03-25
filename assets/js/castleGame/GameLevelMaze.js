@@ -62,8 +62,10 @@ const player = this.gameEnv.gameObjects.find(obj => obj.constructor.name === 'Pl
                 for (let i = 0; i < this.gameEnv.gameObjects.length; i++) {
                 if (this.collisionDetected === true)
                 {
+                const player = this.gameEnv.gameObjects.find(obj => obj.constructor.name === 'Player');
                 showDeathScreen(player)
-                }
+                console.log("im a big boy")
+            }
                 }
             }
         };
