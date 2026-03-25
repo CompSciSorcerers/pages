@@ -32,7 +32,7 @@ permalink: /gamify/castle/archery
             showNavigation: true,
             showLevelSelect: true,
             showInfo: true,
-            homeUrl: "/gamify/sorcerers/archery",
+            homeUrl: "/gamify/castle/archery",
             gameInfo: {
                 title: "Castle Game",
                 version: "1.0",

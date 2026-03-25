@@ -32,7 +32,7 @@ permalink: /gamify/castle/fortress
             showNavigation: true,
             showLevelSelect: true,
             showInfo: true,
-            homeUrl: "/gamify/sorcerers/fortress",
+            homeUrl: "/gamify/castle/fortress",
             gameInfo: {
                 title: "Castle Game",
                 version: "1.0",
