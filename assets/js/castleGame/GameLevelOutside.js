@@ -166,26 +166,44 @@ class GameLevelOutside {
                                     // fading before they begin moving/attacking.
                                     try { window.__startFadeComplete = false; } catch(e) {}
 
-                                    // Create a centered transition text that will type itself
+                                    // Load decorative medieval fonts once so transition dialogue is on-theme.
+                                    if (!document.getElementById('castle-medieval-fonts')) {
+                                        const fontLink = document.createElement('link');
+                                        fontLink.id = 'castle-medieval-fonts';
+                                        fontLink.rel = 'stylesheet';
+                                        fontLink.href = 'https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Uncial+Antiqua&display=swap';
+                                        document.head.appendChild(fontLink);
+                                    }
+
+                                    // Create a centered transition text that will type and erase each dialogue.
                                     const transitionText = document.createElement('div');
-                                    const fullText = 'oogity boogity aufhUYAGFKASULHJDFkjdf??';
                                     transitionText.textContent = '';
-                                    const typingSpeed = 50; // ms per char -- CHANGE TO 80 WHEN FINISHED THE SLOW SPEED IS FOR DEVELOPMENT
+                                    const transitionDialogues = [
+                                        'The castle gates creak open, revealing a shadowy figure.',
+                                        'oogity boogiyt boooo',
+                                        'Step forth, brave one, and claim thy fate.'
+                                    ];
+                                    const typingSpeed = 50;
+                                    const erasingSpeed = 35;
+                                    const lineHoldMs = 1200;
                                     Object.assign(transitionText.style, {
                                         position: 'fixed',
                                         top: '50%',
                                         left: '50%',
                                         transform: 'translate(-50%, -50%)',
-                                        color: 'rgb(136, 0, 255)',
+                                        color: '#f5e6c8',
                                         fontSize: '6vw',
                                         fontWeight: '800',
                                         textAlign: 'center',
                                         zIndex: '10000',
                                         pointerEvents: 'none',
                                         opacity: '0',
+                                        fontFamily: "'Cinzel Decorative', 'Uncial Antiqua', 'Old English Text MT', serif",
                                         transition: `opacity ${Math.min(600, fadeOutMs)}ms ease-in-out`,
-                                        textShadow: '0 3px 8px rgba(181, 0, 0, 0.85)',
-                                        letterSpacing: '0.05em'
+                                        letterSpacing: '0.04em',
+                                        textShadow: '0 0 12px rgba(0, 0, 0, 0.7), 0 0 24px rgba(166, 124, 82, 0.35)',
+                                        maxWidth: '80vw',
+                                        lineHeight: '1.25'
                                     });
 
                                     document.body.appendChild(transitionText);
@@ -195,27 +213,49 @@ class GameLevelOutside {
                                         transitionText.style.opacity = '1';
                                     });
 
-                                    // Typewriter effect
-                                    let charIndex = 0;
-                                    let typingInterval = null;
-                                    const startTyping = () => {
-                                        typingInterval = setInterval(() => {
-                                            transitionText.textContent += fullText.charAt(charIndex);
-                                            charIndex++;
-                                            if (charIndex >= fullText.length) {
-                                                clearInterval(typingInterval);
-                                                typingInterval = null;
+                                    const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+                                    const typeLine = (line) => new Promise((resolve) => {
+                                        let i = 0;
+                                        transitionText.textContent = '';
+                                        const interval = setInterval(() => {
+                                            transitionText.textContent += line.charAt(i);
+                                            i++;
+                                            if (i >= line.length) {
+                                                clearInterval(interval);
+                                                resolve();
                                             }
                                         }, typingSpeed);
+                                    });
+
+                                    const eraseLine = () => new Promise((resolve) => {
+                                        let text = transitionText.textContent;
+                                        const interval = setInterval(() => {
+                                            text = text.slice(0, -1);
+                                            transitionText.textContent = text;
+                                            if (text.length === 0) {
+                                                clearInterval(interval);
+                                                resolve();
+                                            }
+                                        }, erasingSpeed);
+                                    });
+
+                                    const runTransitionDialogue = async () => {
+                                        for (let i = 0; i < transitionDialogues.length; i++) {
+                                            await typeLine(transitionDialogues[i]);
+                                            await sleep(lineHoldMs);
+                                            await eraseLine();
+                                            await sleep(120);
+                                        }
                                     };
 
-                                    startTyping();
+                                    (async () => {
+                                        // Keep sync with fade-in so both effects complete before changing levels.
+                                        await Promise.all([
+                                            runTransitionDialogue(),
+                                            sleep(fadeInMs)
+                                        ]);
 
-                                    // Compute when to perform the level transition: wait until both fadeIn and typing complete
-                                    const typingDuration = fullText.length * typingSpeed;
-                                    const waitMs = Math.max(fadeInMs, typingDuration) + 200; // small hold after -- CHANGE TO 800 WHEN FINISHED THE SLOW SPEED IS FOR DEVELOPMENT
-
-                                    setTimeout(() => {
                                         // Clean up current level properly
                                         if (gameControl.currentLevel) {
                                             // Properly destroy the current level
@@ -244,42 +284,28 @@ class GameLevelOutside {
                                         gameControl.isPaused = false;
                                     
                                         
-                                        // Fade out overlay after transition (with untype animation)
+                                        // Fade out overlay after transition.
                                         setTimeout(() => {
-                                            const untypeSpeed = 50; // ms per character removal
-                                            let untypeIndex = fullText.length - 1;
+                                            fadeOverlay.style.transition = `opacity ${fadeOutMs}ms ease-in-out`;
+                                            transitionText.style.transition = `opacity ${fadeOutMs}ms ease-in-out`;
+                                            fadeOverlay.style.opacity = '0';
+                                            transitionText.style.opacity = '0';
 
-                                            const untypeInterval = setInterval(() => {
-                                                if (untypeIndex >= 0) {
-                                                    transitionText.textContent = fullText.substring(0, untypeIndex);
-                                                    untypeIndex--;
-                                                } else {
-                                                    clearInterval(untypeInterval);
-
-                                                    // Once untyped, fade everything out
-                                                    fadeOverlay.style.transition = `opacity ${fadeOutMs}ms ease-in-out`;
-                                                    transitionText.style.transition = `opacity ${fadeOutMs}ms ease-in-out`;
-                                                    fadeOverlay.style.opacity = '0';
-                                                    transitionText.style.opacity = '0';
-
-                                                    // Remove both elements after fade-out completes
-                                                    setTimeout(() => {
-                                                        try { document.body.removeChild(fadeOverlay); } catch (e) {}
-                                                        try { document.body.removeChild(transitionText); } catch (e) {}
-                                                        // Now the archery level visuals have finished fading in for the player.
-                                                        // Signal to in-level enemies that it's OK to start moving.
-                                                        try { window.__startFadeComplete = true; } catch (e) {}
-                                                    }, fadeOutMs + 150);
-                                                }
-                                            }, untypeSpeed);
-                                        }, waitMs + 300);
+                                            // Remove both elements after fade-out completes
+                                            setTimeout(() => {
+                                                try { document.body.removeChild(fadeOverlay); } catch (e) {}
+                                                try { document.body.removeChild(transitionText); } catch (e) {}
+                                                // Now the archery level visuals have finished fading in for the player.
+                                                // Signal to in-level enemies that it's OK to start moving.
+                                                try { window.__startFadeComplete = true; } catch (e) {}
+                                            }, fadeOutMs + 150);
+                                        }, 200);
 
                                         // Start the boss fight with the same control
                                         console.log("Transitioning to archery level...");
                                         gameControl.transitionToLevel();
 
-
-                                    }, waitMs);
+                                    })();
                                 });
                             }
                         }
