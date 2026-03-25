@@ -15,7 +15,7 @@ import Player from '../GameEnginev1/essentials/Player.js';
 import Npc from '../GameEnginev1/essentials/Npc.js';
 import Barrier from '../GameEnginev1/essentials/Barrier.js';
 import showEndScreen from "./custom/EndScreen.js";
-import showDeathScreen from './DeathScreen.js';
+import showDeathScreen from './custom/DeathScreen.js';
 
 
 class GameLevelMaze {
