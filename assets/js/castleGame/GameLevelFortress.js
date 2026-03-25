@@ -322,21 +322,27 @@ class GameLevelFortress {
     setupInterceptorControls() {
         // Bind the fireInterceptor method to maintain context
         this.boundFireInterceptor = this.fireInterceptor.bind(this);
+        this.boundFireInterceptorTouch = this.fireInterceptorTouch.bind(this);
         
-        // Add Space key event listener
+        // Add keyboard event listener
         document.addEventListener('keydown', this.boundFireInterceptor);
+        
+        // Add touch event listener for mobile devices
+        document.addEventListener('touchstart', this.boundFireInterceptorTouch, { passive: false });
+        document.addEventListener('click', this.boundFireInterceptorTouch); // Also handle mouse clicks for consistency
     }
 
     /**
      * Fires an interceptor from the player's position upward
-     * Triggered when player presses the Space key
+     * Triggered when player presses the Space key or I key
      * 
      * @param {KeyboardEvent} event - The keyboard event object
      */
     fireInterceptor(event) {
-        // Check if Space key was pressed (keyCode 32 or key ' ')
-        if (event.code === 'Space' || event.keyCode === 32) {
-            event.preventDefault(); // Prevent default Space key behavior
+        // Check if Space key (keyCode 32) or I key (keyCode 73) was pressed
+        if ((event.code === 'Space' || event.keyCode === 32) || 
+            (event.code === 'KeyI' || event.keyCode === 73)) {
+            event.preventDefault(); // Prevent default key behavior
             
             // Find the player object
             const players = this.gameEnv.gameObjects.filter(obj => 
@@ -361,6 +367,39 @@ class GameLevelFortress {
             this.gameEnv.gameObjects.push(interceptor);
             this.gameEnv.container.appendChild(interceptor.canvas);
         }
+    }
+
+    /**
+     * Fires an interceptor from touch or click events
+     * Triggered when player taps screen on mobile devices or clicks with mouse
+     * 
+     * @param {TouchEvent|MouseEvent} event - The touch or mouse event object
+     */
+    fireInterceptorTouch(event) {
+        event.preventDefault(); // Prevent default touch/click behavior
+        
+        // Find the player object
+        const players = this.gameEnv.gameObjects.filter(obj => 
+            obj.constructor.name === 'Player'
+        );
+        
+        if (players.length === 0) {
+            console.warn('No player found for interceptor firing');
+            return;
+        }
+        
+        const player = players[0];
+        
+        // Calculate spawn position (center of player, slightly above)
+        const spawnX = player.position.x + player.width / 2 - 20; // Center interceptor on player
+        const spawnY = player.position.y - 20; // Spawn slightly above player
+        
+        // Create new interceptor
+        const interceptor = new Interceptor(this.gameEnv, spawnX, spawnY);
+        
+        // Add to game objects and container
+        this.gameEnv.gameObjects.push(interceptor);
+        this.gameEnv.container.appendChild(interceptor.canvas);
     }
 
     /**
@@ -394,9 +433,15 @@ class GameLevelFortress {
      * Called when level is destroyed or transitioned away from
      */
     cleanup() {
-        // Remove Space key event listener
+        // Remove keyboard event listener
         if (this.boundFireInterceptor) {
             document.removeEventListener('keydown', this.boundFireInterceptor);
+        }
+        
+        // Remove touch and click event listeners
+        if (this.boundFireInterceptorTouch) {
+            document.removeEventListener('touchstart', this.boundFireInterceptorTouch);
+            document.removeEventListener('click', this.boundFireInterceptorTouch);
         }
     }
 }
