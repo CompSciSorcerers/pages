@@ -231,7 +231,7 @@ class Interceptor extends Character {
 
         // Draw interceptor with glow effect
         ctx.save();
-        
+
         // Translate to center and rotate
         ctx.translate(this.canvas.width / 2, this.canvas.height / 2);
         ctx.rotate(drawAngle);

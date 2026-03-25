@@ -1,5 +1,5 @@
 // Define the death screen
-function showDeathScreen(player) {
+function showDeathScreen(player, message="The Scythes have claimed another soul!") {
 
     // === FREEZE THE GAME ===
     // Access the game control through the player's game environment
@@ -74,7 +74,7 @@ function showDeathScreen(player) {
     deathMessage.style.width = '400px';
     deathMessage.innerHTML = `
         <div style="margin-bottom: 20px;">☠️ YOU DIED ☠️</div>
-        <div style="font-size: 16px; margin-bottom: 20px;">The Scythes have claimed another soul!</div>
+        <div style="font-size: 16px; margin-bottom: 20px;">${message}</div>
         <div style="font-size: 14px;">Respawning in 3 seconds...</div>
     `;
     
