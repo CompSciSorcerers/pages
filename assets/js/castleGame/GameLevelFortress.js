@@ -17,7 +17,7 @@ class GameLevelFortress {
      * @static
      * @type {string}
      */
-    static friendlyName = "Level 3: Fortress";
+    static friendlyName = "Level 4: Fortress";
 
     /**
      * Constructs the Fortress game level with all game objects and systems
