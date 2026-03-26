@@ -115,12 +115,70 @@ class Interceptor extends Character {
             return;
         }
         
-        // Check for scythe interceptions
-        this.checkScytheInterception();
+        // Check for scythe interceptions and update velocity
+        this.checkScytheInterceptionAndUpdateVelocity();
 
         // Draw and setup canvas
         this.draw();
         this.setupCanvas();
+    }
+
+    checkScytheInterceptionAndUpdateVelocity() {
+        if (this.hasIntercepted) return;
+        
+        // Find all scythe objects
+        const scythes = this.gameEnv.gameObjects.filter(obj => 
+            obj.constructor.name === 'Scythe'
+        );
+        
+        if (scythes.length === 0) return;
+        
+        // Find nearest scythe
+        let nearestScythe = null;
+        let minDistance = Infinity;
+        
+        for (const scythe of scythes) {
+            // Calculate distance from interceptor to scythe
+            const interceptorCenterX = this.position.x + this.width / 2;
+            const interceptorCenterY = this.position.y + this.height / 2;
+            const scytheCenterX = scythe.position.x + scythe.width / 2;
+            const scytheCenterY = scythe.position.y + scythe.height / 2;
+            
+            const dx = scytheCenterX - interceptorCenterX;
+            const dy = scytheCenterY - interceptorCenterY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            if (distance < minDistance) {
+                minDistance = distance;
+                nearestScythe = scythe;
+            }
+        }
+        
+        if (nearestScythe) {
+            // Update velocity to track the nearest scythe
+            const interceptorCenterX = this.position.x + this.width / 2;
+            const interceptorCenterY = this.position.y + this.height / 2;
+            const scytheCenterX = nearestScythe.position.x + nearestScythe.width / 2;
+            const scytheCenterY = nearestScythe.position.y + nearestScythe.height / 2;
+            
+            const dx = scytheCenterX - interceptorCenterX;
+            const dy = scytheCenterY - interceptorCenterY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            if (distance > 0) {
+                // Update velocity to track the scythe
+                this.velocity = {
+                    x: (dx / distance) * this.speed,
+                    y: (dy / distance) * this.speed
+                };
+            }
+            
+            // Check for interception
+            const INTERCEPTION_DISTANCE = (this.width + nearestScythe.width) / 2.5;
+            if (distance <= INTERCEPTION_DISTANCE) {
+                this.handleInterception(nearestScythe);
+            }
+        }
     }
 
     checkScytheInterception() {
