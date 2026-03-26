@@ -73,19 +73,13 @@ class GameLevelMaze {
         const npcData1 = {
             id: 'hey',
             greeting: 'Hey there!',
-            src: path + "/images/gamify/chillguy.png",
+            src: path + "/images/gamify/morty.jpg",
             SCALE_FACTOR: 13,
-            ANIMATION_RATE: 50,
             INIT_POSITION: { 
                 x: 250 / 1911 * width, 
                 y: 760 / 851 * height
             },
             pixels: { height: 512, width: 384 },
-            orientation: { rows: 4, columns: 3 },
-            down: { row: 0, start: 0, columns: 3 },
-            right: { row: 1, start: 0, columns: 3 },
-            left: { row: 2, start: 0, columns: 3 },
-            up: { row: 3, start: 0, columns: 3 },
             hitbox: { widthPercentage: 0.1, heightPercentage: 0.2 },
             dialogues: ["a"],
             reaction: function() { console.log('test (reaction)'); },
