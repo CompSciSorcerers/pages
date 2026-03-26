@@ -73,7 +73,7 @@ class GameLevelMaze {
         const npcData1 = {
             id: 'hey',
             greeting: 'Hey there!',
-            src: path + "/images/gamify/chillguy.png",
+            src: path + "/images/gamify/morty.jpg",
             SCALE_FACTOR: 13,
             ANIMATION_RATE: 50,
             INIT_POSITION: { 
