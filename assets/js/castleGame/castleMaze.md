@@ -1,6 +1,6 @@
 ---
 layout: opencs
-title: Sorcerers Game 
+title: Castle Game 
 permalink: /gamify/castle/maze
 ---
 

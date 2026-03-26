@@ -4,6 +4,9 @@
  * @param gameEnv - The game environment object
  * @param filepath - The path to the end screen image (default: '/images/sorcerers/archeryWinScreen.png')
  */
+
+import GameLevelMaze from '../GameLevelMaze.js';
+
 export default function showEndScreen(gameEnv) {
     if (typeof document === 'undefined') return;
 
@@ -92,6 +95,88 @@ export default function showEndScreen(gameEnv) {
     commentaryLabel.style.pointerEvents = 'none';
     commentaryLabel.style.textAlign = 'center';
     overlay.appendChild(commentaryLabel);
+
+    const actionButton = document.createElement('button');
+    actionButton.type = 'button';
+    actionButton.textContent = 'Enter the castle';
+    actionButton.style.position = 'absolute';
+    actionButton.style.left = '50%';
+    actionButton.style.bottom = '10%';
+    actionButton.style.transform = 'translateX(-50%)';
+    actionButton.style.padding = '12px 22px';
+    actionButton.style.border = '2px solid #ffffff';
+    actionButton.style.borderRadius = '8px';
+    actionButton.style.background = '#1f2738';
+    actionButton.style.color = '#ffffff';
+    actionButton.style.fontFamily = "'Press Start 2P', monospace";
+    actionButton.style.fontSize = '0.75rem';
+    actionButton.style.letterSpacing = '0.05em';
+    actionButton.style.cursor = 'pointer';
+    actionButton.style.boxShadow = '0 6px 18px rgba(0,0,0,0.5)';
+    actionButton.style.zIndex = '10001';
+    actionButton.addEventListener('click', (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+
+        if (!gameEnv || !gameEnv.gameControl) return;
+
+        // Prevent double-click transitions.
+        actionButton.disabled = true;
+        actionButton.style.opacity = '0.65';
+        actionButton.style.cursor = 'default';
+
+        const gameControl = gameEnv.gameControl;
+        const fadeOverlay = document.createElement('div');
+        const fadeInMs = 700;
+        const fadeOutMs = 700;
+
+        Object.assign(fadeOverlay.style, {
+            position: 'fixed',
+            top: '0',
+            left: '0',
+            width: '100%',
+            height: '100%',
+            backgroundColor: '#000000',
+            opacity: '0',
+            zIndex: '10002',
+            pointerEvents: 'none',
+            transition: `opacity ${fadeInMs}ms ease-in-out`
+        });
+
+        try { document.body.appendChild(fadeOverlay); } catch (err) { console.warn('Could not append fade overlay:', err); }
+
+        const switchToMazeLevel = () => {
+            try {
+                gameControl._originalLevelClasses = gameControl.levelClasses;
+                gameControl.levelClasses = [GameLevelMaze];
+                gameControl.currentLevelIndex = 0;
+                gameControl.isPaused = false;
+                gameControl.transitionToLevel();
+            } catch (err) {
+                console.warn('Failed to transition to maze level:', err);
+            }
+        };
+
+        requestAnimationFrame(() => {
+            fadeOverlay.style.opacity = '1';
+        });
+
+        setTimeout(() => {
+            try { overlay.remove(); } catch (err) { /* ignore */ }
+
+            switchToMazeLevel();
+
+            setTimeout(() => {
+                fadeOverlay.style.transition = `opacity ${fadeOutMs}ms ease-in-out`;
+                fadeOverlay.style.opacity = '0';
+
+                setTimeout(() => {
+                    try { fadeOverlay.remove(); } catch (err) { /* ignore */ }
+                }, fadeOutMs + 100);
+            }, 220);
+        }, fadeInMs + 30);
+    });
+    overlay.appendChild(actionButton);
 
     // Disable click-to-close: keep overlay visible until game control/timeout handles the transition.
     // This prevents accidental dismissal when the player clicks the screen.

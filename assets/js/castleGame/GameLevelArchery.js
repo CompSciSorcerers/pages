@@ -198,7 +198,7 @@ class GameLevelArchery {
             update: function() {
                 // Initialize hitsRemaining if not set
                 if (this.hitsRemaining === undefined) {
-                    this.hitsRemaining = 30;
+                    this.hitsRemaining = 1;
                 }
 
                 // Move the target left/right only if game has started

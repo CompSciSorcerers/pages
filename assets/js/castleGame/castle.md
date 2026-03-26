@@ -1,6 +1,6 @@
 ---
 layout: opencs
-title: Sorcerers Game 
+title: Castle Game 
 permalink: /gamify/castle
 ---
 
@@ -13,12 +13,13 @@ permalink: /gamify/castle
 
     // Adventure Game assets locations
     import Game from "{{site.baseurl}}/assets/js/GameEnginev1/essentials/Game.js";
+    import GameLevelOutside from "{{site.baseurl}}/assets/js/castleGame/GameLevelOutside.js";
     import GameLevelMaze from "{{site.baseurl}}/assets/js/castleGame/GameLevelMaze.js";
     import GameLevelArchery from "{{site.baseurl}}/assets/js/castleGame/GameLevelArchery.js";
     import GameLevelFortress from "{{site.baseurl}}/assets/js/castleGame/GameLevelFortress.js"; 
     import { pythonURI, javaURI, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js';
 
-    const gameLevelClasses = [GameLevelMaze, GameLevelArchery, GameLevelFortress];
+    const gameLevelClasses = [GameLevelOutside, GameLevelArchery, GameLevelFortress, GameLevelMaze];
 
     // Web Server Environment datas
     const environment = {

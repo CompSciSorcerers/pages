@@ -179,12 +179,14 @@ class GameLevelOutside {
                                     const transitionText = document.createElement('div');
                                     transitionText.textContent = '';
                                     const transitionDialogues = [
-                                        'The castle gates creak open, revealing a shadowy figure.',
-                                        'oogity boogiyt boooo',
-                                        'Step forth, brave one, and claim thy fate.'
+                                        'Welcome to the castle.',
+                                        'Your job is to break in and free the prisoner.',
+                                        'Use your bow and arrow to pass the archery challenge.',
+                                        'Good luck, brave Knight.'
                                     ];
-                                    const typingSpeed = 50;
+                                    const typingSpeed = 45;
                                     const erasingSpeed = 35;
+                                    const letterFadeMs = 1000;
                                     const lineHoldMs = 1200;
                                     Object.assign(transitionText.style, {
                                         position: 'fixed',
@@ -217,9 +219,17 @@ class GameLevelOutside {
 
                                     const typeLine = (line) => new Promise((resolve) => {
                                         let i = 0;
-                                        transitionText.textContent = '';
+                                        transitionText.innerHTML = '';
                                         const interval = setInterval(() => {
-                                            transitionText.textContent += line.charAt(i);
+                                            const span = document.createElement('span');
+                                            span.textContent = line.charAt(i);
+                                            span.style.opacity = '0';
+                                            span.style.transition = `opacity ${letterFadeMs}ms ease-out`;
+                                            transitionText.appendChild(span);
+                                            requestAnimationFrame(() => {
+                                                span.style.opacity = '1';
+                                            });
+
                                             i++;
                                             if (i >= line.length) {
                                                 clearInterval(interval);
