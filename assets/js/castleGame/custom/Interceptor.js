@@ -166,7 +166,7 @@ class Interceptor extends Character {
             const distance = Math.sqrt(dx * dx + dy * dy);
             
             if (distance > 0) {
-                // Update velocity to track the scythe
+                // Update velocity to track the scythe (always accurate tracking)
                 this.velocity = {
                     x: (dx / distance) * this.speed,
                     y: (dy / distance) * this.speed
@@ -215,14 +215,21 @@ class Interceptor extends Character {
     handleInterception(scythe) {
         this.hasIntercepted = true;
         this.revComplete = true;
-
-        // Create visual effect for interception
-        this.createInterceptionEffect();
-
-        // Destroy the scythe
-        scythe.destroy();
-
-        // Destroy this interceptor
+        
+        // Add 75% interception accuracy (25% chance to miss)
+        const accuracy = 0.75; // 75% accuracy
+        const willHit = Math.random() < accuracy;
+        
+        if (willHit) {
+            // Successful interception - destroy the scythe
+            this.createInterceptionEffect();
+            scythe.destroy();
+        } else {
+            // Failed interception - just create a miss effect, don't destroy scythe
+            this.createMissEffect();
+        }
+        
+        // Destroy this interceptor regardless of hit/miss
         this.destroy();
     }
 
@@ -269,6 +276,51 @@ class Interceptor extends Character {
                 effect.parentNode.removeChild(effect);
             }
         }, 500);
+    }
+    
+    createMissEffect() {
+        // Create a miss effect (different color/animation from successful hit)
+        const effect = document.createElement('div');
+        effect.style.cssText = `
+            position: absolute;
+            left: ${this.position.x + this.width / 2}px;
+            top: ${this.position.y + this.height / 2}px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #ff6666, #ff0000, transparent);
+            pointer-events: none;
+            z-index: 1000;
+            animation: interceptorMiss 0.3s ease-out forwards;
+        `;
+        
+        // Add CSS animation for miss effect if not already present
+        if (!document.getElementById('interceptor-miss-styles')) {
+            const style = document.createElement('style');
+            style.id = 'interceptor-miss-styles';
+            style.textContent = `
+                @keyframes interceptorMiss {
+                    0% {
+                        transform: translate(-50%, -50%) scale(0);
+                        opacity: 1;
+                    }
+                    100% {
+                        transform: translate(-50%, -50%) scale(1.5);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+        
+        document.body.appendChild(effect);
+        
+        // Remove effect after animation
+        setTimeout(() => {
+            if (effect.parentNode) {
+                effect.parentNode.removeChild(effect);
+            }
+        }, 300);
     }
 
     draw() {
