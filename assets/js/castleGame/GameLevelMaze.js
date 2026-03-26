@@ -31,9 +31,9 @@ class GameLevelMaze {
             src: path + "/images/castleGame/dungeonMaze.png",
             pixels: { height: 772, width: 1134 }
         };
-// i removed the const player line here, apparently that was causing the issues
+// const player = this.gameEnv.gameObjects.find(obj => obj.constructor.name === 'Player');
 
- const sprite_src_mc = path + "/images/castleGame/playerSpritesheet.png";
+        const sprite_src_mc = path + "/images/castleGame/playerSpritesheet.png";
         const MC_SCALE_FACTOR = 13;
         const sprite_data_mc = {
             id: 'Knight',
@@ -59,18 +59,17 @@ class GameLevelMaze {
             hitbox: {widthPercentage: 0.1, heightPercentage: 0.15},
             keypress: {up: 87, left: 65, down: 83, right: 68}, // W, A, S, D
             update: function() {
-                for (let i = 0; i < this.gameEnv.gameObjects.length; i++) {
-                if (this.collisionDetected === true)
-                {
-                const player = this.gameEnv.gameObjects.find(obj => obj.constructor.name === 'Player');
-                showDeathScreen(player, "intelligence has tried to catch up to you, but you were always faster");
-                console.log("im a big boy");
+                // for (let i = 0; i < this.gameEnv.gameObjects.length; i++) {
+                // if (this.collisionDetected === true)
+                // {
+                // const player = this.gameEnv.gameObjects.find(obj => obj.constructor.name === 'Player');
+                // showDeathScreen(player, "intelligence has tried to catch up to you, but you were always faster");
+                // console.log("im a big boy");
             }
-                }
-            }
+
         };
         
-         const npcData1 = {
+        const npcData1 = {
             id: 'hey',
             greeting: 'Hey there!',
             src: path + "/images/gamify/chillguy.png",
