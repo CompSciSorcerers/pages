@@ -35,7 +35,7 @@ class GameLevelFortress {
          * Timer for scythe spawning - increments each frame
          * @type {number}
          */
-        this.scytheSpawnTimer = 0;
+        this.scytheSpawnTimer = -300;  // Delay the first spawn
         /**
          * Interval for scythe spawning (120 frames = 2 seconds at 60 FPS)
          * @type {number}
