@@ -277,7 +277,7 @@ class Interceptor extends Character {
             }
         }, 500);
     }
-    
+
     createMissEffect() {
         // Create a miss effect (different color/animation from successful hit)
         const effect = document.createElement('div');
@@ -293,7 +293,7 @@ class Interceptor extends Character {
             z-index: 1000;
             animation: interceptorMiss 0.3s ease-out forwards;
         `;
-        
+
         // Add CSS animation for miss effect if not already present
         if (!document.getElementById('interceptor-miss-styles')) {
             const style = document.createElement('style');
@@ -312,9 +312,9 @@ class Interceptor extends Character {
             `;
             document.head.appendChild(style);
         }
-        
+
         document.body.appendChild(effect);
-        
+
         // Remove effect after animation
         setTimeout(() => {
             if (effect.parentNode) {
