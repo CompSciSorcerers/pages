@@ -20,6 +20,9 @@ import GameLevelFortress from './GameLevelFortress.js';
 
 
 class GameLevelMaze {
+
+    static friendlyName = "Level 3: The Maze";
+
     constructor(gameEnv) {
         const path = gameEnv.path;
         const width = gameEnv.innerWidth;
@@ -32,6 +35,7 @@ class GameLevelMaze {
             src: path + "/images/castleGame/dungeonMaze.png",
             pixels: { height: 772, width: 1134 }
         };
+
 // const player = this.gameEnv.gameObjects.find(obj => obj.constructor.name === 'Player');
 
         const sprite_src_mc = path + "/images/castleGame/playerSpritesheet.png";
@@ -109,7 +113,7 @@ class GameLevelMaze {
                 try {
                     this.dialogueSystem.showDialogue(
                         whattosay,
-                        "Mysterious Stranger",
+                        "mr portensen",
                         this.spriteData.src, // Full sprite sheet displayed (legacy behavior),
                         {
                             columns: 3,
