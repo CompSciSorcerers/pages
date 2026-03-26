@@ -18,7 +18,7 @@ class Interceptor extends Character {
         const path = gameEnv.path;
         
         // Movement properties - moves toward target
-        this.speed = 12; // Faster than regular projectiles for interception
+        this.speed = 10; // Faster than regular projectiles for interception
         
         // Calculate velocity vector toward target
         if (this.target_coords) {
@@ -57,6 +57,11 @@ class Interceptor extends Character {
         
         // Add glow effect for visual distinction
         this.glowColor = '#00ffff'; // Cyan glow for interceptor
+        
+        // Trail effect properties
+        this.trailTimer = 0;
+        this.trailInterval = 2; // Create trail every 2 frames
+        this.trails = []; // Array to store trail elements
     }
     
     /**
@@ -104,7 +109,14 @@ class Interceptor extends Character {
         // Move interceptor in straight line toward target
         this.position.x += this.velocity.x;
         this.position.y += this.velocity.y;
-
+        
+        // Create trail effect
+        this.trailTimer++;
+        if (this.trailTimer >= this.trailInterval) {
+            this.createTrailParticle();
+            this.trailTimer = 0;
+        }
+        
         // Check if offscreen (in any direction)
         if (this.position.x < -this.width || 
             this.position.x > this.gameEnv.innerWidth ||
@@ -322,6 +334,59 @@ class Interceptor extends Character {
             }
         }, 300);
     }
+    
+    createTrailParticle() {
+        // Create trail particle at interceptor's current position
+        const trail = document.createElement('div');
+        const particleX = this.position.x + this.width / 2;
+        const particleY = this.position.y + this.height / 2;
+        
+        trail.style.cssText = `
+            position: absolute;
+            left: ${particleX}px;
+            top: ${particleY}px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 255, 255, 0.8), rgba(0, 136, 255, 0.4), transparent);
+            pointer-events: none;
+            z-index: 999;
+            animation: trailFade 0.8s ease-out forwards;
+        `;
+        
+        // Add CSS animation for trail fade if not already present
+        if (!document.getElementById('interceptor-trail-styles')) {
+            const style = document.createElement('style');
+            style.id = 'interceptor-trail-styles';
+            style.textContent = `
+                @keyframes trailFade {
+                    0% {
+                        transform: translate(-50%, -50%) scale(1);
+                        opacity: 0.8;
+                    }
+                    100% {
+                        transform: translate(-50%, -50%) scale(0.3);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+        
+        document.body.appendChild(trail);
+        this.trails.push(trail);
+        
+        // Remove trail particle after animation
+        setTimeout(() => {
+            if (trail.parentNode) {
+                trail.parentNode.removeChild(trail);
+            }
+            const index = this.trails.indexOf(trail);
+            if (index > -1) {
+                this.trails.splice(index, 1);
+            }
+        }, 800);
+    }
 
     draw() {
         const ctx = this.ctx;
@@ -361,6 +426,14 @@ class Interceptor extends Character {
     }
 
     destroy() {
+        // Clean up all trail particles
+        this.trails.forEach(trail => {
+            if (trail.parentNode) {
+                trail.parentNode.removeChild(trail);
+            }
+        });
+        this.trails = [];
+        
         // Remove from gameObjects array
         const index = this.gameEnv.gameObjects.indexOf(this);
         if (index > -1) {
