@@ -210,17 +210,17 @@ class GameLevelFortress {
             SCALE_FACTOR: TARGET_NPC_SCALE_FACTOR,
             ANIMATION_RATE: 30, // Slower animation for static sprite
             pixels: { width: 234, height: 432 }, // Large single sprite image
-            INIT_POSITION: { x: 0.1 * width, y: 0.1 * height }, // Right side positioning
+            INIT_POSITION: { x: Math.random() * width, y: 0.1 * height }, // Right side positioning
             orientation: { rows: 4, columns: 3 }, // Multiple frames for animation
             down: { row: 0, start: 0, columns: 3 }, // Animation state
             hitbox: { widthPercentage: 0.2, heightPercentage: 0.5 }, // Tall narrow hitbox
             dialogues: [],
 
-            reaction: function() {
+            reaction: function () {
                 // No reaction needed for target NPC
             },
 
-            interact: function() {
+            interact: function () {
                 try { showEndScreen(this.gameEnv, '/images/castleGame/castleGameEndScreen.png'); } catch (e) { console.warn('Error showing end screen:', e); }
             }
         };
@@ -259,13 +259,13 @@ class GameLevelFortress {
          */
         // Start spawning scythes - initializes projectile spawning system
         this.startScytheSpawning();
-        
+
         // Set up Space key event listener for interceptor firing
         this.setupInterceptorControls();
-        
+
         // Replace NPC's dialogueSystem with our custom version (after objects are created)
         setTimeout(() => {
-            const npcs = this.gameEnv.gameObjects.filter(obj => 
+            const npcs = this.gameEnv.gameObjects.filter(obj =>
                 obj.constructor.name === 'Npc'
             );
             npcs.forEach((npc, index) => {
@@ -323,10 +323,10 @@ class GameLevelFortress {
         // Bind the fireInterceptor method to maintain context
         this.boundFireInterceptor = this.fireInterceptor.bind(this);
         this.boundFireInterceptorTouch = this.fireInterceptorTouch.bind(this);
-        
+
         // Add keyboard event listener
         document.addEventListener('keydown', this.boundFireInterceptor);
-        
+
         // Add touch event listener for mobile devices
         document.addEventListener('touchstart', this.boundFireInterceptorTouch, { passive: false });
         document.addEventListener('click', this.boundFireInterceptorTouch); // Also handle mouse clicks for consistency
@@ -340,29 +340,29 @@ class GameLevelFortress {
      */
     fireInterceptor(event) {
         // Check if Space key (keyCode 32) or I key (keyCode 73) was pressed
-        if ((event.code === 'Space' || event.keyCode === 32) || 
+        if ((event.code === 'Space' || event.keyCode === 32) ||
             (event.code === 'KeyI' || event.keyCode === 73)) {
             event.preventDefault(); // Prevent default key behavior
-            
+
             // Find the player object
-            const players = this.gameEnv.gameObjects.filter(obj => 
+            const players = this.gameEnv.gameObjects.filter(obj =>
                 obj.constructor.name === 'Player'
             );
-            
+
             if (players.length === 0) {
                 console.warn('No player found for interceptor firing');
                 return;
             }
-            
+
             const player = players[0];
-            
+
             // Calculate spawn position (center of player, slightly above)
             const spawnX = player.position.x + player.width / 2 - 20; // Center interceptor on player
             const spawnY = player.position.y - 20; // Spawn slightly above player
-            
+
             // Create new interceptor
             const interceptor = new Interceptor(this.gameEnv, spawnX, spawnY);
-            
+
             // Add to game objects and container
             this.gameEnv.gameObjects.push(interceptor);
             this.gameEnv.container.appendChild(interceptor.canvas);
@@ -377,26 +377,26 @@ class GameLevelFortress {
      */
     fireInterceptorTouch(event) {
         event.preventDefault(); // Prevent default touch/click behavior
-        
+
         // Find the player object
-        const players = this.gameEnv.gameObjects.filter(obj => 
+        const players = this.gameEnv.gameObjects.filter(obj =>
             obj.constructor.name === 'Player'
         );
-        
+
         if (players.length === 0) {
             console.warn('No player found for interceptor firing');
             return;
         }
-        
+
         const player = players[0];
-        
+
         // Calculate spawn position (center of player, slightly above)
         const spawnX = player.position.x + player.width / 2 - 20; // Center interceptor on player
         const spawnY = player.position.y - 20; // Spawn slightly above player
-        
+
         // Create new interceptor
         const interceptor = new Interceptor(this.gameEnv, spawnX, spawnY);
-        
+
         // Add to game objects and container
         this.gameEnv.gameObjects.push(interceptor);
         this.gameEnv.container.appendChild(interceptor.canvas);
@@ -437,7 +437,7 @@ class GameLevelFortress {
         if (this.boundFireInterceptor) {
             document.removeEventListener('keydown', this.boundFireInterceptor);
         }
-        
+
         // Remove touch and click event listeners
         if (this.boundFireInterceptorTouch) {
             document.removeEventListener('touchstart', this.boundFireInterceptorTouch);
