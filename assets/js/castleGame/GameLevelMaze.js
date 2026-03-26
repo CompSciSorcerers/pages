@@ -70,16 +70,18 @@ class GameLevelMaze {
 
         };
         
-        const npcData1 = {
-            id: 'hey',
+        const mortyData = {
+            id: 'morty',
             greeting: 'Hey there!',
-            src: path + "/images/gamify/morty.jpg",
+            src: path + "/images/castleGame/morty.png",
             SCALE_FACTOR: 13,
             INIT_POSITION: { 
                 x: 250 / 1911 * width, 
                 y: 760 / 851 * height
             },
-            pixels: { height: 512, width: 384 },
+            orientation: {rows: 1, columns: 1},
+            down: {row: 0, start: 0, columns: 1},
+            pixels: { height: 895, width: 577 },
             hitbox: { widthPercentage: 0.1, heightPercentage: 0.2 },
             dialogues: ["a"],
             reaction: function() { console.log('test (reaction)'); },
@@ -258,12 +260,12 @@ class GameLevelMaze {
         };
 
 
-        const sprite_src_villager = path + "/images/castleGame/invisDoorCollisionSprite.png";
-        const sprite_greet_villager = "Start the game? Press E";
-        const sprite_data_villager = {
+        const sprite_src_invis = path + "/images/castleGame/invisDoorCollisionSprite.png";
+        const sprite_greet_invis = "Start the game? Press E";
+        const sprite_data_invis = {
             id: 'Villager',
-            greeting: sprite_greet_villager,
-            src: sprite_src_villager,
+            greeting: sprite_greet_invis,
+            src: sprite_src_invis,
             SCALE_FACTOR: 9,
             ANIMATION_RATE: 100,
             pixels: {width: 70, height: 90},
@@ -338,8 +340,8 @@ class GameLevelMaze {
         this.classes = [      
             { class: GameEnvBackground, data: bgData },
             { class: Player, data: sprite_data_mc },
-            { class: Npc, data: npcData1 },
-            { class : Npc, data: sprite_data_villager},
+            { class: Npc, data: mortyData },
+            { class : Npc, data: sprite_data_invis},
             { class: Barrier, data: dbarrier_1 },
             { class: Barrier, data: dbarrier_2 },
             { class: Barrier, data: dbarrier_3 },
