@@ -16,6 +16,7 @@ import Npc from '../GameEnginev1/essentials/Npc.js';
 import Barrier from '../GameEnginev1/essentials/Barrier.js';
 import showEndScreen from "./custom/EndScreen.js";
 import showDeathScreen from './custom/DeathScreen.js';
+import GameLevelFortress from './GameLevelFortress.js';
 
 
 class GameLevelMaze {
@@ -263,33 +264,108 @@ class GameLevelMaze {
         };
 
 
+        const sprite_src_villager = path + "/images/castleGame/invisDoorCollisionSprite.png";
+        const sprite_greet_villager = "Start the game? Press E";
+        const sprite_data_villager = {
+            id: 'Villager',
+            greeting: sprite_greet_villager,
+            src: sprite_src_villager,
+            SCALE_FACTOR: 9,
+            ANIMATION_RATE: 100,
+            pixels: {width: 70, height: 90},
+            INIT_POSITION: {x: 0.88 * width, y: 0.05 * height},
+            orientation: {rows: 1, columns: 1},
+            down: {row: 0, start: 0, columns: 1},
+            hitbox: {widthPercentage: 0.1, heightPercentage: 0.2},
+            dialogues: [
+                "Are you ready to play some archery?"
+            ],
+            reaction: function() {
+                const gameControl = gameEnv.gameControl;
+                const fadeOverlay = document.createElement('div');
+                const fadeInMs = 700;
+                const fadeOutMs = 700;
+
+                Object.assign(fadeOverlay.style, {
+                    position: 'fixed',
+                    top: '0',
+                    left: '0',
+                    width: '100%',
+                    height: '100%',
+                    backgroundColor: '#000000',
+                    opacity: '0',
+                    zIndex: '10002',
+                    pointerEvents: 'none',
+                    transition: `opacity ${fadeInMs}ms ease-in-out`
+                });
+
+                try { document.body.appendChild(fadeOverlay); } catch (err) { console.warn('Could not append fade overlay:', err); }
+
+                const switchToFortressLevel = () => {
+                    try {
+                        gameControl._originalLevelClasses = gameControl.levelClasses;
+                        gameControl.levelClasses = [GameLevelFortress];
+                        gameControl.currentLevelIndex = 0;
+                        gameControl.isPaused = false;
+                        gameControl.transitionToLevel();
+                    } catch (err) {
+                        console.warn('Failed to transition to fortress level:', err);
+                    }
+                };
+
+                requestAnimationFrame(() => {
+                    fadeOverlay.style.opacity = '1';
+                });
+
+                setTimeout(() => {
+                    try { overlay.remove(); } catch (err) { /* ignore */ }
+
+                    switchToFortressLevel();
+
+                    setTimeout(() => {
+                        fadeOverlay.style.transition = `opacity ${fadeOutMs}ms ease-in-out`;
+                        fadeOverlay.style.opacity = '0';
+
+                        setTimeout(() => {
+                            try { fadeOverlay.remove(); } catch (err) { /* ignore */ }
+                        }, fadeOutMs + 100);
+                    }, 220);
+                }, fadeInMs + 30);
+            },
+            
+            // This is where the interactions for starting the game are handled
+            interact: function() {
+               // dont do anything
+            }
+        };
 
 
-        this.classes = [      { class: GameEnvBackground, data: bgData },
-      { class: Player, data: sprite_data_mc },
-      { class: Npc, data: npcData1 },
-      { class: Barrier, data: dbarrier_1 },
-      { class: Barrier, data: dbarrier_2 },
-      { class: Barrier, data: dbarrier_3 },
-      { class: Barrier, data: dbarrier_4 },
-      { class: Barrier, data: dbarrier_5 },
-      { class: Barrier, data: dbarrier_6 },
-      { class: Barrier, data: dbarrier_7 },
-      { class: Barrier, data: dbarrier_8 },
-      { class: Barrier, data: dbarrier_9 },
-      { class: Barrier, data: dbarrier_10 },
-      { class: Barrier, data: dbarrier_11 },
-      { class: Barrier, data: dbarrier_12 },
-      { class: Barrier, data: dbarrier_13 },
-      { class: Barrier, data: dbarrier_14 },
-      { class: Barrier, data: dbarrier_15 },
-      { class: Barrier, data: dbarrier_16 },
-      { class: Barrier, data: dbarrier_17 },
-      { class: Barrier, data: dbarrier_18 },
-      { class: Barrier, data: dbarrier_19 }
 
-
-    ];
+        this.classes = [      
+            { class: GameEnvBackground, data: bgData },
+            { class: Player, data: sprite_data_mc },
+            { class: Npc, data: npcData1 },
+            { class : Npc, data: sprite_data_villager},
+            { class: Barrier, data: dbarrier_1 },
+            { class: Barrier, data: dbarrier_2 },
+            { class: Barrier, data: dbarrier_3 },
+            { class: Barrier, data: dbarrier_4 },
+            { class: Barrier, data: dbarrier_5 },
+            { class: Barrier, data: dbarrier_6 },
+            { class: Barrier, data: dbarrier_7 },
+            { class: Barrier, data: dbarrier_8 },
+            { class: Barrier, data: dbarrier_9 },
+            { class: Barrier, data: dbarrier_10 },
+            { class: Barrier, data: dbarrier_11 },
+            { class: Barrier, data: dbarrier_12 },
+            { class: Barrier, data: dbarrier_13 },
+            { class: Barrier, data: dbarrier_14 },
+            { class: Barrier, data: dbarrier_15 },
+            { class: Barrier, data: dbarrier_16 },
+            { class: Barrier, data: dbarrier_17 },
+            { class: Barrier, data: dbarrier_18 },
+            { class: Barrier, data: dbarrier_19 }
+        ];
 
     }
 
