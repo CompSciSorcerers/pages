@@ -31,7 +31,7 @@ class GameLevelMaze {
             src: path + "/images/castleGame/dungeonMaze.png",
             pixels: { height: 772, width: 1134 }
         };
-const player = this.gameEnv.gameObjects.find(obj => obj.constructor.name === 'Player');
+// i removed the const player line here, apparently that was causing the issues
 
  const sprite_src_mc = path + "/images/castleGame/playerSpritesheet.png";
         const MC_SCALE_FACTOR = 13;
