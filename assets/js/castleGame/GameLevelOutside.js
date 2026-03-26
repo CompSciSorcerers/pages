@@ -7,9 +7,9 @@ import Enemy from '../GameEnginev1/essentials/Enemy.js';
 import GameLevelArchery from './GameLevelArchery.js';
 
 /**
- * GameLevelArchery
+ * GameLevelOutside
  * 
- * Defines the configuration for the Archery mini-game level.
+ * Defines the configuration for the Outside mini-game level.
  * This class constructs the objects that will exist in the level,
  * including the background, player, NPC, barrier, and moving target.
  * 
@@ -18,8 +18,16 @@ import GameLevelArchery from './GameLevelArchery.js';
  */
 class GameLevelOutside {
 
+
     /**
-     * Creates a new Archery level configuration.
+     * Friendly name of the game level
+     * @static
+     * @type {string}
+     */
+    static friendlyName = "Level 1: Castle Grounds";
+
+    /**
+     * Creates a new Outside level configuration.
      *
      * @param {GameEnvironment} gameEnv - The main game env object
      */

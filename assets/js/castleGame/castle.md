@@ -19,7 +19,7 @@ permalink: /gamify/castle
     import GameLevelFortress from "{{site.baseurl}}/assets/js/castleGame/GameLevelFortress.js"; 
     import { pythonURI, javaURI, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js';
 
-    const gameLevelClasses = [GameLevelOutside, GameLevelArchery, GameLevelFortress, GameLevelMaze];
+    const gameLevelClasses = [GameLevelOutside, GameLevelArchery, GameLevelMaze, GameLevelFortress];
 
     // Web Server Environment datas
     const environment = {

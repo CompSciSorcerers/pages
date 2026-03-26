@@ -18,6 +18,14 @@ import Enemy from '../GameEnginev1/essentials/Enemy.js';
 class GameLevelArchery {
 
     /**
+     * Friendly name of the game level
+     * @static
+     * @type {string}
+     */
+    static friendlyName = "Level 2: Archery";
+
+
+    /**
      * Creates a new Archery level configuration.
      *
      * @param {GameEnvironment} gameEnv - The main game env object
