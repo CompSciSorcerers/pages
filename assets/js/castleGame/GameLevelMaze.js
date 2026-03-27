@@ -13,7 +13,7 @@
 import GameEnvBackground from '../GameEnginev1/essentials/GameEnvBackground.js';
 import Player from '../GameEnginev1/essentials/Player.js';
 import Npc from '../GameEnginev1/essentials/Npc.js';
-import Barrier from '../GameEnginev1/essentials/Barrier.js';
+import DeathBarrier from './custom/DeathBarrier.js';
 import showEndScreen from "./custom/EndScreen.js";
 import showDeathScreen from './custom/DeathScreen.js';
 import GameLevelFortress from './GameLevelFortress.js';
@@ -36,10 +36,8 @@ class GameLevelMaze {
             pixels: { height: 772, width: 1134 }
         };
 
-// const player = this.gameEnv.gameObjects.find(obj => obj.constructor.name === 'Player');
-
         const sprite_src_mc = path + "/images/castleGame/playerSpritesheet.png";
-        const MC_SCALE_FACTOR = 13;
+        const MC_SCALE_FACTOR = 20;
         const sprite_data_mc = {
             id: 'Knight',
             greeting: "Hi, I am a Knight.",
@@ -48,7 +46,7 @@ class GameLevelMaze {
             STEP_FACTOR: 1750,
             ANIMATION_RATE: 100,
             INIT_POSITION: { 
-                x: 92 / 1911 * width, 
+                x: 202 / 1911 * width, 
                 y: 760 / 851 * height
             },
             pixels: {height: 432, width: 234},
@@ -62,15 +60,7 @@ class GameLevelMaze {
             upLeft: {row: 1, start: 0, columns: 3, rotate: Math.PI/16},
             upRight: {row: 2, start: 0, columns: 3, rotate: -Math.PI/16},
             hitbox: {widthPercentage: 0.1, heightPercentage: 0.15},
-            keypress: {up: 87, left: 65, down: 83, right: 68}, // W, A, S, D
-            update: function() {
-                // for (let i = 0; i < this.gameEnv.gameObjects.length; i++) {
-                // if (this.collisionDetected === true)
-                // {
-                // const player = this.gameEnv.gameObjects.find(obj => obj.constructor.name === 'Player');
-                // showDeathScreen(player, "intelligence has tried to catch up to you, but you were always faster");
-                // console.log("im a big boy");
-            }
+            keypress: {up: 87, left: 65, down: 83, right: 68} // W, A, S, D
 
         };
         
@@ -345,26 +335,26 @@ class GameLevelMaze {
             { class: GameEnvBackground, data: bgData },
             { class: Player, data: sprite_data_mc },
             { class: Npc, data: mortyData },
-            { class : Npc, data: sprite_data_invis},
-            { class: Barrier, data: dbarrier_1 },
-            { class: Barrier, data: dbarrier_2 },
-            { class: Barrier, data: dbarrier_3 },
-            { class: Barrier, data: dbarrier_4 },
-            { class: Barrier, data: dbarrier_5 },
-            { class: Barrier, data: dbarrier_6 },
-            { class: Barrier, data: dbarrier_7 },
-            { class: Barrier, data: dbarrier_8 },
-            { class: Barrier, data: dbarrier_9 },
-            { class: Barrier, data: dbarrier_10 },
-            { class: Barrier, data: dbarrier_11 },
-            { class: Barrier, data: dbarrier_12 },
-            { class: Barrier, data: dbarrier_13 },
-            { class: Barrier, data: dbarrier_14 },
-            { class: Barrier, data: dbarrier_15 },
-            { class: Barrier, data: dbarrier_16 },
-            { class: Barrier, data: dbarrier_17 },
-            { class: Barrier, data: dbarrier_18 },
-            { class: Barrier, data: dbarrier_19 }
+            { class: Npc, data: sprite_data_invis},
+            { class: DeathBarrier, data: dbarrier_1 },
+            { class: DeathBarrier, data: dbarrier_2 },
+            { class: DeathBarrier, data: dbarrier_3 },
+            { class: DeathBarrier, data: dbarrier_4 },
+            { class: DeathBarrier, data: dbarrier_5 },
+            { class: DeathBarrier, data: dbarrier_6 },
+            { class: DeathBarrier, data: dbarrier_7 },
+            { class: DeathBarrier, data: dbarrier_8 },
+            { class: DeathBarrier, data: dbarrier_9 },
+            { class: DeathBarrier, data: dbarrier_10 },
+            { class: DeathBarrier, data: dbarrier_11 },
+            { class: DeathBarrier, data: dbarrier_12 },
+            { class: DeathBarrier, data: dbarrier_13 },
+            { class: DeathBarrier, data: dbarrier_14 },
+            { class: DeathBarrier, data: dbarrier_15 },
+            { class: DeathBarrier, data: dbarrier_16 },
+            { class: DeathBarrier, data: dbarrier_17 },
+            { class: DeathBarrier, data: dbarrier_18 },
+            { class: DeathBarrier, data: dbarrier_19 }
         ];
 
     }
