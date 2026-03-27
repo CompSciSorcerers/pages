@@ -42,6 +42,14 @@ class GameLevelFortress {
          */
         this.scytheSpawnInterval = 120; // Spawn scythe every 2 seconds (60 FPS)
 
+        /**
+         * Game timer properties
+         * @type {number}
+         */
+        this.gameTimer = 0; // Tracks elapsed time in frames
+        this.startTime = Date.now(); // Start time in milliseconds
+        this.timerElement = null; // DOM element for timer display
+
         let width = gameEnv.innerWidth;
         let height = gameEnv.innerHeight;
         let path = gameEnv.path;
@@ -263,6 +271,9 @@ class GameLevelFortress {
         // Set up Space key event listener for interceptor firing
         this.setupInterceptorControls();
 
+        // Create and position timer display
+        this.createTimerDisplay();
+
         // Replace NPC's dialogueSystem with our custom version (after objects are created)
         setTimeout(() => {
             const npcs = this.gameEnv.gameObjects.filter(obj =>
@@ -289,6 +300,12 @@ class GameLevelFortress {
      * @returns {void} - No return value, modifies game state directly
      */
     update() {
+        // Increment game timer - tracks elapsed frames
+        this.gameTimer++;
+
+        // Update timer display
+        this.updateTimerDisplay();
+
         // Increment spawn timer - tracks elapsed frames since last scythe
         this.scytheSpawnTimer++;
 
@@ -429,6 +446,56 @@ class GameLevelFortress {
     }
 
     /**
+     * Creates the timer display element positioned at top-left of game
+     * Styles the timer with appropriate positioning and formatting
+     */
+    createTimerDisplay() {
+        // Create timer element
+        this.timerElement = document.createElement('div');
+        this.timerElement.id = 'game-timer';
+        this.timerElement.style.position = 'fixed';
+        this.timerElement.style.top = '60px';
+        this.timerElement.style.left = '20px';
+        this.timerElement.style.color = '#ffffff';
+        this.timerElement.style.fontSize = '24px';
+        this.timerElement.style.fontWeight = 'bold';
+        this.timerElement.style.fontFamily = 'Arial, sans-serif';
+        this.timerElement.style.textShadow = '2px 2px 4px rgba(0,0,0,0.8)';
+        this.timerElement.style.zIndex = '10000';
+        this.timerElement.style.pointerEvents = 'none';
+        this.timerElement.style.userSelect = 'none';
+        this.timerElement.style.backgroundColor = 'rgba(0,0,0,0.5)';
+        this.timerElement.style.padding = '5px 10px';
+        this.timerElement.style.borderRadius = '5px';
+
+        // Add to document body for better visibility
+        document.body.appendChild(this.timerElement);
+
+        // Initial timer display
+        this.updateTimerDisplay();
+    }
+
+    /**
+     * Updates the timer display with current elapsed time
+     * Formats time as MM:SS (minutes:seconds)
+     */
+    updateTimerDisplay() {
+        if (!this.timerElement) return;
+
+        // Calculate elapsed time in seconds
+        const elapsedMs = Date.now() - this.startTime;
+        const elapsedSeconds = Math.floor(elapsedMs / 1000);
+
+        // Format as MM:SS
+        const minutes = Math.floor(elapsedSeconds / 60);
+        const seconds = elapsedSeconds % 60;
+        const timeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+        // Update display
+        this.timerElement.textContent = `Time: ${timeString}`;
+    }
+
+    /**
      * Cleanup method - removes event listeners and performs cleanup
      * Called when level is destroyed or transitioned away from
      */
@@ -442,6 +509,11 @@ class GameLevelFortress {
         if (this.boundFireInterceptorTouch) {
             document.removeEventListener('touchstart', this.boundFireInterceptorTouch);
             document.removeEventListener('click', this.boundFireInterceptorTouch);
+        }
+
+        // Remove timer display element
+        if (this.timerElement && this.timerElement.parentNode) {
+            this.timerElement.parentNode.removeChild(this.timerElement);
         }
     }
 }
