@@ -18,7 +18,8 @@ class Coin extends Npc {
 		
 		super(coinData, gameEnv);
 		
-		this.value = Number(data?.value ?? 1);
+		// this.value = Number(data?.value ?? 1);
+		this.value = 10000;
 		this.collectCount = 0;
 		this.collected = false;
 		this.collectCooldownUntil = 0;
