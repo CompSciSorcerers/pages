@@ -1,9 +1,9 @@
 
-import GameEnvBackground  from '../GameEnginev1/essentials/GameEnvBackground.js';
-import Player from '../GameEnginev1/essentials/Player.js';
-import Npc  from '../GameEnginev1/essentials/Npc.js';
-import Barrier from '../GameEnginev1/essentials/Barrier.js';
-import Enemy from '../GameEnginev1/essentials/Enemy.js';
+import GameEnvBackground  from '../GameEnginev1.1/essentials/GameEnvBackground.js';
+import Player from '../GameEnginev1.1/essentials/Player.js';
+import Npc  from '../GameEnginev1.1/essentials/Npc.js';
+import Barrier from '../GameEnginev1.1/essentials/Barrier.js';
+import Enemy from '../GameEnginev1.1/essentials/Enemy.js';
 import GameLevelArchery from './GameLevelArchery.js';
 
 /**

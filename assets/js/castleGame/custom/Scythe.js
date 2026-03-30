@@ -1,5 +1,5 @@
-import Enemy from '../../GameEnginev1/essentials/Enemy.js';
-import Player from '../../GameEnginev1/essentials/Player.js';
+import Enemy from '../../GameEnginev1.1/essentials/Enemy.js';
+import Player from '../../GameEnginev1.1/essentials/Player.js';
 import showDeathScreen from './DeathScreen.js';
 
 class Scythe extends Enemy {

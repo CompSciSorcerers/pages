@@ -12,7 +12,8 @@ permalink: /gamify/castle
 <script type="module">
 
     // Adventure Game assets locations
-    import Game from "{{site.baseurl}}/assets/js/GameEnginev1/essentials/Game.js";
+    import Game from "{{site.baseurl}}/assets/js/GameEnginev1.1/essentials/Game.js";
+    import GameControl from "{{site.baseurl}}/assets/js/GameEnginev1.1/essentials/GameControl.js";
     import GameLevelOutside from "{{site.baseurl}}/assets/js/castleGame/GameLevelOutside.js";
     import GameLevelMaze from "{{site.baseurl}}/assets/js/castleGame/GameLevelMaze.js";
     import GameLevelArchery from "{{site.baseurl}}/assets/js/castleGame/GameLevelArchery.js";
