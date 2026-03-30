@@ -2,6 +2,7 @@
 import GameEnvBackground  from '../GameEnginev1.1/essentials/GameEnvBackground.js';
 import Player from '../GameEnginev1.1/essentials/Player.js';
 import Npc  from '../GameEnginev1.1/essentials/Npc.js';
+import AiNpc  from '../GameEnginev1.1/essentials/AiNpc.js';
 import Barrier from '../GameEnginev1.1/essentials/Barrier.js';
 import Enemy from '../GameEnginev1.1/essentials/Enemy.js';
 import GameLevelArchery from './GameLevelArchery.js';
@@ -77,6 +78,78 @@ class GameLevelOutside {
             keypress: {up: 87, left: 65, down: 83, right: 68}, // W, A, S, D
         };
     
+
+        const sir_morty = path + "/images/castleGame/mortyKnight.png";
+        const sir_morty_greeting = "Hello! I'm Sir Morty!";
+        const sir_morty_data = {
+        id: "Sir Morty",
+        greeting: sir_morty_greeting,
+        src: sir_morty,
+        SCALE_FACTOR: 7,
+        ANIMATION_RATE: 10,
+        pixels: { height: 864, width: 468 },
+        INIT_POSITION: { x: width * 0.57, y: height * 0.5 },
+        orientation: { rows: 4, columns: 3 },
+        // LOCK: use ONLY the 4th row (index 3) for every direction/state
+        down:      { row: 0, start: 0, columns: 3 },
+        hitbox: { widthPercentage: 0.2, heightPercentage: 0.2 },
+        // AI-specific properties (required for AiNpc utility)
+        expertise: "default",              // Topic area for backend
+        chatHistory: [],                   // Conversation memory
+        dialogues: [                       // Random greetings
+            "Enter the castle if you dare!",
+            "The Dark Knight awaits inside.",
+            "I heard there's a treasure in the castle.",
+            "Beware of the traps in the castle!",
+            "The castle has stood for centuries."
+        ],
+        knowledgeBase: {                   // Context hints for AI
+            default: [
+                {
+                    question: "What is inside the castle?",
+                    answer: "Inside the castle lays a prisoner who has been locked away for years. The Dark Knight guards the castle and challenges anyone who dares to enter with an archery test, a maze, and a showdown inside the fortress."
+                },
+                {
+                    question: "Who are you?",
+                    answer: "I am Sir Morty, a brave knight of the castle. Enter or recieve a .55! Code code code!"
+                },
+                {
+                    question: "How do I win the game?",
+                    answer: "To win the game, you need to successfully navigate through the castle grounds, complete the archery challenge, solve the maze, and defeat the Dark Knight in the fortress. Only then will you be able to free the prisoner and claim victory!"
+                },
+                {
+                    question: "Any tips for the archery challenge?",
+                    answer: "In the archery challenge, timing and precision are key. Pay attention to the movement patterns of the targets and try to anticipate their next move. Practice your aim and don't be afraid to take a few shots to get a feel for the mechanics. Good luck!"
+                },
+                {
+                    question: "What can you tell me about the Dark Knight?",
+                    answer: "The Dark Knight is a formidable opponent who guards the castle's inner sanctum. He is known for his archery skills and strategic mind. To defeat him, you'll need to be quick on your feet and have a solid strategy. Study his movements and look for openings to strike. Stay determined and you might just come out victorious!"
+                },
+                {
+                    question: "Can you give me a hint for the maze?",
+                    answer: "The maze can be tricky, but keep an eye out for subtle visual cues that might indicate the correct path. Sometimes the walls themselves can give you hints, like cracks or moss. Take your time and don't rush through it. If you get lost, try retracing your steps and look for patterns in the layout. You can do it!"
+                },
+                {
+                    question: "Is there anything else I should know about the castle?",
+                    answer: "The castle is full of secrets and hidden passages. Explore every nook and cranny, and you might find something that gives you an edge in your quest. Also, remember that the castle has a rich history, and learning about it might provide insights into how to navigate its challenges. Stay curious and keep exploring!"
+                }
+            ]
+        },
+        // Orchestrator: Handle collision/proximity reactions
+        reaction: function() {
+            if (this.dialogueSystem) {
+                this.showReactionDialogue();
+            } else {
+                console.log(network_wizard_greeting);
+            }
+        },
+        // Orchestrator: Handle player interaction (E key press)
+        interact: function() {
+            // Delegate to AiNpc utility for full AI conversation interface
+            AiNpc.showInteraction(this);
+        }
+        };
+
 
         /**
          * DarkKnight NPC configuration:
@@ -343,6 +416,7 @@ class GameLevelOutside {
             {class: GameEnvBackground, data: image_data_floor},
             {class: Player, data: sprite_data_mc},
             {class: Npc, data: sprite_data_darkKnight},
+            {class: AiNpc, data: sir_morty_data}
         ];
     }
 }
