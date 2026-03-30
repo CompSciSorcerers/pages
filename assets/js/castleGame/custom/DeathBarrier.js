@@ -5,6 +5,10 @@ class DeathBarrier extends Barrier {
     constructor(data, gameEnv) {
         super(data, gameEnv);
         this._hasTriggeredDeath = false;
+        // Store the level start time - all barriers share this for grace period
+        if (!DeathBarrier.levelStartTime) {
+            DeathBarrier.levelStartTime = new Date();
+        }
     }
 
     update() {
@@ -18,19 +22,32 @@ class DeathBarrier extends Barrier {
         this.isCollision(player);
 
         if (this.collisionData?.hit) {
+            // Check grace period from level start time
+            const timeSinceLevelStart = new Date() - DeathBarrier.levelStartTime;
+            if (timeSinceLevelStart < 500) {
+                console.log('[MazeDebug] Grace period active:', timeSinceLevelStart, 'ms');
+                return;
+            }
+
             this._hasTriggeredDeath = true;
             player.isDead = true;
 
             console.log('[MazeDebug] DeathBarrier hit player:', this.canvas?.id || this.id || 'unknown');
+            console.log('[MazeDebug] Player Position:', player.x, player.y);
 
             try {
-                // showDeathScreen(player, 'You got lost in the maze.');
+                showDeathScreen(player, 'You got lost in the maze.');
             } catch (error) {
                 console.error('DeathBarrier failed to show death screen:', error);
                 this._hasTriggeredDeath = false;
                 player.isDead = false;
             }
         }
+    }
+
+    // Reset level start time when level restarts
+    static resetLevelStartTime() {
+        DeathBarrier.levelStartTime = new Date();
     }
 }
 

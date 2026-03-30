@@ -18,12 +18,14 @@ import showEndScreen from "./custom/EndScreen.js";
 import showDeathScreen from './custom/DeathScreen.js';
 import GameLevelFortress from './GameLevelFortress.js';
 
-
 class GameLevelMaze {
 
     static friendlyName = "Level 3: The Maze";
 
     constructor(gameEnv) {
+        // Reset grace period when level starts
+        DeathBarrier.resetLevelStartTime();
+        
         const path = gameEnv.path;
         const width = gameEnv.innerWidth;
         const height = gameEnv.innerHeight;
