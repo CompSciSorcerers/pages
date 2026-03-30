@@ -236,6 +236,11 @@ class Interceptor extends Character {
             // Successful interception - destroy the scythe
             this.createInterceptionEffect();
             scythe.destroy();
+            
+            // Notify the game level about successful interception for scoring
+            if (this.gameEnv && this.gameEnv.gameControl && this.gameEnv.gameControl.currentLevel && this.gameEnv.gameControl.currentLevel.onScytheDestroyed) {
+                this.gameEnv.gameControl.currentLevel.onScytheDestroyed();
+            }
         } else {
             // Failed interception - just create a miss effect, don't destroy scythe
             this.createMissEffect();

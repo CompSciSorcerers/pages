@@ -6,6 +6,7 @@ import DialogueSystem from './custom/DialogueSystem.js';
 import Scythe from './custom/Scythe.js';
 import Interceptor from './custom/Interceptor.js';
 import showEndScreen from "./custom/EndScreen.js";
+import Leaderboard from "../GameEnginev1.1/essentials/Leaderboard.js";
 
 /**
  * Represents the Fortress game level with all game objects and systems
@@ -49,6 +50,17 @@ class GameLevelFortress {
         this.gameTimer = 0; // Tracks elapsed time in frames
         this.startTime = Date.now(); // Start time in milliseconds
         this.timerElement = null; // DOM element for timer display
+
+        /**
+         * Scoring system properties
+         * @type {Object}
+         */
+        this.scores = {
+            scythesDestroyed: 0,    // Track successful interceptions
+            survivalTime: 0,        // Track survival time in seconds
+            completionTime: 0       // Track time to complete level
+        };
+        this.levelCompleted = false; // Track if player reached target
 
         let width = gameEnv.innerWidth;
         let height = gameEnv.innerHeight;
@@ -229,7 +241,13 @@ class GameLevelFortress {
             },
 
             interact: function () {
-                try { showEndScreen(this.gameEnv, '/images/castleGame/castleGameEndScreen.png'); } catch (e) { console.warn('Error showing end screen:', e); }
+                try { 
+                    // Mark level as completed before showing end screen
+                    if (this.gameEnv && this.gameEnv.currentLevel && this.gameEnv.currentLevel.onLevelCompleted) {
+                        this.gameEnv.currentLevel.onLevelCompleted();
+                    }
+                    showEndScreen(this.gameEnv, '/images/castleGame/castleGameEndScreen.png'); 
+                } catch (e) { console.warn('Error showing end screen:', e); }
             }
         };
 
@@ -274,6 +292,19 @@ class GameLevelFortress {
         // Create and position timer display
         this.createTimerDisplay();
 
+        // Initialize scoring system
+        this.initializeScoring();
+
+        // Initialize leaderboard
+        this.initializeLeaderboard();
+
+        // Initialize score manager for leaderboard integration
+        this.gameEnv.initScoreManager().then(() => {
+            console.log('Score manager initialized successfully');
+        }).catch(error => {
+            console.warn('Failed to initialize score manager:', error);
+        });
+
         // Replace NPC's dialogueSystem with our custom version (after objects are created)
         setTimeout(() => {
             const npcs = this.gameEnv.gameObjects.filter(obj =>
@@ -285,6 +316,85 @@ class GameLevelFortress {
                 }
             });
         }, 100);
+    }
+
+    /**
+     * Initialize the scoring system for the level
+     * Sets up GameEnv score configuration and stats tracking
+     */
+    initializeScoring() {
+        // Configure score tracking in GameEnv
+        this.gameEnv.scoreConfig = {
+            counterVar: 'scythesDestroyed',      // Primary scoring metric
+            counterLabel: 'Scythes Destroyed',   // Display label
+            scoreVar: 'finalScore'               // Backend score variable
+        };
+
+        // Initialize stats object if it doesn't exist
+        if (!this.gameEnv.stats) {
+            this.gameEnv.stats = {};
+        }
+
+        // Set initial scores
+        this.gameEnv.stats.scythesDestroyed = 0;
+        this.gameEnv.stats.survivalTime = 0;
+        this.gameEnv.stats.finalScore = 0;
+        this.gameEnv.stats.gameName = 'FortressGame';
+    }
+
+    /**
+     * Initialize the leaderboard widget
+     * Creates a collapsible leaderboard with game-specific configuration
+     */
+    initializeLeaderboard() {
+        // Create leaderboard instance with game-specific options
+        this.leaderboard = new Leaderboard(this.gameEnv.gameControl, {
+            gameName: 'FortressGame',
+            initiallyHidden: false,  // Show leaderboard by default
+            parentId: 'game-container' // Mount inside game container if available
+        });
+    }
+
+    /**
+     * Update scoring when a scythe is destroyed
+     * Called by Interceptor objects when they destroy a scythe
+     */
+    onScytheDestroyed() {
+        this.scores.scythesDestroyed++;
+        this.gameEnv.stats.scythesDestroyed = this.scores.scythesDestroyed;
+        
+        // Calculate final score based on performance
+        this.updateFinalScore();
+    }
+
+    /**
+     * Calculate and update the final score
+     * Combines all scoring metrics into a single score
+     */
+    updateFinalScore() {
+        const survivalBonus = Math.floor((Date.now() - this.startTime) / 1000); // Seconds survived
+        const destructionScore = this.scores.scythesDestroyed * 100; // 100 points per scythe
+        const completionBonus = this.levelCompleted ? 500 : 0; // 500 points for completion
+        
+        this.scores.survivalTime = survivalBonus;
+        this.gameEnv.stats.survivalTime = survivalBonus;
+        
+        const finalScore = destructionScore + survivalBonus + completionBonus;
+        this.gameEnv.stats.finalScore = finalScore;
+    }
+
+    /**
+     * Mark level as completed and calculate final score
+     * Called when player reaches the target NPC
+     */
+    onLevelCompleted() {
+        if (!this.levelCompleted) {
+            this.levelCompleted = true;
+            this.scores.completionTime = Math.floor((Date.now() - this.startTime) / 1000);
+            this.updateFinalScore();
+            
+            console.log('Level completed! Final scores:', this.scores);
+        }
     }
 
     /**
@@ -514,6 +624,16 @@ class GameLevelFortress {
         // Remove timer display element
         if (this.timerElement && this.timerElement.parentNode) {
             this.timerElement.parentNode.removeChild(this.timerElement);
+        }
+
+        // Clean up leaderboard
+        if (this.leaderboard) {
+            this.leaderboard.destroy();
+        }
+
+        // Clean up score manager
+        if (this.gameEnv.scoreManager) {
+            this.gameEnv.scoreManager.destroy();
         }
     }
 }
