@@ -416,7 +416,7 @@ class GameLevelOutside {
             {class: GameEnvBackground, data: image_data_floor},
             {class: Player, data: sprite_data_mc},
             {class: Npc, data: sprite_data_darkKnight},
-            {class: AiNpc, data: sir_morty_data}
+            {class: Npc, data: sir_morty_data}
         ];
     }
 }
