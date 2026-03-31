@@ -32,6 +32,11 @@ class GameLevelFortress {
          * @type {Object}
          */
         this.gameEnv = gameEnv;
+        
+        // Store reference to this level instance globally for interceptor access
+        if (typeof window !== 'undefined') {
+            window.currentGameLevel = this;
+        }
         /**
          * Timer for scythe spawning - increments each frame
          * @type {number}

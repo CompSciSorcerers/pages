@@ -238,8 +238,19 @@ class Interceptor extends Character {
             scythe.destroy();
             
             // Notify the game level about successful interception for scoring
-            if (this.gameEnv && this.gameEnv.gameControl && this.gameEnv.gameControl.currentLevel && this.gameEnv.gameControl.currentLevel.onScytheDestroyed) {
-                this.gameEnv.gameControl.currentLevel.onScytheDestroyed();
+            if (typeof window !== 'undefined' && window.currentGameLevel && window.currentGameLevel.onScytheDestroyed) {
+                window.currentGameLevel.onScytheDestroyed();
+            } else if (this.gameEnv && this.gameEnv.gameControl) {
+                // Fallback: Try multiple paths to find the level
+                const level = this.gameEnv.gameControl.currentLevel || 
+                           this.gameEnv.currentLevel || 
+                           this.gameEnv.gameControl.game?.currentLevel;
+                
+                if (level && level.onScytheDestroyed) {
+                    level.onScytheDestroyed();
+                } else {
+                    console.warn('Could not find level with onScytheDestroyed method');
+                }
             }
         } else {
             // Failed interception - just create a miss effect, don't destroy scythe
