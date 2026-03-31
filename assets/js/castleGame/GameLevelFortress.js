@@ -4,6 +4,7 @@ import Npc from '../GameEnginev1.1/essentials/Npc.js';
 import Barrier from '../GameEnginev1.1/essentials/Barrier.js';
 import DialogueSystem from './custom/DialogueSystem.js';
 import Scythe from './custom/Scythe.js';
+import SpecialScythe from './custom/SpecialScythe.js';
 import Interceptor from './custom/Interceptor.js';
 import showEndScreen from "./custom/EndScreen.js";
 import Leaderboard from "../GameEnginev1.1/essentials/Leaderboard.js";
@@ -47,6 +48,17 @@ class GameLevelFortress {
          * @type {number}
          */
         this.scytheSpawnInterval = 120; // Spawn scythe every 2 seconds (60 FPS)
+
+        /**
+         * Timer for special scythe spawning - increments each frame
+         * @type {number}
+         */
+        this.specialScytheSpawnTimer = 0;
+        /**
+         * Interval for special scythe spawning (600 frames = 10 seconds at 60 FPS)
+         * @type {number}
+         */
+        this.specialScytheSpawnInterval = 600; // Spawn special scythe every 10 seconds
 
         /**
          * Game timer properties
@@ -471,6 +483,15 @@ class GameLevelFortress {
             }
             this.scytheSpawnTimer = 0; // Reset timer for next cycle
         }
+
+        // Increment special scythe spawn timer
+        this.specialScytheSpawnTimer++;
+
+        // Check special scythe spawn condition
+        if (this.specialScytheSpawnTimer >= this.specialScytheSpawnInterval) {
+            this.spawnSpecialScythe(); // Spawn special scythe
+            this.specialScytheSpawnTimer = 0; // Reset timer for next cycle
+        }
     }
 
     /**
@@ -596,6 +617,22 @@ class GameLevelFortress {
 
         // Add to visual container - enables rendering in game viewport
         this.gameEnv.container.appendChild(scythe.canvas);
+    }
+
+    /**
+     * Special scythe spawning - creates new special scythe objects in game world
+     * Special scythes are bigger, uninterceptable, and bounce off screen edges
+     * 
+     * @returns {void} - Modifies game state by adding new special projectile
+     */
+    spawnSpecialScythe() {
+        const specialScythe = new SpecialScythe(this.gameEnv); // Create with environment context
+
+        // Add to active game objects - enables update/render cycle participation
+        this.gameEnv.gameObjects.push(specialScythe);
+
+        // Add to visual container - enables rendering in game viewport
+        this.gameEnv.container.appendChild(specialScythe.canvas);
     }
 
     /**
