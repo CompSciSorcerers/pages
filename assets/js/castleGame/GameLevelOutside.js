@@ -6,6 +6,7 @@ import AiNpc  from '../GameEnginev1.1/essentials/AiNpc.js';
 import Barrier from '../GameEnginev1.1/essentials/Barrier.js';
 import Enemy from '../GameEnginev1.1/essentials/Enemy.js';
 import GameLevelArchery from './GameLevelArchery.js';
+import Coin from '../GameEnginev1.1/Coin.js';
 
 /**
  * GameLevelOutside
@@ -140,7 +141,7 @@ class GameLevelOutside {
             if (this.dialogueSystem) {
                 this.showReactionDialogue();
             } else {
-                console.log(network_wizard_greeting);
+                console.log(sir_morty_greeting);
             }
         },
         // Orchestrator: Handle player interaction (E key press)
@@ -411,12 +412,25 @@ class GameLevelOutside {
             }
         };
 
+        const sprite_data_coin = {
+            id: 'coin',
+            greeting: false,
+            INIT_POSITION: { x: 0.6, y: 0.6 },  // 60% from left, 60% from top
+            width: 40,
+            height: 70,
+            color: '#FFD700',
+            hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
+            zIndex: 12,
+            value: 1
+        };
+
 
         this.classes = [
             {class: GameEnvBackground, data: image_data_floor},
             {class: Player, data: sprite_data_mc},
             {class: Npc, data: sprite_data_darkKnight},
-            {class: Npc, data: sir_morty_data}
+            {class: Npc, data: sir_morty_data},
+            {class: Coin, data: sprite_data_coin}
         ];
     }
 }
