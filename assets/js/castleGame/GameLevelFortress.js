@@ -301,6 +301,10 @@ class GameLevelFortress {
         // Initialize score manager for leaderboard integration
         this.gameEnv.initScoreManager().then(() => {
             console.log('Score manager initialized successfully');
+            // Show the score display in the leaderboard
+            if (this.gameEnv.scoreManager) {
+                this.gameEnv.scoreManager.toggleScoreDisplay();
+            }
         }).catch(error => {
             console.warn('Failed to initialize score manager:', error);
         });
@@ -325,9 +329,9 @@ class GameLevelFortress {
     initializeScoring() {
         // Configure score tracking in GameEnv
         this.gameEnv.scoreConfig = {
-            counterVar: 'scythesDestroyed',      // Primary scoring metric
-            counterLabel: 'Scythes Destroyed',   // Display label
-            scoreVar: 'finalScore'               // Backend score variable
+            counterVar: 'finalScore',           // Primary scoring metric (total score)
+            counterLabel: 'Score',              // Display label
+            scoreVar: 'finalScore'             // Backend score variable
         };
 
         // Initialize stats object if it doesn't exist
@@ -361,10 +365,13 @@ class GameLevelFortress {
      */
     onScytheDestroyed() {
         this.scores.scythesDestroyed++;
-        this.gameEnv.stats.scythesDestroyed = this.scores.scythesDestroyed;
         
-        // Calculate final score based on performance
-        this.updateFinalScore();
+        // Update all stats to prevent flickering
+        this.gameEnv.stats.scythesDestroyed = this.scores.scythesDestroyed;
+        this.gameEnv.stats.survivalTime = this.scores.survivalTime;
+        this.gameEnv.stats.finalScore = this.calculateCurrentScore();
+        
+        console.log('Scythe destroyed! New score:', this.gameEnv.stats.finalScore);
     }
 
     /**
@@ -373,14 +380,40 @@ class GameLevelFortress {
      */
     updateFinalScore() {
         const survivalBonus = Math.floor((Date.now() - this.startTime) / 1000); // Seconds survived
-        const destructionScore = this.scores.scythesDestroyed * 100; // 100 points per scythe
-        const completionBonus = this.levelCompleted ? 500 : 0; // 500 points for completion
-        
         this.scores.survivalTime = survivalBonus;
-        this.gameEnv.stats.survivalTime = survivalBonus;
         
-        const finalScore = destructionScore + survivalBonus + completionBonus;
-        this.gameEnv.stats.finalScore = finalScore;
+        // Update all stats to prevent flickering
+        this.gameEnv.stats.survivalTime = survivalBonus;
+        this.gameEnv.stats.scythesDestroyed = this.scores.scythesDestroyed;
+        this.gameEnv.stats.finalScore = this.calculateCurrentScore();
+    }
+
+    /**
+     * Update only the survival time component of the score
+     * Called periodically to update survival time without recalculating everything
+     */
+    updateSurvivalTime() {
+        const survivalBonus = Math.floor((Date.now() - this.startTime) / 1000);
+        this.scores.survivalTime = survivalBonus;
+        
+        // Update stats with all current values to prevent flickering
+        this.gameEnv.stats.survivalTime = survivalBonus;
+        this.gameEnv.stats.scythesDestroyed = this.scores.scythesDestroyed;
+        this.gameEnv.stats.finalScore = this.calculateCurrentScore();
+        
+        // Let the score manager's auto-sync handle the display update
+        // Don't manually call updateScoreDisplay to avoid conflicts
+    }
+
+    /**
+     * Calculate the current score without updating stats
+     * Used for display purposes
+     */
+    calculateCurrentScore() {
+        const survivalBonus = this.scores.survivalTime;
+        const destructionScore = this.scores.scythesDestroyed * 100;
+        const completionBonus = this.levelCompleted ? 500 : 0;
+        return destructionScore + survivalBonus + completionBonus;
     }
 
     /**
@@ -415,6 +448,11 @@ class GameLevelFortress {
 
         // Update timer display
         this.updateTimerDisplay();
+
+        // Update survival time score every 60 frames (1 second)
+        if (this.gameTimer % 60 === 0) {
+            this.updateSurvivalTime();
+        }
 
         // Increment spawn timer - tracks elapsed frames since last scythe
         this.scytheSpawnTimer++;
