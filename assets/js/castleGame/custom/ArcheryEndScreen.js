@@ -6,7 +6,6 @@
  */
 
 import GameLevelMaze from '../GameLevelMaze.js';
-import LeaderboardManager from './LeaderboardManager.js';
 
 export default function showEndScreen(gameEnv) {
     if (typeof document === 'undefined') return;
@@ -43,15 +42,11 @@ export default function showEndScreen(gameEnv) {
     img.style.boxShadow = '0 0 40px rgba(255,255,255,0.2)';
     overlay.appendChild(img);
 
-    // Leaderboard manager - calculate score before using it
-    const leaderboard = new LeaderboardManager('archery');
-    const score = leaderboard.timeToScore(timeTaken);
-
     const timeLabel = document.createElement('div');
-    timeLabel.innerHTML = `<div>Time: ${formattedTime}</div><div style="margin-top: 8px; font-size: 1.2rem; color: #ffd700;">Score: ${score.toLocaleString()}</div>`;
+    timeLabel.textContent = `Time taken: ${formattedTime}`;
     timeLabel.style.position = 'absolute';
     timeLabel.style.left = '50%';
-    timeLabel.style.bottom = '58%';
+    timeLabel.style.bottom = '30%';
     timeLabel.style.transform = 'translateX(-50%)';
     timeLabel.style.color = '#ffffff';
     timeLabel.style.fontSize = '1.5rem';
@@ -88,7 +83,7 @@ export default function showEndScreen(gameEnv) {
     commentaryLabel.textContent = commentary;
     commentaryLabel.style.position = 'absolute';
     commentaryLabel.style.left = '50%';
-    commentaryLabel.style.bottom = '68%';
+    commentaryLabel.style.bottom = '20%';
     commentaryLabel.style.transform = 'translateX(-50%)';
     commentaryLabel.style.color = '#ffe354';
     commentaryLabel.style.fontSize = '1.1rem';
@@ -101,155 +96,12 @@ export default function showEndScreen(gameEnv) {
     commentaryLabel.style.textAlign = 'center';
     overlay.appendChild(commentaryLabel);
 
-    // Leaderboard title
-    const leaderboardTitle = document.createElement('div');
-    leaderboardTitle.textContent = 'TOP SCORES (Loading...)';
-    leaderboardTitle.style.position = 'absolute';
-    leaderboardTitle.style.left = '50%';
-    leaderboardTitle.style.bottom = '45%';
-    leaderboardTitle.style.transform = 'translateX(-50%)';
-    leaderboardTitle.style.color = '#ffe354';
-    leaderboardTitle.style.fontSize = '0.8rem';
-    leaderboardTitle.style.fontWeight = '700';
-    leaderboardTitle.style.fontFamily = "'Press Start 2P', monospace";
-    leaderboardTitle.style.letterSpacing = '0.1em';
-    leaderboardTitle.style.textShadow = '0 2px 8px rgba(0,0,0,0.9)';
-    leaderboardTitle.style.pointerEvents = 'none';
-    overlay.appendChild(leaderboardTitle);
-
-    // Leaderboard container
-    const leaderboardContainer = document.createElement('div');
-    leaderboardContainer.style.position = 'absolute';
-    leaderboardContainer.style.left = '50%';
-    leaderboardContainer.style.bottom = '32%';
-    leaderboardContainer.style.transform = 'translateX(-50%)';
-    leaderboardContainer.style.width = '80%';
-    leaderboardContainer.style.maxWidth = '600px';
-    leaderboardContainer.style.maxHeight = '200px';
-    leaderboardContainer.style.overflow = 'auto';
-    leaderboardContainer.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
-    leaderboardContainer.style.border = '2px solid #ffe354';
-    leaderboardContainer.style.borderRadius = '8px';
-    leaderboardContainer.style.padding = '12px';
-    leaderboardContainer.innerHTML = '<p style="color: #aaa; text-align: center;">Loading leaderboard...</p>';
-    overlay.appendChild(leaderboardContainer);
-
-    // Load leaderboard asynchronously
-    (async () => {
-        try {
-            const leaderboardHTML = await leaderboard.getLeaderboardHTML();
-            leaderboardContainer.innerHTML = leaderboardHTML;
-            leaderboardTitle.textContent = 'TOP SCORES';
-        } catch (error) {
-            console.error('Failed to load leaderboard:', error);
-            leaderboardContainer.innerHTML = '<p style="color: #ff6b6b; text-align: center;">Failed to load leaderboard</p>';
-            leaderboardTitle.textContent = 'TOP SCORES (Error)';
-        }
-    })();
-
-    // Save score section
-    const saveSection = document.createElement('div');
-    saveSection.style.position = 'absolute';
-    saveSection.style.left = '50%';
-    saveSection.style.bottom = '13%';
-    saveSection.style.transform = 'translateX(-50%)';
-    saveSection.style.display = 'flex';
-    saveSection.style.gap = '10px';
-    saveSection.style.alignItems = 'center';
-    saveSection.style.zIndex = '10001';
-
-    const playerNameInput = document.createElement('input');
-    playerNameInput.type = 'text';
-    playerNameInput.placeholder = 'Your name';
-    playerNameInput.style.padding = '8px 12px';
-    playerNameInput.style.border = '2px solid #ffe354';
-    playerNameInput.style.borderRadius = '4px';
-    playerNameInput.style.background = '#1f2738';
-    playerNameInput.style.color = '#ffffff';
-    playerNameInput.style.fontFamily = "'Press Start 2P', monospace";
-    playerNameInput.style.fontSize = '0.6rem';
-    playerNameInput.style.minWidth = '150px';
-    playerNameInput.maxLength = 20;
-    saveSection.appendChild(playerNameInput);
-
-    const saveButton = document.createElement('button');
-    saveButton.type = 'button';
-    saveButton.textContent = 'Save Score';
-    saveButton.style.padding = '8px 15px';
-    saveButton.style.border = '2px solid #ffe354';
-    saveButton.style.borderRadius = '4px';
-    saveButton.style.background = '#2a5d3a';
-    saveButton.style.color = '#ffe354';
-    saveButton.style.fontFamily = "'Press Start 2P', monospace";
-    saveButton.style.fontSize = '0.6rem';
-    saveButton.style.cursor = 'pointer';
-    saveButton.style.boxShadow = '0 4px 12px rgba(0,0,0,0.5)';
-    saveButton.style.transition = 'all 0.3s ease';
-
-    saveButton.addEventListener('mouseover', () => {
-        saveButton.style.background = '#3a7d4a';
-        saveButton.style.transform = 'scale(1.05)';
-    });
-
-    saveButton.addEventListener('mouseout', () => {
-        saveButton.style.background = '#2a5d3a';
-        saveButton.style.transform = 'scale(1)';
-    });
-
-    saveButton.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const playerName = playerNameInput.value.trim();
-        
-        if (!playerName) {
-            alert('Please enter your name!');
-            return;
-        }
-
-        saveButton.disabled = true;
-        saveButton.textContent = 'Saving...';
-        
-        leaderboard.saveScore(playerName, timeTaken)
-            .then(result => {
-                let message = `Score saved!\n\nPlayer: ${result.playerName}\nScore: ${result.score}\nTime: ${result.timeTaken}s\nRank: #${result.rank}`;
-                if (result.isNewHighScore) {
-                    message = `🏆 NEW HIGH SCORE! 🏆\n\n${message}`;
-                }
-                alert(message);
-                
-                // Refresh leaderboard display
-                leaderboard.getLeaderboardHTML()
-                    .then(html => {
-                        leaderboardContainer.innerHTML = html;
-                    })
-                    .catch(err => {
-                        console.error('Failed to refresh leaderboard:', err);
-                        leaderboardContainer.innerHTML = '<p style="color: #ff6b6b; text-align: center;">Failed to load leaderboard</p>';
-                    });
-                
-                // Disable inputs after save
-                playerNameInput.disabled = true;
-                saveButton.disabled = true;
-                saveButton.style.opacity = '0.5';
-                saveButton.style.cursor = 'default';
-                saveButton.textContent = 'Score Saved!';
-            })
-            .catch(error => {
-                console.error('Failed to save score:', error);
-                alert('Failed to save score: ' + error.message);
-                saveButton.disabled = false;
-                saveButton.textContent = 'Save Score';
-            });
-    });
-
-    saveSection.appendChild(saveButton);
-    overlay.appendChild(saveSection);
-
     const actionButton = document.createElement('button');
     actionButton.type = 'button';
     actionButton.textContent = 'Enter the castle';
     actionButton.style.position = 'absolute';
     actionButton.style.left = '50%';
-    actionButton.style.bottom = '4%';
+    actionButton.style.bottom = '10%';
     actionButton.style.transform = 'translateX(-50%)';
     actionButton.style.padding = '12px 22px';
     actionButton.style.border = '2px solid #ffffff';
