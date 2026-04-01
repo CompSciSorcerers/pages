@@ -101,7 +101,7 @@ export default function showEndScreen(gameEnv) {
     actionButton.textContent = 'Enter the castle';
     actionButton.style.position = 'absolute';
     actionButton.style.left = '50%';
-    actionButton.style.bottom = '10%';
+    actionButton.style.bottom = '15%';
     actionButton.style.transform = 'translateX(-50%)';
     actionButton.style.padding = '12px 22px';
     actionButton.style.border = '2px solid #ffffff';
