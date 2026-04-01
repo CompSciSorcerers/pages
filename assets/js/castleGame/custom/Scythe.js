@@ -44,6 +44,16 @@ class Scythe extends Enemy {
         // Check for NPC collision
         this.checkNPCCollision();
 
+        // Disable dialogue system for scythes - they shouldn't talk to players
+        if (this.dialogueSystem) {
+            this.dialogueSystem = null;
+        }
+        
+        // Remove interact key listeners to prevent dialogue triggers
+        if (this.removeInteractKeyListeners) {
+            this.removeInteractKeyListeners();
+        }
+
         // All the logic to update the NPC position and rotation
         // Ellipse motion properties (similar to Mansion game's Boomerang)
         this.source_coords = { x: spawnXPos, y: spawnYPos };

@@ -150,16 +150,16 @@ class GameLevelFortress {
         };
 
         /**
-         * Panicked NPC sprite data - interactive character with dialogue system
+         * Helpful NPC sprite data - interactive character with dialogue system
          * Single-frame sprite with randomized dialogue messages
          */
-        const paniced_npc_src = path + "/images/castleGame/kingSprite.png";
-        const PANICED_NPC_SCALE_FACTOR = 4; // Medium-sized NPC
-        const sprite_data_panic_npc = {
+        const helpful_npc_src = path + "/images/castleGame/kingSprite.png";
+        const HELPFUL_NPC_SCALE_FACTOR = 4; // Medium-sized NPC
+        const sprite_data_helpful_npc = {
             id: 'King',
             greeting: "Help!",
-            src: paniced_npc_src,
-            SCALE_FACTOR: PANICED_NPC_SCALE_FACTOR,
+            src: helpful_npc_src,
+            SCALE_FACTOR: HELPFUL_NPC_SCALE_FACTOR,
             ANIMATION_RATE: 30, // Slower animation for static sprite
             pixels: { width: 234, height: 432 }, // Large single sprite image
             INIT_POSITION: { x: 0.5625 * width, y: 0.8 * height }, // Right side positioning
@@ -171,12 +171,9 @@ class GameLevelFortress {
              * Provides story context and hints about game mechanics
              */
             dialogues: [
-                "I'm so scared! The scythes have been comming for me!",
-                "Rumor has it that missiles with scythes!",
-                "I don't want to face the scythes and missiles!",
-                "Flee for yourself! I'll be hit before you can save me!",
-                "Try dodging the scythes and missiles! It's your only hope!",
-                "I'm trapped! Please help me!"
+                "Rescue the Green Knight!",
+                "The castle is too strong. Intercept its scythes!",
+                "Beware of the larger scythes. They can bounce instead of going off screen."
             ],
 
             reaction: function () { }, // No visual reaction to interaction
@@ -221,7 +218,7 @@ class GameLevelFortress {
                 try {
                     this.dialogueSystem.showDialogue(
                         whattosay,
-                        "Panicked NPC",
+                        "Helpful NPC",
                         this.spriteData.src, // Full sprite sheet displayed (legacy behavior),
                         {
                             columns: 3,
@@ -290,7 +287,7 @@ class GameLevelFortress {
         this.classes = [
             { class: GameEnvBackground, data: image_data_chamber }, // Atmospheric background
             { class: Player, data: sprite_data_mc }, // Playable character
-            { class: Npc, data: sprite_data_panic_npc }, // Interactive NPC
+            { class: Npc, data: sprite_data_helpful_npc }, // Interactive NPC
             { class: Npc, data: sprite_data_target_npc }, // Target NPC
             { class: Barrier, data: barrier_data } // Collision boundary
         ];

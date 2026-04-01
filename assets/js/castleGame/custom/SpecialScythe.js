@@ -40,6 +40,16 @@ class SpecialScythe extends Enemy {
         // Mark as special scythe
         this.isSpecial = true;
 
+        // Disable dialogue system for special scythes - they shouldn't talk to players
+        if (this.dialogueSystem) {
+            this.dialogueSystem = null;
+        }
+        
+        // Remove interact key listeners to prevent dialogue triggers
+        if (this.removeInteractKeyListeners) {
+            this.removeInteractKeyListeners();
+        }
+
         // Bouncing motion properties instead of ellipse
         this.velocity = {
             x: (Math.random() - 0.5) * 8, // Random horizontal velocity
