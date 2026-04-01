@@ -194,7 +194,7 @@ class GameLevelOutside {
                 
                 // Show portal dialogue with buttons
                 this.dialogueSystem.showDialogue(
-                    "Are you to enter the castle?",
+                    "Are you ready to enter the castle?",
                     "DarkKnight",
                     this.spriteData.src
                 );
@@ -261,8 +261,8 @@ class GameLevelOutside {
                                     const transitionDialogues = [
                                         'Welcome to the castle.',
                                         'Your job is to break in and free the prisoner.',
-                                        'Use your bow and arrow to pass the archery challenge.',
-                                        'Good luck, brave Knight.'
+                                        'Use your bow to pass the archery challenge.',
+                                        'Good luck, brave knight.'
                                     ];
                                     const typingSpeed = 45;
                                     const erasingSpeed = 35;
