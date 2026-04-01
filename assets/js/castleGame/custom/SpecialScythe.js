@@ -121,6 +121,9 @@ class SpecialScythe extends Enemy {
         // Check for collisions with player
         this.checkPlayerCollision();
 
+        // Check for collisions with regular scythes
+        this.checkRegularScytheCollisions();
+
         super.update();
     }
 
@@ -186,6 +189,79 @@ class SpecialScythe extends Enemy {
                 break;
             }
         }
+    }
+
+    checkRegularScytheCollisions() {
+        // Find all regular scythe objects (not special scythes)
+        const regularScythes = this.gameEnv.gameObjects.filter(obj =>
+            obj.constructor.name === 'Scythe' && !obj.isSpecial
+        );
+
+        if (regularScythes.length === 0) return;
+
+        // Check collision with each regular scythe
+        for (const regularScythe of regularScythes) {
+            // Calculate center points of both scythes
+            const specialCenterX = this.position.x + this.width / 2;
+            const specialCenterY = this.position.y + this.height / 2;
+            const regularCenterX = regularScythe.position.x + regularScythe.width / 2;
+            const regularCenterY = regularScythe.position.y + regularScythe.height / 2;
+
+            // Calculate distance between center points
+            const dx = regularCenterX - specialCenterX;
+            const dy = regularCenterY - specialCenterY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            // Use relative hit distance based on sprite sizes
+            const HIT_DISTANCE = (this.width + regularScythe.width) / 3;
+
+            if (distance <= HIT_DISTANCE) {
+                // Destroy the regular scythe
+                regularScythe.revComplete = true;
+                regularScythe.destroy();
+                
+                // Create explosion effect at collision point
+                this.createExplosionEffect(regularCenterX, regularCenterY);
+            }
+        }
+    }
+
+    createExplosionEffect(x, y) {
+        // Create a visual explosion effect
+        const explosion = document.createElement('div');
+        explosion.style.position = 'absolute';
+        explosion.style.left = x + 'px';
+        explosion.style.top = y + 'px';
+        explosion.style.width = '30px';
+        explosion.style.height = '30px';
+        explosion.style.backgroundColor = '#ffff00';
+        explosion.style.borderRadius = '50%';
+        explosion.style.transform = 'translate(-50%, -50%)';
+        explosion.style.pointerEvents = 'none';
+        explosion.style.zIndex = '1000';
+        
+        // Add to game container
+        const gameContainer = this.gameEnv.canvasContainer || document.body;
+        gameContainer.appendChild(explosion);
+
+        // Animate explosion
+        let scale = 1;
+        let opacity = 1;
+        const animateExplosion = () => {
+            scale += 0.2;
+            opacity -= 0.05;
+            
+            explosion.style.transform = `translate(-50%, -50%) scale(${scale})`;
+            explosion.style.opacity = opacity;
+
+            if (opacity > 0) {
+                requestAnimationFrame(animateExplosion);
+            } else {
+                gameContainer.removeChild(explosion);
+            }
+        };
+        
+        requestAnimationFrame(animateExplosion);
     }
 
     handleCollisionWithPlayer() {
