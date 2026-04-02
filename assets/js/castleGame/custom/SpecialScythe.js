@@ -1,6 +1,7 @@
 import Enemy from '../../GameEnginev1.1/essentials/Enemy.js';
 import Player from '../../GameEnginev1.1/essentials/Player.js';
 import showDeathScreen from './DeathScreen.js';
+import UltraScythe from './UltraScythe.js';
 
 /**
  * SpecialScythe class - a bigger, uninterceptable scythe that bounces off screen edges
@@ -254,12 +255,12 @@ class SpecialScythe extends Enemy {
             const HIT_DISTANCE = (this.width + otherSpecialScythe.width) / 3;
 
             if (distance <= HIT_DISTANCE) {
-                // Create mega explosion at collision point
-                const explosionX = (thisCenterX + otherCenterX) / 2;
-                const explosionY = (thisCenterY + otherCenterY) / 2;
-                this.createMegaExplosion(explosionX, explosionY);
+                // Create scythe fusion instead of mega explosion
+                const fusionX = (thisCenterX + otherCenterX) / 2;
+                const fusionY = (thisCenterY + otherCenterY) / 2;
+                this.createFusionScythe(fusionX, fusionY);
 
-                // Destroy both special scythes
+                // Destroy both original special scythes
                 this.revComplete = true;
                 this.destroy();
                 otherSpecialScythe.revComplete = true;
@@ -270,59 +271,52 @@ class SpecialScythe extends Enemy {
         }
     }
 
-    createMegaExplosion(x, y) {
-        // First, destroy all regular scythes on screen
-        const regularScythes = this.gameEnv.gameObjects.filter(obj =>
-            obj.constructor.name === 'Scythe' && !obj.isSpecial
-        );
+    createFusionScythe(x, y) {
+        // Create fusion effect
+        this.createFusionEffect(x, y);
 
-        regularScythes.forEach(scythe => {
-            scythe.revComplete = true;
-            scythe.destroy();
-        });
+        // Create the ultra scythe
+        const ultraScythe = new UltraScythe(this.gameEnv, x, y);
+        this.gameEnv.gameObjects.push(ultraScythe);
+        this.gameEnv.container.appendChild(ultraScythe.canvas);
+    }
 
-        // Create multiple explosion rings for dramatic effect
-        for (let i = 0; i < 3; i++) {
-            setTimeout(() => {
-                this.createExplosionRing(x, y, 50 + i * 40, 0.8 - i * 0.2);
-            }, i * 100);
-        }
-
-        // Create central flash
-        const centralFlash = document.createElement('div');
-        centralFlash.style.position = 'absolute';
-        centralFlash.style.left = x + 'px';
-        centralFlash.style.top = y + 'px';
-        centralFlash.style.width = '100px';
-        centralFlash.style.height = '100px';
-        centralFlash.style.backgroundColor = '#ffffff';
-        centralFlash.style.borderRadius = '50%';
-        centralFlash.style.transform = 'translate(-50%, -50%)';
-        centralFlash.style.pointerEvents = 'none';
-        centralFlash.style.zIndex = '1001';
-        centralFlash.style.boxShadow = '0 0 50px 20px rgba(255, 255, 0, 0.8)';
+    createFusionEffect(x, y) {
+        // Create bright white flash for fusion
+        const fusionFlash = document.createElement('div');
+        fusionFlash.style.position = 'absolute';
+        fusionFlash.style.left = x + 'px';
+        fusionFlash.style.top = y + 'px';
+        fusionFlash.style.width = '80px';
+        fusionFlash.style.height = '80px';
+        fusionFlash.style.backgroundColor = '#ffffff';
+        fusionFlash.style.borderRadius = '50%';
+        fusionFlash.style.transform = 'translate(-50%, -50%)';
+        fusionFlash.style.pointerEvents = 'none';
+        fusionFlash.style.zIndex = '1002';
+        fusionFlash.style.boxShadow = '0 0 30px 15px rgba(255, 0, 255, 0.9)';
         
         const gameContainer = this.gameEnv.canvasContainer || document.body;
-        gameContainer.appendChild(centralFlash);
+        gameContainer.appendChild(fusionFlash);
 
-        // Animate central flash
+        // Animate fusion flash
         let flashScale = 1;
         let flashOpacity = 1;
-        const animateFlash = () => {
-            flashScale += 0.3;
-            flashOpacity -= 0.08;
+        const animateFusion = () => {
+            flashScale += 0.4;
+            flashOpacity -= 0.1;
             
-            centralFlash.style.transform = `translate(-50%, -50%) scale(${flashScale})`;
-            centralFlash.style.opacity = flashOpacity;
+            fusionFlash.style.transform = `translate(-50%, -50%) scale(${flashScale})`;
+            fusionFlash.style.opacity = flashOpacity;
 
             if (flashOpacity > 0) {
-                requestAnimationFrame(animateFlash);
+                requestAnimationFrame(animateFusion);
             } else {
-                gameContainer.removeChild(centralFlash);
+                gameContainer.removeChild(fusionFlash);
             }
         };
         
-        requestAnimationFrame(animateFlash);
+        requestAnimationFrame(animateFusion);
     }
 
     createExplosionRing(x, y, initialSize, initialOpacity) {
