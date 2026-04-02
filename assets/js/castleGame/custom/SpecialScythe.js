@@ -78,13 +78,13 @@ class SpecialScythe extends Enemy {
 
         // Lifetime properties
         this.creationTime = Date.now(); // Track when scythe was created
-        this.lifespan = 30000; // 30 seconds in milliseconds
+        this.lifespan = 60000; // 60 seconds in milliseconds (increased from 30)
     }
 
     update() {
         if (this.revComplete) return;
 
-        // Check if scythe has exceeded its lifespan (30 seconds)
+        // Check if scythe has exceeded its lifespan (60 seconds)
         const currentTime = Date.now();
         if (currentTime - this.creationTime >= this.lifespan) {
             this.revComplete = true;
@@ -123,6 +123,9 @@ class SpecialScythe extends Enemy {
 
         // Check for collisions with regular scythes
         this.checkRegularScytheCollisions();
+
+        // Check for collisions with other special scythes
+        this.checkSpecialScytheCollisions();
 
         super.update();
     }
@@ -224,6 +227,139 @@ class SpecialScythe extends Enemy {
                 this.createExplosionEffect(regularCenterX, regularCenterY);
             }
         }
+    }
+
+    checkSpecialScytheCollisions() {
+        // Find all other special scythe objects
+        const otherSpecialScythes = this.gameEnv.gameObjects.filter(obj =>
+            obj.constructor.name === 'SpecialScythe' && obj !== this && !obj.revComplete
+        );
+
+        if (otherSpecialScythes.length === 0) return;
+
+        // Check collision with each special scythe
+        for (const otherSpecialScythe of otherSpecialScythes) {
+            // Calculate center points of both scythes
+            const thisCenterX = this.position.x + this.width / 2;
+            const thisCenterY = this.position.y + this.height / 2;
+            const otherCenterX = otherSpecialScythe.position.x + otherSpecialScythe.width / 2;
+            const otherCenterY = otherSpecialScythe.position.y + otherSpecialScythe.height / 2;
+
+            // Calculate distance between center points
+            const dx = otherCenterX - thisCenterX;
+            const dy = otherCenterY - thisCenterY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            // Use relative hit distance based on sprite sizes
+            const HIT_DISTANCE = (this.width + otherSpecialScythe.width) / 3;
+
+            if (distance <= HIT_DISTANCE) {
+                // Create mega explosion at collision point
+                const explosionX = (thisCenterX + otherCenterX) / 2;
+                const explosionY = (thisCenterY + otherCenterY) / 2;
+                this.createMegaExplosion(explosionX, explosionY);
+
+                // Destroy both special scythes
+                this.revComplete = true;
+                this.destroy();
+                otherSpecialScythe.revComplete = true;
+                otherSpecialScythe.destroy();
+
+                break; // Only handle one collision per frame
+            }
+        }
+    }
+
+    createMegaExplosion(x, y) {
+        // First, destroy all regular scythes on screen
+        const regularScythes = this.gameEnv.gameObjects.filter(obj =>
+            obj.constructor.name === 'Scythe' && !obj.isSpecial
+        );
+
+        regularScythes.forEach(scythe => {
+            scythe.revComplete = true;
+            scythe.destroy();
+        });
+
+        // Create multiple explosion rings for dramatic effect
+        for (let i = 0; i < 3; i++) {
+            setTimeout(() => {
+                this.createExplosionRing(x, y, 50 + i * 40, 0.8 - i * 0.2);
+            }, i * 100);
+        }
+
+        // Create central flash
+        const centralFlash = document.createElement('div');
+        centralFlash.style.position = 'absolute';
+        centralFlash.style.left = x + 'px';
+        centralFlash.style.top = y + 'px';
+        centralFlash.style.width = '100px';
+        centralFlash.style.height = '100px';
+        centralFlash.style.backgroundColor = '#ffffff';
+        centralFlash.style.borderRadius = '50%';
+        centralFlash.style.transform = 'translate(-50%, -50%)';
+        centralFlash.style.pointerEvents = 'none';
+        centralFlash.style.zIndex = '1001';
+        centralFlash.style.boxShadow = '0 0 50px 20px rgba(255, 255, 0, 0.8)';
+        
+        const gameContainer = this.gameEnv.canvasContainer || document.body;
+        gameContainer.appendChild(centralFlash);
+
+        // Animate central flash
+        let flashScale = 1;
+        let flashOpacity = 1;
+        const animateFlash = () => {
+            flashScale += 0.3;
+            flashOpacity -= 0.08;
+            
+            centralFlash.style.transform = `translate(-50%, -50%) scale(${flashScale})`;
+            centralFlash.style.opacity = flashOpacity;
+
+            if (flashOpacity > 0) {
+                requestAnimationFrame(animateFlash);
+            } else {
+                gameContainer.removeChild(centralFlash);
+            }
+        };
+        
+        requestAnimationFrame(animateFlash);
+    }
+
+    createExplosionRing(x, y, initialSize, initialOpacity) {
+        const ring = document.createElement('div');
+        ring.style.position = 'absolute';
+        ring.style.left = x + 'px';
+        ring.style.top = y + 'px';
+        ring.style.width = initialSize + 'px';
+        ring.style.height = initialSize + 'px';
+        ring.style.border = '3px solid #ff6600';
+        ring.style.borderRadius = '50%';
+        ring.style.transform = 'translate(-50%, -50%)';
+        ring.style.pointerEvents = 'none';
+        ring.style.zIndex = '999';
+        ring.style.opacity = initialOpacity;
+        
+        const gameContainer = this.gameEnv.canvasContainer || document.body;
+        gameContainer.appendChild(ring);
+
+        // Animate ring expansion
+        let scale = 1;
+        let opacity = initialOpacity;
+        const animateRing = () => {
+            scale += 0.15;
+            opacity -= 0.02;
+            
+            ring.style.transform = `translate(-50%, -50%) scale(${scale})`;
+            ring.style.opacity = opacity;
+
+            if (opacity > 0) {
+                requestAnimationFrame(animateRing);
+            } else {
+                gameContainer.removeChild(ring);
+            }
+        };
+        
+        requestAnimationFrame(animateRing);
     }
 
     createExplosionEffect(x, y) {
