@@ -14,7 +14,7 @@ import GameEnvBackground from '../GameEnginev1.1/essentials/GameEnvBackground.js
 import Player from '../GameEnginev1.1/essentials/Player.js';
 import Npc from '../GameEnginev1.1/essentials/Npc.js';
 import DeathBarrier from './custom/DeathBarrier.js';
-import showEndScreen from "./custom/EndScreen.js";
+import showEndScreen from "./custom/EndScreen.js"; // Not currently used, instead the level just transitions
 import showDeathScreen from './custom/DeathScreen.js';
 import GameLevelFortress from './GameLevelFortress.js';
 
@@ -299,7 +299,7 @@ class GameLevelMaze {
                         gameControl.levelClasses = [GameLevelFortress];
                         gameControl.currentLevelIndex = 0;
                         gameControl.isPaused = false;
-                        gameControl.transitionToLevel();
+                        gameControl.transitionToLevel(); // defined by game engine most likely, forces the level to switch immediately
                     } catch (err) {
                         console.warn('Failed to transition to fortress level:', err);
                     }
@@ -322,7 +322,7 @@ class GameLevelMaze {
                             try { fadeOverlay.remove(); } catch (err) { /* ignore */ }
                         }, fadeOutMs + 100);
                     }, 220);
-                }, fadeInMs + 30);
+                }, fadeInMs + 30); // fade in and fade out for the transition to gamelevelfortress
             },
             
             // This is where the interactions for starting the game are handled

@@ -11,10 +11,10 @@ class DeathBarrier extends Barrier {
         }
     }
 
-    update() {
+    update() { // Checks for collisions, if triggered then uses the belo code
         super.update();
 
-        if (this._hasTriggeredDeath) return;
+        if (this._hasTriggeredDeath) return; // if the death is already triggered no need to trigger it again
 
         const player = this.gameEnv?.gameObjects?.find(obj => obj.constructor?.name === 'Player');
         if (!player || !player.canvas || !this.canvas) return;
@@ -26,7 +26,7 @@ class DeathBarrier extends Barrier {
             const timeSinceLevelStart = new Date() - DeathBarrier.levelStartTime;
             if (timeSinceLevelStart < 500) {
                 console.log('[MazeDebug] Grace period active:', timeSinceLevelStart, 'ms');
-                return;
+                return; // we added a grace period because there was an error where the barrier would kill the player before they could even play
             }
 
             this._hasTriggeredDeath = true;
