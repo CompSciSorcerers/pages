@@ -19,6 +19,7 @@ class Interceptor extends Character {
         
         // Movement properties - moves toward target
         this.speed = 10; // Faster than regular projectiles for interception
+        this.turnRate = 0.05; // How quickly interceptor can change direction (smaller = slower)
         
         // Calculate velocity vector toward target
         if (this.target_coords) {
@@ -167,7 +168,7 @@ class Interceptor extends Character {
         }
         
         if (nearestScythe) {
-            // Update velocity to track the nearest scythe
+            // Update velocity to track the nearest scythe with gradual turning
             const interceptorCenterX = this.position.x + this.width / 2;
             const interceptorCenterY = this.position.y + this.height / 2;
             const scytheCenterX = nearestScythe.position.x + nearestScythe.width / 2;
@@ -178,11 +179,13 @@ class Interceptor extends Character {
             const distance = Math.sqrt(dx * dx + dy * dy);
             
             if (distance > 0) {
-                // Update velocity to track the scythe (always accurate tracking)
-                this.velocity = {
-                    x: (dx / distance) * this.speed,
-                    y: (dy / distance) * this.speed
-                };
+                // Calculate desired velocity toward target
+                const desiredVelX = (dx / distance) * this.speed;
+                const desiredVelY = (dy / distance) * this.speed;
+                
+                // Gradually turn toward target (slower direction change)
+                this.velocity.x += (desiredVelX - this.velocity.x) * this.turnRate;
+                this.velocity.y += (desiredVelY - this.velocity.y) * this.turnRate;
             }
             
             // Check for interception
