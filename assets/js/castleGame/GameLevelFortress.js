@@ -5,6 +5,8 @@ import Barrier from '../GameEnginev1.1/essentials/Barrier.js';
 import DialogueSystem from './custom/DialogueSystem.js';
 import Scythe from './custom/Scythe.js';
 import SpecialScythe from './custom/SpecialScythe.js';
+import UltraScythe from './custom/UltraScythe.js';
+import SuperScythe from './custom/SuperScythe.js';
 import Interceptor from './custom/Interceptor.js';
 import showEndScreen from "./custom/EndScreen.js";
 import Leaderboard from "../GameEnginev1.1/essentials/Leaderboard.js";
@@ -523,6 +525,7 @@ class GameLevelFortress {
     /**
      * Fires an interceptor from the player's position upward
      * Triggered when player presses the Space key or I key
+     * Spawns a SuperScythe when player presses the 4 key
      * 
      * @param {KeyboardEvent} event - The keyboard event object
      */
@@ -554,6 +557,60 @@ class GameLevelFortress {
             // Add to game objects and container
             this.gameEnv.gameObjects.push(interceptor);
             this.gameEnv.container.appendChild(interceptor.canvas);
+        }
+        // Check if 4 key was pressed to spawn SuperScythe
+        else if (event.code === 'Digit4' || event.keyCode === 52) {
+            event.preventDefault(); // Prevent default key behavior
+
+            // Calculate spawn position at top of screen (like other scythes)
+            const width = this.gameEnv.innerWidth;
+            const spawnX = Math.random() * (width - 200); // Random X position at top (accounting for much larger size)
+            const spawnY = -200; // Spawn at top of screen (accounting for much larger size)
+
+            // Create new SuperScythe
+            const superScythe = new SuperScythe(this.gameEnv, spawnX, spawnY);
+
+            // Add to game objects and container
+            this.gameEnv.gameObjects.push(superScythe);
+            this.gameEnv.container.appendChild(superScythe.canvas);
+
+            console.log('SuperScythe spawned at top of screen with 4 key!');
+        }
+        // Check if 3 key was pressed to spawn UltraScythe
+        else if (event.code === 'Digit3' || event.keyCode === 51) {
+            event.preventDefault(); // Prevent default key behavior
+
+            // Calculate spawn position at top of screen (like other scythes)
+            const width = this.gameEnv.innerWidth;
+            const spawnX = Math.random() * (width - 150); // Random X position at top (accounting for larger size)
+            const spawnY = -150; // Spawn at top of screen (accounting for larger size)
+
+            // Create new UltraScythe
+            const ultraScythe = new UltraScythe(this.gameEnv, spawnX, spawnY);
+
+            // Add to game objects and container
+            this.gameEnv.gameObjects.push(ultraScythe);
+            this.gameEnv.container.appendChild(ultraScythe.canvas);
+
+            console.log('UltraScythe spawned at top of screen with 3 key!');
+        }
+        // Check if 2 key was pressed to spawn SpecialScythe
+        else if (event.code === 'Digit2' || event.keyCode === 50) {
+            event.preventDefault(); // Prevent default key behavior
+
+            // Calculate spawn position at top of screen (like other scythes)
+            const width = this.gameEnv.innerWidth;
+            const spawnX = Math.random() * (width - 100); // Random X position at top (accounting for larger size)
+            const spawnY = -100; // Spawn at top of screen (accounting for larger size)
+
+            // Create new SpecialScythe
+            const specialScythe = new SpecialScythe(this.gameEnv);
+
+            // Add to game objects and container
+            this.gameEnv.gameObjects.push(specialScythe);
+            this.gameEnv.container.appendChild(specialScythe.canvas);
+
+            console.log('SpecialScythe spawned at top of screen with 2 key!');
         }
     }
 
