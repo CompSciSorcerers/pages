@@ -7,6 +7,7 @@ import Scythe from './custom/Scythe.js';
 import SpecialScythe from './custom/SpecialScythe.js';
 import UltraScythe from './custom/UltraScythe.js';
 import SuperScythe from './custom/SuperScythe.js';
+import BossScythe from './custom/BossScythe.js';
 import Interceptor from './custom/Interceptor.js';
 import showEndScreen from "./custom/EndScreen.js";
 import Leaderboard from "../GameEnginev1.1/essentials/Leaderboard.js";
@@ -611,6 +612,24 @@ class GameLevelFortress {
             this.gameEnv.container.appendChild(specialScythe.canvas);
 
             console.log('SpecialScythe spawned at top of screen with 2 key!');
+        }
+        // Check if 5 key was pressed to spawn BossScythe
+        else if (event.code === 'Digit5' || event.keyCode === 53) {
+            event.preventDefault(); // Prevent default key behavior
+
+            // Calculate spawn position at top of screen (like other scythes)
+            const width = this.gameEnv.innerWidth;
+            const spawnX = Math.random() * (width - 300); // Random X position at top (accounting for massive size)
+            const spawnY = -300; // Spawn at top of screen (accounting for massive size)
+
+            // Create new BossScythe
+            const bossScythe = new BossScythe(this.gameEnv, spawnX, spawnY);
+
+            // Add to game objects and container
+            this.gameEnv.gameObjects.push(bossScythe);
+            this.gameEnv.container.appendChild(bossScythe.canvas);
+
+            console.log('BossScythe spawned at top of screen with 5 key!');
         }
     }
 
