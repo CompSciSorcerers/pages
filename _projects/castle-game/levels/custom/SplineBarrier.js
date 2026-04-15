@@ -7,9 +7,9 @@ class SplineBarrier extends Barrier {
     }
 
     // Interpolates between point P1 and P2, using P0 and P3 as control points
-function catmullRom(p0, p1, p2, p3, t) {
-    const t2 = t * t;
-    const t3 = t2 * t;
+    static catmullRom(p0, p1, p2, p3, t) {
+        const t2 = t * t;
+        const t3 = t2 * t;
 
     
     return 0.5 * (
@@ -21,7 +21,7 @@ function catmullRom(p0, p1, p2, p3, t) {
 }
 
 // Generate curve positions
-function getCurvePoints(splinePoints, segments = 50) {
+static getCurvePoints(splinePoints, segments = 50) {
     const curvePoints = [];
     
     for (let i = 0; i < splinePoints.length - 1; i++) {
@@ -38,4 +38,4 @@ function getCurvePoints(splinePoints, segments = 50) {
         }
     }
     return curvePoints;
-}
+} }
