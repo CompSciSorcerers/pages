@@ -2,14 +2,14 @@ import GameEnvBackground from "/assets/js/GameEnginev1.1/essentials/GameEnvBackg
 import Player from "/assets/js/GameEnginev1.1/essentials/Player.js";
 import Npc from '/assets/js/GameEnginev1.1/essentials/Npc.js';
 import Barrier from '/assets/js/GameEnginev1.1/essentials/Barrier.js';
-import DialogueSystem from './custom/DialogueSystem.js';
-import Scythe from './custom/Scythe.js';
-import SpecialScythe from './custom/SpecialScythe.js';
-import UltraScythe from './custom/UltraScythe.js';
-import SuperScythe from './custom/SuperScythe.js';
-import BossScythe from './custom/BossScythe.js';
-import Interceptor from './custom/Interceptor.js';
-import showEndScreen from "./custom/EndScreen.js";
+import DialogueSystem from './DialogueSystem.js';
+import Scythe from './Scythe.js';
+import SpecialScythe from './SpecialScythe.js';
+import UltraScythe from './UltraScythe.js';
+import SuperScythe from './SuperScythe.js';
+import BossScythe from './BossScythe.js';
+import Interceptor from './Interceptor.js';
+import showEndScreen from "./EndScreen.js";
 import Leaderboard from "/assets/js/GameEnginev1.1/essentials/Leaderboard.js";
 
 /**

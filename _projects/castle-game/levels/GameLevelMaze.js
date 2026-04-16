@@ -13,9 +13,9 @@
 import GameEnvBackground from '/assets/js/GameEnginev1.1/essentials/GameEnvBackground.js';
 import Player from '/assets/js/GameEnginev1.1/essentials/Player.js';
 import Npc from '/assets/js/GameEnginev1.1/essentials/Npc.js';
-import DeathBarrier from './custom/DeathBarrier.js';
-import showEndScreen from "./custom/EndScreen.js"; // Not currently used, instead the level just transitions
-import showDeathScreen from './custom/DeathScreen.js';
+import DeathBarrier from './DeathBarrier.js';
+import showEndScreen from "./EndScreen.js"; // Not currently used, instead the level just transitions
+import showDeathScreen from './DeathScreen.js';
 import GameLevelFortress from './GameLevelFortress.js';
 
 class GameLevelMaze {

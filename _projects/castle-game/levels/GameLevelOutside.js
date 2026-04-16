@@ -4,7 +4,7 @@ import Player from '/assets/js/GameEnginev1.1/essentials/Player.js';
 import Npc  from '/assets/js/GameEnginev1.1/essentials/Npc.js';
 import AiNpc  from '/assets/js/GameEnginev1.1/essentials/AiNpc.js';
 import GameLevelArchery from './GameLevelArchery.js';
-import SpriteSheetCoin from './custom/SpriteSheetCoin.js';
+import SpriteSheetCoin from './SpriteSheetCoin.js';
 
 /**
  * GameLevelOutside

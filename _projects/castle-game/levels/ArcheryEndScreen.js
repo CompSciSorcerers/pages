@@ -5,7 +5,7 @@
  * @param filepath - The path to the end screen image (default: '/images/sorcerers/archeryWinScreen.png')
  */
 
-import GameLevelMaze from '../GameLevelMaze.js';
+import GameLevelMaze from './GameLevelMaze.js';
 
 export default function showEndScreen(gameEnv) {
     if (typeof document === 'undefined') return;

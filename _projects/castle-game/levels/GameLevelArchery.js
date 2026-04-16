@@ -1,6 +1,6 @@
 
 import GameEnvBackground  from '/assets/js/GameEnginev1.1/essentials/GameEnvBackground.js';
-import FightingPlayer from './custom/FightingPlayer.js';
+import FightingPlayer from './FightingPlayer.js';
 import Npc  from '/assets/js/GameEnginev1.1/essentials/Npc.js';
 import Barrier from '/assets/js/GameEnginev1.1/essentials/Barrier.js';
 import Enemy from '/assets/js/GameEnginev1.1/essentials/Enemy.js';
