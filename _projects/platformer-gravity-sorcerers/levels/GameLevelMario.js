@@ -21,11 +21,11 @@ class GameLevelMario {
 		const floorData = {
 			id: 'mario-floor',
 			x: 0,
-			y: 0.7,
+			y: 0.75,
 			width: 1,
 			height: 0.1,
 			color: 'rgba(133, 94, 66, 0.95)',
-			visible: true,
+			visible: false,
 			hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
 		};
 
@@ -39,7 +39,7 @@ class GameLevelMario {
 			ANIMATION_RATE: 8,
 			INIT_POSITION: {
 				x: width * 0.1,
-				y: height * 0.7,
+				y: height * 0.3,
 			},
 			pixels: { height: 432, width: 234 },
 			orientation: { rows: 4, columns: 3 },

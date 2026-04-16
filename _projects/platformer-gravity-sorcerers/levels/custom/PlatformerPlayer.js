@@ -6,13 +6,36 @@ class PlatformerPlayer extends Player {
 		super(data, gameEnv);
 
 		this.verticalVelocity = 0;
-		this.gravityAcceleration = data?.gravityAcceleration ?? 0.6;
+		this.gravityAcceleration = data?.gravityAcceleration ?? 0.4;
 		this.jumpVelocity = data?.jumpVelocity ?? Math.max(8, this.yVelocity * 1.5);
 
 		this.isGrounded = false;
 		this._groundedThisFrame = false;
 		this._skipGravityThisFrame = false;
 		this._jumpPressedLatch = false;
+		this.clearPressedKeysOnCollision = false;
+	}
+
+	_hasBarrierSupport() {
+		if (!this.gameEnv?.gameObjects) return false;
+
+		const supportTolerance = 4;
+		const playerLeft = this.position.x;
+		const playerRight = this.position.x + this.width;
+		const playerBottom = this.position.y + this.height;
+
+		return this.gameEnv.gameObjects.some((obj) => {
+			if (!(obj instanceof Barrier)) return false;
+
+			const barrierLeft = obj.x;
+			const barrierRight = obj.x + obj.width;
+			const barrierTop = obj.y;
+
+			const horizontallyOverlapping = playerRight > barrierLeft && playerLeft < barrierRight;
+			const standingOnTop = Math.abs(playerBottom - barrierTop) <= supportTolerance;
+
+			return horizontallyOverlapping && standingOnTop;
+		});
 	}
 
 	updateVelocity() {
@@ -28,7 +51,7 @@ class PlatformerPlayer extends Player {
 		}
 
 		const upPressed = Boolean(this.pressedKeys[this.keypress.up]);
-		if (upPressed && this.isGrounded && !this._jumpPressedLatch) {
+		if (upPressed && (this.isGrounded || this._hasBarrierSupport()) && !this._jumpPressedLatch) {
 			this.verticalVelocity = this.jumpVelocity;
 			this.isGrounded = false;
 			this._groundedThisFrame = false;
@@ -51,6 +74,9 @@ class PlatformerPlayer extends Player {
 	}
 
 	update() {
+		this.updateVelocity();
+		this.updateDirection();
+
 		if (!this._skipGravityThisFrame) {
 			this.verticalVelocity -= this.gravityAcceleration;
 		}
@@ -109,6 +135,7 @@ class PlatformerPlayer extends Player {
 			this.position.y = otherObject.y + otherObject.height;
 			this.verticalVelocity = 0;
 			this.velocity.y = 0;
+			
 		}
 
 		if (touchPoints.left) {
