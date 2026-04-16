@@ -3,7 +3,7 @@ import GameEnvBackground  from '/assets/js/GameEnginev1.1/essentials/GameEnvBack
 import Player from '/assets/js/GameEnginev1.1/essentials/Player.js';
 import Npc from '/assets/js/GameEnginev1.1/essentials/Npc.js';
 import AiNpc from '/assets/js/GameEnginev1.1/essentials/AiNpc.js';
-import SpriteSheetCoin from '/assets/js/GameEnginev1.1/essentials/SpriteSheetCoin.js';
+import SpriteSheetCoin from '/assets/js/projects/castle-game/levels/SpriteSheetCoin.js';
 
 /**
  * GameLevelOutside
