@@ -6,6 +6,38 @@ class SplineBarrier extends Barrier {
         this.splinePoints = data.splinePoints || [];
     }
 
+    update() {
+        super.update();
+        
+        // Get curve points for collision detection
+        const curvePoints = SplineBarrier.getCurvePoints(this.splinePoints);
+        
+        // Find player
+        const player = this.gameEnv?.gameObjects?.find(obj => obj.constructor?.name === 'Player');
+        if (!player || !player.canvas || !this.canvas) return;
+
+        // Check collision with curve points
+        this.collisionData.hit = this.checkCurveCollision(player, curvePoints);
+        
+        if (this.collisionData.hit) {
+            this.handleCollisionEvent();
+        }
+    }
+
+    checkCurveCollision(player, curvePoints) {
+        const playerCenter = player.getCenter();
+        const collisionDistance = 20; // pixels
+        
+        // Check if player is close to any curve point
+        for (const point of curvePoints) {
+            const distance = Math.hypot(point.x - playerCenter.x, point.y - playerCenter.y);
+            if (distance < collisionDistance) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     // Interpolates between point P1 and P2, using P0 and P3 as control points
     static catmullRom(p0, p1, p2, p3, t) {
         const t2 = t * t;
