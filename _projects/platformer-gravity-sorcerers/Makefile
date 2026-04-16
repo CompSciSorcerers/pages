@@ -39,7 +39,7 @@ build:
 # Copy only JS and image assets (not notebook) - for watch triggers
 assets:
 	@mkdir -p $(JS_DEST)/levels
-	@cp levels/*.js $(JS_DEST)/levels/ 2>/dev/null || true
+	@cp -r levels/* $(JS_DEST)/levels/ 2>/dev/null || true
 	@mkdir -p $(JS_DEST)/model
 	@cp model/*.js $(JS_DEST)/model/ 2>/dev/null || true
 	@mkdir -p $(IMAGES_DEST)
@@ -68,10 +68,11 @@ watch:
 				cp $(PROJECT_SRC)/notebook.src.ipynb $(NOTEBOOK_DEST)/$(NOTEBOOK_FILENAME) 2>/dev/null || true; \
 				cd $(WORKSPACE_ROOT) && make convert-single NOTEBOOK_FILE="$(NOTEBOOK_DEST)/$(NOTEBOOK_FILENAME)" 2>&1; \
 			elif echo "$$changed_file" | grep -q "/levels/"; then \
-				filename=$$(basename "$$changed_file"); \
-				echo "  🔄 Level changed: $$filename"; \
-				mkdir -p $(JS_DEST)/levels; \
-				cp "$$changed_file" $(JS_DEST)/levels/ 2>/dev/null || true; \
+				rel_path=$${changed_file#$(PROJECT_SRC)/levels/}; \
+				echo "  🔄 Level changed: $$rel_path"; \
+				dest_dir="$(JS_DEST)/levels/$$(dirname "$$rel_path")"; \
+				mkdir -p "$$dest_dir"; \
+				cp "$$changed_file" "$$dest_dir/" 2>/dev/null || true; \
 			elif echo "$$changed_file" | grep -q "/model/"; then \
 				filename=$$(basename "$$changed_file"); \
 				echo "  🔄 Model changed: $$filename"; \
