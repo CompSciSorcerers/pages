@@ -29,32 +29,32 @@ class GameLevelMario {
 			hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
 		};
 
-		const spriteSrc = path + '/images/projects/platformer-gravity-sorcerers/playerSpritesheet.png';
+		const spriteSrc = path + '/images/projects/platformer-gravity-sorcerers/mario.png';
 		const playerData = {
-			id: 'PlatformerHero',
+			id: 'Mario',
 			greeting: 'Let\'s-a go!',
 			src: spriteSrc,
 			SCALE_FACTOR: 10,
 			STEP_FACTOR: 1600,
-			ANIMATION_RATE: 8,
+			ANIMATION_RATE: 20,
 			INIT_POSITION: {
 				x: width * 0.1,
 				y: height * 0.3,
 			},
-			pixels: { height: 432, width: 234 },
-			orientation: { rows: 4, columns: 3 },
+			pixels: { height: 384, width: 288 },
+			orientation: { rows: 2, columns: 3 },
 			down: { row: 0, start: 0, columns: 3 },
-			downRight: { row: 2, start: 0, columns: 3 },
+			downRight: { row: 0, start: 0, columns: 3 },
 			downLeft: { row: 1, start: 0, columns: 3 },
 			left: { row: 1, start: 0, columns: 3 },
-			right: { row: 2, start: 0, columns: 3 },
-			up: { row: 3, start: 0, columns: 3 },
+			right: { row: 0, start: 0, columns: 3 },
+			up: { row: 0, start: 0, columns: 3 },
 			upLeft: { row: 1, start: 0, columns: 3 },
-			upRight: { row: 2, start: 0, columns: 3 },
+			upRight: { row: 0, start: 0, columns: 3 },
 			hitbox: { widthPercentage: 0.1, heightPercentage: 0.15 },
 			keypress: { up: 87, left: 65, down: 83, right: 68 },
-			jumpVelocity: 12,
-			gravityAcceleration: 0.55,
+			jumpVelocity: 8,
+			gravityAcceleration: 0.35,
 		};
 
 		this.classes = [
