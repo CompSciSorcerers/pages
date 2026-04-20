@@ -17,10 +17,27 @@ class PlatformerPlayer extends Player {
 		this.debugHitbox = Boolean(data?.debugHitbox);
 		this.debugHitboxColor = data?.debugHitboxColor || 'rgba(57, 255, 20, 0.95)';
 		this._debugHitboxElement = null;
+		this.jumpSoundSrc = data?.jumpSoundSrc || null;
+		this.jumpSoundVolume = data?.jumpSoundVolume ?? 0.7;
+		this._jumpAudio = null;
 
 		if (this.debugHitbox) {
 			this._ensureDebugHitboxElement();
 		}
+
+		if (this.jumpSoundSrc) {
+			this._jumpAudio = new Audio(this.jumpSoundSrc);
+			this._jumpAudio.preload = 'auto';
+			this._jumpAudio.volume = Math.min(1, Math.max(0, this.jumpSoundVolume));
+		}
+	}
+
+	_playJumpSound() {
+		if (!this._jumpAudio) return;
+		try {
+			this._jumpAudio.currentTime = 0;
+			this._jumpAudio.play().catch(() => {});
+		} catch (_) {}
 	}
 
 	_ensureDebugHitboxElement() {
@@ -199,6 +216,7 @@ class PlatformerPlayer extends Player {
 		const upPressed = Boolean(this.pressedKeys[this.keypress.up]);
 		if (upPressed && (this.isGrounded || this._hasBarrierSupport()) && !this._jumpPressedLatch) {
 			this.verticalVelocity = this.jumpVelocity;
+			this._playJumpSound();
 			this.isGrounded = false;
 			this._groundedThisFrame = false;
 			this._skipGravityThisFrame = false;
@@ -305,6 +323,13 @@ class PlatformerPlayer extends Player {
 
 	destroy() {
 		this._removeDebugHitboxElement();
+		if (this._jumpAudio) {
+			try {
+				this._jumpAudio.pause();
+				this._jumpAudio.src = '';
+			} catch (_) {}
+			this._jumpAudio = null;
+		}
 		super.destroy();
 	}
 }

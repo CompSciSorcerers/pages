@@ -1,6 +1,8 @@
 import GameEnvBackground from '/assets/js/GameEnginev1.1/essentials/GameEnvBackground.js';
 import Barrier from '/assets/js/GameEnginev1.1/essentials/Barrier.js';
 import PlatformerPlayer from './custom/PlatformerPlayer.js';
+import Npc from '/assets/js/GameEnginev1.1/essentials/Npc.js';
+
 
 class GameLevelMario {
 	static displayName = 'Mario Platformer';
@@ -10,6 +12,32 @@ class GameLevelMario {
 		const width = gameEnv.innerWidth;
 		const height = gameEnv.innerHeight;
 		console.log('Initializing GameLevelMario with path:', path, 'width:', width, 'height:', height);
+
+		const marioJumpAudioSrc = path + '/images/projects/platformer-gravity-sorcerers/mario-jump.mp3';
+		const marioThemeAudioSrc = path + '/images/projects/platformer-gravity-sorcerers/mario-theme.mp3';
+		this.levelMusic = new Audio(marioThemeAudioSrc);
+		this.levelMusic.loop = true;
+		this.levelMusic.preload = 'auto';
+		this.levelMusic.volume = 0.35;
+
+		const tryStartLevelMusic = () => {
+			if (!this.levelMusic) return;
+			if (!this.levelMusic.paused) return;
+			this.levelMusic.play().catch(() => {});
+		};
+
+		tryStartLevelMusic();
+
+		const startOnInteraction = () => {
+			tryStartLevelMusic();
+			if (this.levelMusic && !this.levelMusic.paused) {
+				window.removeEventListener('keydown', startOnInteraction);
+				window.removeEventListener('pointerdown', startOnInteraction);
+			}
+		};
+
+		window.addEventListener('keydown', startOnInteraction);
+		window.addEventListener('pointerdown', startOnInteraction);
 
 		const image_src_bg = path + "/images/projects/platformer-gravity-sorcerers/oldmariobg.png";
 		const image_data_bg = {
@@ -25,7 +53,7 @@ class GameLevelMario {
 			width: 1,
 			height: 0.1,
 			color: 'rgba(133, 94, 66, 0.95)',
-			visible: true,
+			visible: false,
 			hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
 		};
 
@@ -36,7 +64,7 @@ class GameLevelMario {
 			width: 39/1118,
 			height: 49/760,
 			color: 'rgba(133, 94, 66, 0.95)',
-			visible: true,
+			visible: false,
 			hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
 		};
 
@@ -47,7 +75,7 @@ class GameLevelMario {
 			width: 150/1110,
 			height: 45/757,
 			color: 'rgba(133, 94, 66, 0.95)',
-			visible: true,
+			visible: false,
 			hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
 		};
 
@@ -58,7 +86,7 @@ class GameLevelMario {
 			width: 114/1110,
 			height: 47/757,
 			color: 'rgba(133, 94, 66, 0.95)',
-			visible: true,
+			visible: false,
 			hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
 		};
 
@@ -69,7 +97,7 @@ class GameLevelMario {
 			width: 76/1110,
 			height: 46/757,
 			color: 'rgba(133, 94, 66, 0.95)',
-			visible: true,
+			visible: false,
 			hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
 		};
 
@@ -80,7 +108,7 @@ class GameLevelMario {
 			width: 37/1110,
 			height: 47/757,
 			color: 'rgba(133, 94, 66, 0.95)',
-			visible: true,
+			visible: false,
 			hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
 		};
 
@@ -91,7 +119,7 @@ class GameLevelMario {
 			width: 40/1110,
 			height: 46/757,
 			color: 'rgba(133, 94, 66, 0.95)',
-			visible: true,
+			visible: false,
 			hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
 		}; 
 
@@ -102,7 +130,7 @@ class GameLevelMario {
 			width: 76/1110,
 			height: 48/757,
 			color: 'rgba(133, 94, 66, 0.95)',
-			visible: true,
+			visible: false,
 			hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
 		};
 
@@ -113,7 +141,7 @@ class GameLevelMario {
 			width: 113/1110,
 			height: 47/757,
 			color: 'rgba(133, 94, 66, 0.95)',
-			visible: true,
+			visible: false,
 			hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
 		}; 
 
@@ -124,7 +152,7 @@ class GameLevelMario {
 			width: 151/1110,
 			height: 46/757,
 			color: 'rgba(133, 94, 66, 0.95)',
-			visible: true,
+			visible: false,
 			hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
 		}; 
 
@@ -153,10 +181,67 @@ class GameLevelMario {
 			hitbox: { widthPercentage: 0.2, heightPercentage: 0.2 },
 			debugHitbox: false,
 			debugHitboxColor: 'rgba(57, 255, 20, 0.95)',
+			jumpSoundSrc: marioJumpAudioSrc,
+			jumpSoundVolume: 0.8,
 			keypress: { up: 87, left: 65, down: 83, right: 68 },
 			jumpVelocity: 7,
 			gravityAcceleration: 0.1,
 		};
+
+		const sprite_src_toad = path + "/images/projects/platformer-gravity-sorcerers/jumping-toad.png";
+        const sprite_greet_toad = "toad";
+        const sprite_data_toad = {
+            id: 'Toad',
+            greeting: sprite_greet_toad,
+            src: sprite_src_toad,
+            SCALE_FACTOR: 10,
+            ANIMATION_RATE: 8,
+            pixels: {width: 2400, height: 200},
+            INIT_POSITION: {x: 0.6 * width, y: 0.8 * height},
+            orientation: {rows: 1, columns: 12},
+            down: {row: 0, start: 0, columns: 12, mirror: true},
+            hitbox: {widthPercentage: 0.1, heightPercentage: 0.2},
+            dialogues: [
+                "Are you ready to play some archery?"
+            ],
+            reaction: function() {
+                console.log("Toad collision");
+            },
+            
+            // This is where the interactions for starting the game are handled
+            interact: function() {
+                // Clear any existing dialogue first to prevent duplicates
+                if (this.dialogueSystem && this.dialogueSystem.isDialogueOpen()) {
+                    this.dialogueSystem.closeDialogue();
+                }
+                
+                // Create a new dialogue system if needed
+                if (!this.dialogueSystem) {
+                    this.dialogueSystem = new DialogueSystem();
+                }
+                
+                // Show portal dialogue with buttons
+                this.dialogueSystem.showDialogue(
+                    "hallo i is toad",
+                    "Toad",
+                    this.spriteData.src
+                );
+                
+                // Add buttons directly to the dialogue
+                this.dialogueSystem.addButtons([
+                    {
+                        text: "Eliminate toad",
+                        primary: true,
+                        action: () => {
+                            this.dialogueSystem.closeDialogue();
+
+                            // Make the NPC disappear after interaction
+                            this.destroy();
+                        }
+                    }
+                ]);
+            }
+        };
 
 		this.classes = [
 			{ class: GameEnvBackground, data: image_data_bg },
@@ -170,7 +255,8 @@ class GameLevelMario {
 			{ class: Barrier, data: platform6Data },
 			{ class: Barrier, data: platform7Data },
 			{ class: Barrier, data: platform8Data },
-			{ class: Barrier, data: platform9Data }
+			{ class: Barrier, data: platform9Data },
+			{ class: Npc, data: sprite_data_toad },
 		];
 	}
 }
