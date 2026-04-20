@@ -3,7 +3,8 @@ import GameEnvBackground  from '/assets/js/GameEnginev1.1/essentials/GameEnvBack
 import Player from '/assets/js/GameEnginev1.1/essentials/Player.js';
 import Npc from '/assets/js/GameEnginev1.1/essentials/Npc.js';
 import AiNpc from '/assets/js/GameEnginev1.1/essentials/AiNpc.js';
-import SpriteSheetCoin from '/assets/js/projects/castle-game/levels/SpriteSheetCoin.js';
+import SpriteSheetCoin from '/assets/js/projects/barriers-spline-sorcerers/levels/SpriteSheetCoin.js';
+import SplineBarrier from '/assets/js/projects/barriers-spline-sorcerers/levels/SplineBarrier.js';
 
 /**
  * GameLevelOutside
@@ -212,6 +213,25 @@ class GameLevelOutside {
             spriteFrames: { rows: 2, columns: 4, frameIndex: Math.floor(Math.random() * 8) }     
         }
 
+        /**
+         * Example Spline Barrier Configuration
+         * 
+         * Creates a curved barrier that blocks player movement
+         * The spline points define a smooth S-curve across the level
+         */
+        const spline_barrier_data = {
+            id: 'curved-wall',
+            greeting: "This is a curved barrier, you cannot pass through it!",
+            splinePoints: [
+                { x: 200, y: 300 },   // Start point
+                { x: 400, y: 200 },   // Control point 1
+                { x: 600, y: 400 },   // Control point 2
+                { x: 800, y: 300 }    // End point
+            ],
+            // Optional: Add visual properties if you want to render the barrier
+            color: '#8B4513',  // Brown color for wooden barrier
+            lineWidth: 5        // Line thickness for visual representation
+        };
 
 
         this.classes = [
@@ -219,6 +239,7 @@ class GameLevelOutside {
             {class: Player, data: sprite_data_mc},
             {class: Npc, data: sprite_data_darkKnight},
             {class: Npc, data: sir_morty_data},
+            {class: SplineBarrier, data: spline_barrier_data},
             {class: SpriteSheetCoin, data: gem_data}
         ];
     }
