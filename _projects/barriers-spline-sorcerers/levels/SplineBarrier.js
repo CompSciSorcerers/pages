@@ -3,12 +3,13 @@ import Barrier from '/assets/js/GameEnginev1.1/essentials/Barrier.js';
 class SplineBarrier extends Barrier {
     constructor(data, gameEnv) {
         // Safety check: ensure splinePoints is a valid array
+        let splinePoints;
         if (data && data.splinePoints && Array.isArray(data.splinePoints)) {
-            this.splinePoints = data.splinePoints;
+            splinePoints = data.splinePoints;
         } else {
             console.warn('SplineBarrier: No valid splinePoints provided, using default curve');
             // Provide a default simple curve as fallback
-            this.splinePoints = [
+            splinePoints = [
                 { x: 100, y: 200 },
                 { x: 300, y: 100 },
                 { x: 500, y: 300 }
@@ -16,7 +17,7 @@ class SplineBarrier extends Barrier {
         }
         
         // Calculate canvas bounds from spline points
-        const bounds = this.calculateBounds(this.splinePoints);
+        const bounds = SplineBarrier.calculateBounds(splinePoints);
         
         // Set width/height in data based on spline bounds
         data.width = bounds.width + 40; // Add padding
@@ -28,6 +29,9 @@ class SplineBarrier extends Barrier {
         data.visible = data.visible !== undefined ? data.visible : true;
         
         super(data, gameEnv);
+        
+        // Now safe to access 'this'
+        this.splinePoints = splinePoints;
         
         // Store visual properties for drawing the spline
         this.barrierColor = data.color || '#8B4513';
@@ -98,7 +102,7 @@ class SplineBarrier extends Barrier {
         }
     }
 
-    calculateBounds(splinePoints) {
+    static calculateBounds(splinePoints) {
         let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
         for (const point of splinePoints) {
             minX = Math.min(minX, point.x);
