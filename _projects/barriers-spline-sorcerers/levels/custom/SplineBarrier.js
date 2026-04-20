@@ -33,6 +33,7 @@ class SplineBarrier extends Barrier {
             const distance = Math.hypot(point.x - playerCenter.x, point.y - playerCenter.y);
             if (distance < collisionDistance) {
                 return true;
+                console.log("collision detected")
             }
         }
         return false;
