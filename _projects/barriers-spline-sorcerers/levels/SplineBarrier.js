@@ -67,37 +67,31 @@ class SplineBarrier extends Barrier {
     update() {
         super.update();
 
-        // Get curve points for collision detection
-        const curvePoints = SplineBarrier.getCurvePoints(this.splinePoints);
-        
         // Find player
         const player = this.gameEnv?.gameObjects?.find(obj => obj.constructor?.name === 'Player');
         if (!player || !player.canvas || !this.canvas) return;
 
-        // Check collision with curve points
+        // Get curve points for collision detection
+        const curvePoints = SplineBarrier.getCurvePoints(this.splinePoints);
         const collisionPoint = this.getCollisionPoint(player, curvePoints);
-        const isColliding = collisionPoint !== null;
         
-        if (isColliding) {
-            // Set touchPoints structure expected by GameObject.handleCollisionState
+        if (collisionPoint) {
+            // Block player movement by pushing them away from the curve
             const playerCenter = player.getCenter();
-            this.collisionData.hit = true;
-            this.collisionData.touchPoints = {
-                this: {
-                    top: playerCenter.y < collisionPoint.y,
-                    bottom: playerCenter.y > collisionPoint.y,
-                    left: playerCenter.x < collisionPoint.x,
-                    right: playerCenter.x > collisionPoint.x
-                },
-                other: player
-            };
-            this.handleCollisionEvent();
-        } else {
-            // Reset collision data when not colliding
-            this.collisionData.hit = false;
-            // Clear collision events to allow re-triggering
-            if (this.state && this.state.collisionEvents) {
-                this.state.collisionEvents = [];
+            const dx = playerCenter.x - collisionPoint.x;
+            const dy = playerCenter.y - collisionPoint.y;
+            const dist = Math.hypot(dx, dy);
+            
+            // Normalize and push away
+            if (dist > 0) {
+                const pushX = (dx / dist) * 2; // Push strength
+                const pushY = (dy / dist) * 2;
+                
+                // Move player away from collision point
+                if (player.transform) {
+                    player.transform.x += pushX;
+                    player.transform.y += pushY;
+                }
             }
         }
     }
