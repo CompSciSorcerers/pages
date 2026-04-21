@@ -243,14 +243,30 @@ class GameLevelOutside {
          * Creates a curved barrier that blocks player movement
          * The spline points define a smooth S-curve across the level
          */
-        const spline_barrier_data = {
-            id: 'curved-wall',
+        const spline_barrier_data_1 = {
+            id: 'curved-wall-1',
             greeting: "This is a curved barrier, you cannot pass through it!",
             splinePoints: [
-                { x: 200, y: 300 },   // Start point
-                { x: 400, y: 200 },   // Control point 1
-                { x: 600, y: 400 },   // Control point 2
-                { x: 800, y: 300 }    // End point
+                { x: 427/1114*width, y: 749/760*height },
+                { x: 539/1114*width, y: 627/760*height },
+                { x: 445/1114*width, y: 504/760*height },
+                { x: 550/1114*width, y: 380/760*height },
+                // { x: 520/1114*width, y: 295/760*height }
+            ],
+            // Optional: Add visual properties if you want to render the barrier
+            color: '#8B4513',  // Brown color for wooden barrier
+            lineWidth: 5        // Line thickness for visual representation
+        };
+
+        const spline_barrier_data_2 = {
+            id: 'curved-wall-2',
+            greeting: "This is a curved barrier, you cannot pass through it!",
+            splinePoints: [
+                { x: 604/1114*width, y: 749/760*height },
+                { x: 675/1114*width, y: 666/760*height },
+                { x: 575/1114*width, y: 494/760*height },
+                { x: 635/1114*width, y: 384/760*height },
+                // { x: 590/1114*width, y: 305/760*height }
             ],
             // Optional: Add visual properties if you want to render the barrier
             color: '#8B4513',  // Brown color for wooden barrier
@@ -262,8 +278,9 @@ class GameLevelOutside {
             {class: GameEnvBackground, data: image_data_floor},
             {class: Player, data: sprite_data_mc},
             {class: Npc, data: sprite_data_darkKnight},
-            {class: Npc, data: sir_morty_data},
-            {class: SplineBarrier, data: spline_barrier_data},
+            // {class: Npc, data: sir_morty_data},
+            {class: SplineBarrier, data: spline_barrier_data_1},
+            {class: SplineBarrier, data: spline_barrier_data_2},
             {class: SpriteSheetCoin, data: gem_data}
         ];
     }
