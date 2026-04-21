@@ -86,6 +86,7 @@ class GameLevelOutside {
         src: sir_morty,
         SCALE_FACTOR: 7,
         ANIMATION_RATE: 40,
+        interactDistance: 50, // Reduce interaction distance
         pixels: { height: 864, width: 468 },
         INIT_POSITION: { x: width * 0.57, y: height * 0.5 },
         orientation: { rows: 4, columns: 3 },
@@ -144,6 +145,17 @@ class GameLevelOutside {
         },
         // Orchestrator: Handle player interaction (E key press)
         interact: function() {
+            // Check distance to player before allowing interaction
+            const player = this.gameEnv?.gameObjects?.find(obj => obj.constructor?.name === 'Player');
+            if (player) {
+                const dx = player.x - this.x;
+                const dy = player.y - this.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                if (distance > 50) { // Max interaction distance
+                    console.log('Too far to interact:', distance);
+                    return;
+                }
+            }
             // Delegate to AiNpc utility for full AI conversation interface
             AiNpc.showInteraction(this);
         }
@@ -164,6 +176,7 @@ class GameLevelOutside {
             src: sprite_src_darkKnight,
             SCALE_FACTOR: 12,
             ANIMATION_RATE: 40,
+            interactDistance: 50, // Reduce interaction distance
             pixels: {width: 242, height: 432},
             INIT_POSITION: {x: 0.49 * width, y: 0.33 * height},
             orientation: {rows: 4, columns: 3},
@@ -182,6 +195,17 @@ class GameLevelOutside {
             
             // This is where the interactions for starting the game are handled
             interact: function() {
+                // Check distance to player before allowing interaction
+                const player = this.gameEnv?.gameObjects?.find(obj => obj.constructor?.name === 'Player');
+                if (player) {
+                    const dx = player.x - this.x;
+                    const dy = player.y - this.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance > 50) { // Max interaction distance
+                        console.log('Too far to interact:', distance);
+                        return;
+                    }
+                }
                 // Clear any existing dialogue first to prevent duplicates
                 if (this.dialogueSystem && this.dialogueSystem.isDialogueOpen()) {
                     this.dialogueSystem.closeDialogue();
