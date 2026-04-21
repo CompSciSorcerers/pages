@@ -184,8 +184,8 @@ class GameLevelMario {
 			jumpSoundSrc: marioJumpAudioSrc,
 			jumpSoundVolume: 0.8,
 			keypress: { up: 87, left: 65, down: 83, right: 68 },
-			jumpVelocity: 7,
-			gravityAcceleration: 0.1,
+			jumpVelocity: 6,
+			gravityAcceleration: 0.12,
 		};
 
 		const sprite_src_toad = path + "/images/projects/platformer-gravity-sorcerers/jumping-toad.png";
@@ -222,7 +222,7 @@ class GameLevelMario {
                 
                 // Show portal dialogue with buttons
                 this.dialogueSystem.showDialogue(
-                    "hallo i is toad",
+                    "hallo i is toad. platformers are really cool!",
                     "Toad",
                     this.spriteData.src
                 );
@@ -230,7 +230,7 @@ class GameLevelMario {
                 // Add buttons directly to the dialogue
                 this.dialogueSystem.addButtons([
                     {
-                        text: "Eliminate toad",
+                        text: "ELIMINATE TOAD",
                         primary: true,
                         action: () => {
                             this.dialogueSystem.closeDialogue();
