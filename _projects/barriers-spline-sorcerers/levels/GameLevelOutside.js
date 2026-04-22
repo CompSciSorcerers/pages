@@ -254,6 +254,7 @@ class GameLevelOutside {
                 // { x: 520/1114*width, y: 295/760*height }
             ],
             // Optional: Add visual properties if you want to render the barrier
+            visible: false,
             color: '#8B4513',  // Brown color for wooden barrier
             lineWidth: 5        // Line thickness for visual representation
         };
@@ -269,6 +270,7 @@ class GameLevelOutside {
                 // { x: 590/1114*width, y: 305/760*height }
             ],
             // Optional: Add visual properties if you want to render the barrier
+            visible: false,
             color: '#8B4513',  // Brown color for wooden barrier
             lineWidth: 5        // Line thickness for visual representation
         };
