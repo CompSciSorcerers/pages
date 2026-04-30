@@ -16,9 +16,9 @@
 #   results) and in your feed.xml site description.
 
 title: Open Coding 
-description: "Class of 2029"
-owner_name: CompSciSorcerers 
-github_username: CompSciSorcerers
+description: "Class of 2026"
+owner_name: Open Coding Society 
+github_username: open-coding-society 
 github_repo: "pages" 
 baseurl: "" 
 future: true
@@ -129,3 +129,4 @@ minima:
     - navigation/blog.md
     - navigation/courses.md
     - navigation/search.md
+    
