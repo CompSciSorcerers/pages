@@ -354,11 +354,13 @@ class GameLevelOutside {
                                             
                                             // Force cleanup of any remaining canvases
                                             const gameContainer = document.getElementById('gameContainer');
-                                            const oldCanvases = gameContainer.querySelectorAll('canvas:not(#gameCanvas)');
-                                            oldCanvases.forEach(canvas => {
-                                                console.log("Removing old canvas:", canvas.id);
-                                                canvas.parentNode.removeChild(canvas);
-                                            });
+                                            if (gameContainer) {
+                                                const oldCanvases = gameContainer.querySelectorAll('canvas:not(#gameCanvas)');
+                                                oldCanvases.forEach(canvas => {
+                                                    console.log("Removing old canvas:", canvas.id);
+                                                    canvas.parentNode.removeChild(canvas);
+                                                });
+                                            }
                                         }
                                         
                                         console.log("Setting up battle room level...");
