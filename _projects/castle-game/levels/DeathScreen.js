@@ -1,5 +1,9 @@
+let restartScheduled = false;
+
 // Define the death screen
 function showDeathScreen(player, message="The Scythes have claimed another soul!") {
+    if (restartScheduled) return;
+    restartScheduled = true;
 
     // === FREEZE THE GAME ===
     // Access the game control through the player's game environment
@@ -75,7 +79,7 @@ function showDeathScreen(player, message="The Scythes have claimed another soul!
     deathMessage.innerHTML = `
         <div style="margin-bottom: 20px;">☠️ YOU DIED ☠️</div>
         <div style="font-size: 16px; margin-bottom: 20px;">${message}</div>
-        <div style="font-size: 14px;">Respawning in 3 seconds...</div>
+        <div style="font-size: 14px;">Restarting in 3 seconds...</div>
     `;
     
     document.body.appendChild(deathMessage);
@@ -87,15 +91,28 @@ function showDeathScreen(player, message="The Scythes have claimed another soul!
         }
     }, 2000);
     
-    // 3. Reset the level after a short delay using page reload for reliability
+    // 3. Reset the level after a short delay
     setTimeout(() => {
-        // Clean up any lingering resources before reload
-        if (self && self.timerInterval) {
-            clearInterval(self.timerInterval);
+        // Clean up any lingering resources before restart
+        try {
+            if (self && self.timerInterval) {
+                clearInterval(self.timerInterval);
+            }
+        } catch (error) {
+            console.warn('DeathScreen cleanup failed:', error);
         }
-        
-        // Force a complete page reload - most reliable way to reset
-        location.reload();
+
+        if (gameControl && typeof gameControl.transitionToLevel === 'function') {
+            try {
+                gameControl.isPaused = false;
+                gameControl.transitionToLevel();
+            } catch (error) {
+                console.error('Failed to restart level:', error);
+            }
+        } else {
+            console.warn('DeathScreen could not restart level (missing gameControl).');
+        }
+        restartScheduled = false;
     }, 3000); // 3 second delay before reset
 }
 

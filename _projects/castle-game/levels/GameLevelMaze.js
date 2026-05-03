@@ -330,7 +330,7 @@ class GameLevelMaze {
                 });
 
                 setTimeout(() => {
-                    try { overlay.remove(); } catch (err) { /* ignore */ }
+                    try { fadeOverlay.remove(); } catch (err) { /* ignore */ }
 
                     switchToFortressLevel();
 
@@ -343,12 +343,7 @@ class GameLevelMaze {
                         }, fadeOutMs + 100);
                     }, 220);
                 }, fadeInMs + 30); // fade in and fade out for the transition to gamelevelfortress
-            },
-            
-            // This is where the interactions for starting the game are handled
-            interact: function() {
-               // dont do anything
-            }
+                }
         };
 
 
