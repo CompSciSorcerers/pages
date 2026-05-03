@@ -87,7 +87,44 @@ jobs:
           REPO="${{ github.repository }}"
           OWNER=$(echo "$REPO" | cut -d'/' -f1)
           NAME=$(echo "$REPO" | cut -d'/' -f2)
-          BASEURL=""
+
+          PAGES_URL=""
+          if [[ -n "${GITHUB_TOKEN:-}" ]]; then
+            PAGES_URL=$(REPO="$REPO" python - <<'PY'
+import json
+import os
+import sys
+import urllib.request
+
+repo = os.environ.get("REPO")
+token = os.environ.get("GITHUB_TOKEN")
+if not repo or not token:
+    sys.exit(0)
+
+req = urllib.request.Request(f"https://api.github.com/repos/{repo}/pages")
+req.add_header("Authorization", f"Bearer {token}")
+req.add_header("Accept", "application/vnd.github+json")
+
+try:
+    with urllib.request.urlopen(req, timeout=10) as response:
+        data = json.load(response)
+        print(data.get("html_url", ""))
+except Exception:
+    pass
+PY
+)
+          fi
+
+          if [[ -n "$PAGES_URL" && "$PAGES_URL" != *".github.io"* ]]; then
+            BASEURL=""
+          elif [[ "$NAME" == "$OWNER.github.io" ]]; then
+            BASEURL=""
+          elif [[ "${{ github.repository }}" = "Open-Coding-Society/pages" ]]; then
+            BASEURL=""
+          else
+            BASEURL="/$NAME"
+          fi
+
           echo "baseurl: \"$BASEURL\"" > _config.override.yml
 
       - name: Build with Jekyll
