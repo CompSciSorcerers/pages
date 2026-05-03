@@ -19,8 +19,9 @@ student-management-groups
 test-project
 game-in-game-lesson
 red-riding
-barriers-spline-sorcerers:dev
-platformer-gravity-sorcerers:dev
+castle-game
+barriers-spline-sorcerers
+platformer-gravity-sorcerers
 backgrounds
 multiplayer
 transitions
