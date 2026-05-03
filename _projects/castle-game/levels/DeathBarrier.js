@@ -1,4 +1,4 @@
-import Barrier from '/assets/js/GameEnginev1.1/essentials/Barrier.js';
+import Barrier from '@assets/js/GameEnginev1.1/essentials/Barrier.js';
 import showDeathScreen from './DeathScreen.js';
 
 class DeathBarrier extends Barrier {

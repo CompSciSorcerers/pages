@@ -1,8 +1,8 @@
 
-import GameEnvBackground  from '/assets/js/GameEnginev1.1/essentials/GameEnvBackground.js';
-import Player from '/assets/js/GameEnginev1.1/essentials/Player.js';
-import Npc  from '/assets/js/GameEnginev1.1/essentials/Npc.js';
-import AiNpc  from '/assets/js/GameEnginev1.1/essentials/AiNpc.js';
+import GameEnvBackground  from '@assets/js/GameEnginev1.1/essentials/GameEnvBackground.js';
+import Player from '@assets/js/GameEnginev1.1/essentials/Player.js';
+import Npc  from '@assets/js/GameEnginev1.1/essentials/Npc.js';
+import AiNpc  from '@assets/js/GameEnginev1.1/essentials/AiNpc.js';
 import GameLevelArchery from './GameLevelArchery.js';
 import SpriteSheetCoin from './SpriteSheetCoin.js';
 
@@ -37,7 +37,7 @@ class GameLevelOutside {
         const path = gameEnv.path;
 
         // --- Floor ---
-        const image_src_floor = path + "/images/castleGame/castleOutside.png";
+        const image_src_floor = path + "/images/projects/castle-game/castleOutside.png";
         const image_data_floor = {
             name: 'floor',
             src: image_src_floor,
@@ -50,7 +50,7 @@ class GameLevelOutside {
          * Represents the main controllable character (knight)
          * The player can move around the map and interact with NPCs. It can also shoot arrows.
          */
-        const sprite_src_mc = path + "/images/castleGame/playerSpritesheet.png";
+        const sprite_src_mc = path + "/images/projects/castle-game/playerSpritesheet.png";
         const MC_SCALE_FACTOR = 15;
         const sprite_data_mc = {
             id: 'Knight',
@@ -78,7 +78,7 @@ class GameLevelOutside {
         };
     
 
-        const sir_morty = path + "/images/castleGame/mortyKnight.png";
+        const sir_morty = path + "/images/projects/castle-game/mortyKnight.png";
         const sir_morty_greeting = "Hello! I'm Sir Morty!";
         const sir_morty_data = {
         id: "Sir Morty",
@@ -156,7 +156,7 @@ class GameLevelOutside {
          * Acts as the  trigger to start the archery mini-game.
          * When the player interacts (presses E), a dialogue appears allowing the player to start or cancel the game.
          */
-        const sprite_src_darkKnight = path + "/images/castleGame/darkKnight.png";
+        const sprite_src_darkKnight = path + "/images/projects/castle-game/darkKnight.png";
         const sprite_greet_darkKnight = "Start the game? Press E";
         const sprite_data_darkKnight = {
             id: 'DarkKnight',
@@ -354,11 +354,13 @@ class GameLevelOutside {
                                             
                                             // Force cleanup of any remaining canvases
                                             const gameContainer = document.getElementById('gameContainer');
-                                            const oldCanvases = gameContainer.querySelectorAll('canvas:not(#gameCanvas)');
-                                            oldCanvases.forEach(canvas => {
-                                                console.log("Removing old canvas:", canvas.id);
-                                                canvas.parentNode.removeChild(canvas);
-                                            });
+                                            if (gameContainer) {
+                                                const oldCanvases = gameContainer.querySelectorAll('canvas:not(#gameCanvas)');
+                                                oldCanvases.forEach(canvas => {
+                                                    console.log("Removing old canvas:", canvas.id);
+                                                    canvas.parentNode.removeChild(canvas);
+                                                });
+                                            }
                                         }
                                         
                                         console.log("Setting up battle room level...");
@@ -416,7 +418,7 @@ class GameLevelOutside {
             INIT_POSITION: { x: 0.5, y: 0.5 },
             SCALE_FACTOR: 30,
             value: 5,
-            spriteImagePath: path + '/images/castleGame/gems.png',
+            spriteImagePath: path + '/images/projects/castle-game/gems.png',
             spriteFrames: { rows: 2, columns: 4, frameIndex: Math.floor(Math.random() * 8) }     
         }
 

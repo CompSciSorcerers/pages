@@ -1,7 +1,7 @@
-import GameEnvBackground from "/assets/js/GameEnginev1.1/essentials/GameEnvBackground.js";
-import Player from "/assets/js/GameEnginev1.1/essentials/Player.js";
-import Npc from '/assets/js/GameEnginev1.1/essentials/Npc.js';
-import Barrier from '/assets/js/GameEnginev1.1/essentials/Barrier.js';
+import GameEnvBackground from "@assets/js/GameEnginev1.1/essentials/GameEnvBackground.js";
+import Player from "@assets/js/GameEnginev1.1/essentials/Player.js";
+import Npc from '@assets/js/GameEnginev1.1/essentials/Npc.js';
+import Barrier from '@assets/js/GameEnginev1.1/essentials/Barrier.js';
 import DialogueSystem from './DialogueSystem.js';
 import Scythe from './Scythe.js';
 import SpecialScythe from './SpecialScythe.js';
@@ -10,7 +10,7 @@ import SuperScythe from './SuperScythe.js';
 import BossScythe from './BossScythe.js';
 import Interceptor from './Interceptor.js';
 import showEndScreen from "./EndScreen.js";
-import Leaderboard from "/assets/js/GameEnginev1.1/essentials/Leaderboard.js";
+import Leaderboard from "@assets/js/GameEnginev1.1/essentials/Leaderboard.js";
 
 /**
  * Represents the Fortress game level with all game objects and systems
@@ -104,7 +104,7 @@ class GameLevelFortress {
         // update: now changed to mario castle theme
         // Will be stopped when transitioning to the battle room below
         let randomSong = ["marioCastle.mp3", "legendZelda.mp3"][Math.floor(Math.random() * 2)];
-        const levelMusic = new Audio(path + `/assets/sounds/mansionGame/${randomSong}`);
+        const levelMusic = new Audio(path + `@assets/sounds/mansionGame/${randomSong}`);
         levelMusic.loop = true; // Continuous playback
         levelMusic.volume = 0.3; // Moderate volume level
         levelMusic.play().catch(err => console.warn('Level music failed to play:', err));

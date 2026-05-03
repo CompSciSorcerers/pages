@@ -3,20 +3,21 @@
 // How to use this file:
 // 1) Save as assets/js/adventureGame/GameLevelGamelevelmaze.js in your repo.
 // 2) Reference it in your runner or level selector. Examples:
-//    import GameLevelPlanets from '/assets/js/GameEnginev1/GameLevelPlanets.js';
-//    import GameLevelGamelevelmaze from '/assets/js/adventureGame/GameLevelGamelevelmaze.js';
+//    import GameLevelPlanets from '@assets/js/GameEnginev1/GameLevelPlanets.js';
+//    import GameLevelGamelevelmaze from '@assets/js/adventureGame/GameLevelGamelevelmaze.js';
 //    export const gameLevelClasses = [GameLevelPlanets, GameLevelGamelevelmaze];
 //    // or pass it directly to your GameControl as the only level.
 // 3) Ensure images exist and paths resolve via 'path' provided by the engine.
 // 4) You can add more objects to this.classes inside the constructor.
 
-import GameEnvBackground from '/assets/js/GameEnginev1.1/essentials/GameEnvBackground.js';
-import Player from '/assets/js/GameEnginev1.1/essentials/Player.js';
-import Npc from '/assets/js/GameEnginev1.1/essentials/Npc.js';
+import GameEnvBackground from '@assets/js/GameEnginev1.1/essentials/GameEnvBackground.js';
+import Player from '@assets/js/GameEnginev1.1/essentials/Player.js';
+import Npc from '@assets/js/GameEnginev1.1/essentials/Npc.js';
 import DeathBarrier from './DeathBarrier.js';
 import showEndScreen from "./EndScreen.js"; // Not currently used, instead the level just transitions
 import showDeathScreen from './DeathScreen.js';
 import GameLevelFortress from './GameLevelFortress.js';
+import Ghost from './Ghost.js';
 
 class GameLevelMaze {
 
@@ -34,11 +35,11 @@ class GameLevelMaze {
 
         const bgData = {
             name: "custom_bg",
-            src: path + "/images/castleGame/dungeonMaze.png",
+            src: path + "/images/projects/castle-game/dungeonMaze.png",
             pixels: { height: 772, width: 1134 }
         };
 
-        const sprite_src_mc = path + "/images/castleGame/playerSpritesheet.png";
+        const sprite_src_mc = path + "/images/projects/castle-game/playerSpritesheet.png";
         const MC_SCALE_FACTOR = 20;
         const sprite_data_mc = {
             id: 'Knight',
@@ -69,7 +70,7 @@ class GameLevelMaze {
         const mortyData = {
             id: 'morty',
             greeting: 'Hey there!',
-            src: path + "/images/castleGame/morty.png",
+            src: path + "/images/projects/castle-game/morty.png",
             SCALE_FACTOR: 13,
             INIT_POSITION: { 
                 x: 250 / 1911 * width, 
@@ -139,6 +140,25 @@ class GameLevelMaze {
                     console.error('Error calling showDialogue:', error);
                 }
             }
+        };
+
+        const ghostData = {
+            id: 'Ghost',
+            greeting: false,
+            src: path + "/images/projects/castle-game/ghost.png",
+            SCALE_FACTOR: 12,
+            ANIMATION_RATE: 20,
+            INIT_POSITION: { x: 0.8 * width, y: 0.2 * height },
+            pixels: { width: 3000, height: 1000 },
+            orientation: { rows: 2, columns: 6 },
+            down: { row: 0, start: 0, columns: 6 },
+            left: { row: 1, start: 0, columns: 6},
+            right: { row: 1, start: 0, columns: 6},
+            hitbox: { widthPercentage: 0.15, heightPercentage: 0.2 },
+            followSpeedFactor: 0.4,
+            followStopDistance: 12,
+            zIndex: 12,
+            canvasFilter: 'drop-shadow(0 0 8px rgba(150, 220, 255, 0.7))'
         };
 
         const dbarrier_1 = {
@@ -256,7 +276,7 @@ class GameLevelMaze {
         };
 
 
-        const sprite_src_invis = path + "/images/castleGame/invisDoorCollisionSprite.png";
+        const sprite_src_invis = path + "/images/projects/castle-game/testDoorCollisionSprite.png";
         const sprite_greet_invis = "Start the game? Press E";
         const sprite_data_invis = {
             id: 'Villager',
@@ -338,6 +358,7 @@ class GameLevelMaze {
             { class: Player, data: sprite_data_mc },
             { class: Npc, data: mortyData },
             { class: Npc, data: sprite_data_invis},
+            { class: Ghost, data: ghostData },
             { class: DeathBarrier, data: dbarrier_1 },
             { class: DeathBarrier, data: dbarrier_2 },
             { class: DeathBarrier, data: dbarrier_3 },

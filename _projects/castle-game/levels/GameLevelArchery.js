@@ -1,9 +1,9 @@
 
-import GameEnvBackground  from '/assets/js/GameEnginev1.1/essentials/GameEnvBackground.js';
+import GameEnvBackground  from '@assets/js/GameEnginev1.1/essentials/GameEnvBackground.js';
 import FightingPlayer from './FightingPlayer.js';
-import Npc  from '/assets/js/GameEnginev1.1/essentials/Npc.js';
-import Barrier from '/assets/js/GameEnginev1.1/essentials/Barrier.js';
-import Enemy from '/assets/js/GameEnginev1.1/essentials/Enemy.js';
+import Npc  from '@assets/js/GameEnginev1.1/essentials/Npc.js';
+import Barrier from '@assets/js/GameEnginev1.1/essentials/Barrier.js';
+import Enemy from '@assets/js/GameEnginev1.1/essentials/Enemy.js';
 
 /**
  * GameLevelArchery
@@ -38,7 +38,7 @@ class GameLevelArchery {
         window.archeryGameStarted = false;
 
         // --- Floor ---
-        const image_src_floor = path + "/images/castleGame/grassBackground.png";
+        const image_src_floor = path + "/images/projects/castle-game/grassBackground.png";
         const image_data_floor = {
             name: 'floor',
             src: image_src_floor,
@@ -51,7 +51,7 @@ class GameLevelArchery {
          * Represents the main controllable character (knight)
          * The player can move around the map and interact with NPCs. It can also shoot arrows.
          */
-        const sprite_src_mc = path + "/images/castleGame/playerSpritesheet.png";
+        const sprite_src_mc = path + "/images/projects/castle-game/playerSpritesheet.png";
         const MC_SCALE_FACTOR = 7;
         const sprite_data_mc = {
             id: 'Knight',
@@ -85,7 +85,7 @@ class GameLevelArchery {
          * Acts as the  trigger to start the archery mini-game.
          * When the player interacts (presses E), a dialogue appears allowing the player to start or cancel the game.
          */
-        const sprite_src_villager = path + "/images/castleGame/villager.png";
+        const sprite_src_villager = path + "/images/projects/castle-game/villager.png";
         const sprite_greet_villager = "Start the game? Press E";
         const sprite_data_villager = {
             id: 'Villager',
@@ -189,7 +189,7 @@ class GameLevelArchery {
         const target_data = {
             id: 'archery_target',
             greeting: "Target",
-            src: path + "/images/castleGame/target.png",
+            src: path + "/images/projects/castle-game/target.png",
             SCALE_FACTOR: 5,
             ANIMATION_RATE: 100,
             pixels: {width: 178, height: 169},
