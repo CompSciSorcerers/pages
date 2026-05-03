@@ -87,15 +87,7 @@ jobs:
           REPO="${{ github.repository }}"
           OWNER=$(echo "$REPO" | cut -d'/' -f1)
           NAME=$(echo "$REPO" | cut -d'/' -f2)
-
-          if [[ "$NAME" == "$OWNER.github.io" ]]; then
-            BASEURL=""
-          elif [[ "${{ github.repository }}" = "Open-Coding-Society/pages" ]]; then
-            BASEURL=""
-          else
-            BASEURL="/$NAME"
-          fi
-
+          BASEURL=""
           echo "baseurl: \"$BASEURL\"" > _config.override.yml
 
       - name: Build with Jekyll
