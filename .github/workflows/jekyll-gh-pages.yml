@@ -92,9 +92,7 @@ jobs:
             BASEURL=""
           elif [[ "${{ github.repository }}" = "Open-Coding-Society/pages" ]]; then
             BASEURL=""
-          elif [[ "$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-            "https://api.github.com/repos/$REPO/pages" | python3 -c \
-            "import sys,json; d=json.load(sys.stdin); print(d.get('cname',''))" 2>/dev/null)" == *.opencodingsociety.com ]]; then
+          elif [[ -f "CNAME" ]] && grep -q "\.opencodingsociety\.com" CNAME; then
             BASEURL=""
           else
             BASEURL="/$NAME"
