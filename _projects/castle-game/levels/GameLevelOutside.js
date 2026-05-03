@@ -218,6 +218,8 @@ class GameLevelOutside {
                                 const fadeOverlay = document.createElement('div');
                                 const fadeInMs = 2000; // longer fade in
                                 const fadeOutMs = 1200; // fade out duration
+                                let starFrameId = null;
+                                let starResizeHandler = null;
                                 // Reset the battle room fade flag
                                 window.__startFadeComplete = false;
                                 Object.assign(fadeOverlay.style, {
@@ -226,19 +228,91 @@ class GameLevelOutside {
                                     left: '0',
                                     width: '100%',
                                     height: '100%',
-                                    backgroundColor: '#000',
+                                    backgroundColor: 'rgba(0, 0, 0, 0.85)',
                                     opacity: '0',
                                     transition: `opacity ${fadeInMs}ms ease-in-out`,
                                     zIndex: '9999'
                                 });
                                 document.body.appendChild(fadeOverlay);
 
+                                // Parallax starfield backdrop for the transition screen.
+                                const starCanvas = document.createElement('canvas');
+                                const starCtx = starCanvas.getContext('2d');
+                                Object.assign(starCanvas.style, {
+                                    position: 'fixed',
+                                    top: '0',
+                                    left: '0',
+                                    width: '100%',
+                                    height: '100%',
+                                    zIndex: '9998',
+                                    pointerEvents: 'none',
+                                    opacity: '0',
+                                    transition: 'opacity 600ms ease-in-out'
+                                });
+                                document.body.appendChild(starCanvas);
+
+                                const starLayers = [
+                                    { count: 140, speed: 0.25, size: [0.6, 1.4], alpha: [0.2, 0.5] },
+                                    { count: 80, speed: 0.6, size: [1.0, 2.2], alpha: [0.4, 0.8] },
+                                    { count: 35, speed: 1.1, size: [1.6, 3.4], alpha: [0.5, 0.9] }
+                                ];
+
+                                const starState = starLayers.map(layer => ({
+                                    speed: layer.speed,
+                                    stars: Array.from({ length: layer.count }, () => ({
+                                        x: Math.random(),
+                                        y: Math.random(),
+                                        r: layer.size[0] + Math.random() * (layer.size[1] - layer.size[0]),
+                                        a: layer.alpha[0] + Math.random() * (layer.alpha[1] - layer.alpha[0])
+                                    }))
+                                }));
+
+                                const resizeStars = () => {
+                                    starCanvas.width = window.innerWidth;
+                                    starCanvas.height = window.innerHeight;
+                                };
+
+                                const drawStars = () => {
+                                    if (!starCtx) return;
+                                    const w = starCanvas.width;
+                                    const h = starCanvas.height;
+                                    starCtx.clearRect(0, 0, w, h);
+
+                                    const gradient = starCtx.createRadialGradient(
+                                        w * 0.5, h * 0.35, 0, w * 0.5, h * 0.35, Math.max(w, h) * 0.7
+                                    );
+                                    gradient.addColorStop(0, 'rgba(40, 70, 120, 0.35)');
+                                    gradient.addColorStop(1, 'rgba(0, 0, 10, 0.95)');
+                                    starCtx.fillStyle = gradient;
+                                    starCtx.fillRect(0, 0, w, h);
+
+                                    starState.forEach(layer => {
+                                        layer.stars.forEach(star => {
+                                            star.y += layer.speed / h;
+                                            if (star.y > 1) {
+                                                star.y = 0;
+                                                star.x = Math.random();
+                                            }
+                                            starCtx.fillStyle = `rgba(200, 220, 255, ${star.a})`;
+                                            starCtx.beginPath();
+                                            starCtx.arc(star.x * w, star.y * h, star.r, 0, Math.PI * 2);
+                                            starCtx.fill();
+                                        });
+                                    });
+
+                                    starFrameId = requestAnimationFrame(drawStars);
+                                };
+
+                                resizeStars();
+                                starResizeHandler = () => resizeStars();
+                                window.addEventListener('resize', starResizeHandler);
+                                drawStars();
+
                                
                                 console.log("Starting battle level transition...");
 
-                                // Fade in
+                                // Start the starfield and text first, then fade in the backdrop.
                                 requestAnimationFrame(() => {
-                                    fadeOverlay.style.opacity = '1';
 
                                     // Mark that the battle-room fade-complete flag is not yet set.
                                     // This flag will be set to true once the overlay is fully removed
@@ -294,6 +368,12 @@ class GameLevelOutside {
                                     requestAnimationFrame(() => {
                                         transitionText.style.opacity = '1';
                                     });
+
+                                    // Fade in the backdrop after typing begins to avoid the initial flash.
+                                    setTimeout(() => {
+                                        fadeOverlay.style.opacity = '1';
+                                        starCanvas.style.opacity = '1';
+                                    }, 100);
 
                                     const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -387,6 +467,11 @@ class GameLevelOutside {
                                             setTimeout(() => {
                                                 try { document.body.removeChild(fadeOverlay); } catch (e) {}
                                                 try { document.body.removeChild(transitionText); } catch (e) {}
+                                                try { document.body.removeChild(starCanvas); } catch (e) {}
+                                                if (starFrameId) cancelAnimationFrame(starFrameId);
+                                                if (starResizeHandler) {
+                                                    window.removeEventListener('resize', starResizeHandler);
+                                                }
                                                 // Now the archery level visuals have finished fading in for the player.
                                                 // Signal to in-level enemies that it's OK to start moving.
                                                 try { window.__startFadeComplete = true; } catch (e) {}

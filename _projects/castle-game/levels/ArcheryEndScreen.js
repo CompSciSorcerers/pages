@@ -10,6 +10,10 @@ import GameLevelMaze from './GameLevelMaze.js';
 export default function showEndScreen(gameEnv) {
     if (typeof document === 'undefined') return;
 
+    if (typeof window !== 'undefined') {
+        window.archeryVictory = true;
+    }
+
     const timeTaken = window.timeStarted ? (Date.now() / 1000.0) - window.timeStarted : null;
     console.log(`Archery game won! Time taken: ${timeTaken !== null ? timeTaken + ' seconds' : 'Error calculating time'}`);
     const formattedTime = timeTaken !== null ? `${timeTaken.toFixed(2)} seconds` : 'N/A';
@@ -19,6 +23,65 @@ export default function showEndScreen(gameEnv) {
     if (document.getElementById('archery-victory-overlay')) return;
     // Determine resource path
     const path = (gameEnv && gameEnv.path) ? gameEnv.path : '';
+
+    // Clear any active arrows and HUD elements so the victory screen is clean
+    if (gameEnv && Array.isArray(gameEnv.gameObjects)) {
+        const arrows = gameEnv.gameObjects.filter(obj => obj && obj.constructor?.name === 'Projectile');
+        arrows.forEach(arrow => {
+            try {
+                if (typeof arrow.destroy === 'function') {
+                    arrow.destroy();
+                }
+            } catch (error) {
+                console.warn('Failed to destroy arrow:', error);
+            }
+        });
+
+        gameEnv.gameObjects.forEach(obj => {
+            if (obj && Array.isArray(obj.projectiles)) {
+                obj.projectiles.forEach(projectile => {
+                    try {
+                        if (projectile && typeof projectile.destroy === 'function') {
+                            projectile.destroy();
+                        }
+                    } catch (error) {
+                        console.warn('Failed to destroy projectile:', error);
+                    }
+                });
+                obj.projectiles = [];
+            }
+            if (!obj || !obj.counterEl) return;
+            try {
+                if (obj.counterEl.parentNode) {
+                    obj.counterEl.parentNode.removeChild(obj.counterEl);
+                }
+            } catch (error) {
+                console.warn('Failed to remove hits counter:', error);
+            }
+            obj.counterEl = null;
+        });
+    }
+
+    if (gameEnv && gameEnv.gameControl) {
+        gameEnv.gameControl.isPaused = true;
+    }
+
+    if (typeof window !== 'undefined' && window.archeryHitsCounter) {
+        try {
+            if (window.archeryHitsCounter.parentNode) {
+                window.archeryHitsCounter.parentNode.removeChild(window.archeryHitsCounter);
+            }
+        } catch (error) {
+            console.warn('Failed to remove global hits counter:', error);
+        }
+        window.archeryHitsCounter = null;
+    }
+
+    document.querySelectorAll('#archery-hits-remaining').forEach((counterEl) => {
+        if (counterEl && counterEl.parentNode) {
+            counterEl.parentNode.removeChild(counterEl);
+        }
+    });
 
     const overlay = document.createElement('div');
     overlay.id = 'archery-victory-overlay';

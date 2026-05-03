@@ -204,6 +204,13 @@ class GameLevelArchery {
 
             // This is where interactions between the target and projectiles are handled!
             update: function() {
+                if (typeof window !== 'undefined' && window.archeryVictory) {
+                    if (this.counterEl && this.counterEl.parentNode) {
+                        this.counterEl.parentNode.removeChild(this.counterEl);
+                    }
+                    this.counterEl = null;
+                    return;
+                }
                 // Initialize hitsRemaining if not set
                 if (this.hitsRemaining === undefined) {
                     this.hitsRemaining = 30;
@@ -233,34 +240,42 @@ class GameLevelArchery {
                         this.speed += 0.5;
                     }
 
-                    if (this.speed > 10){
-                        this.speed = 10; // cap the speed
+                    if (this.speed > 7){
+                        this.speed = 7; // cap the speed
                     }
                 }
 
                 // counter element
                 if (!this.counterEl) {
                     this.counterEl = document.createElement('div');
+                    this.counterEl.id = 'archery-hits-remaining';
                     this.counterEl.style.position = 'absolute';
+                    this.counterEl.style.right = '24px';
+                    this.counterEl.style.bottom = '20px';
                     this.counterEl.style.color = 'red';
                     this.counterEl.style.font = 'bold 18px monospace';
-                    this.counterEl.style.textAlign = 'center';
+                    this.counterEl.style.textAlign = 'right';
                     this.counterEl.style.pointerEvents = 'none';
                     this.counterEl.style.userSelect = 'none';
+                    this.counterEl.style.zIndex = '10001';
                     const container =
                         this.gameEnv?.container ||
                         this.gameEnv?.gameContainer ||
                         document.getElementById('gameContainer') ||
                         document.body;
                     if (container) {
+                        const computed = window.getComputedStyle(container);
+                        if (computed.position === 'static') {
+                            container.style.position = 'relative';
+                        }
                         container.appendChild(this.counterEl);
+                    }
+                    if (typeof window !== 'undefined') {
+                        window.archeryHitsCounter = this.counterEl;
                     }
                 }
 
-                // reposition each frame
-                const rect = this.canvas.getBoundingClientRect();
-                this.counterEl.style.left = `${rect.left}px`;
-                this.counterEl.style.top = `${rect.bottom + 2}px`;
+                // Update counter text without moving it around
                 this.counterEl.innerText = this.hitsRemaining;
             }
         };

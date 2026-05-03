@@ -276,7 +276,7 @@ class GameLevelMaze {
         };
 
 
-        const sprite_src_invis = path + "/images/projects/castle-game/testDoorCollisionSprite.png";
+        const sprite_src_invis = path + "/images/projects/castle-game/invisDoorCollisionSprite.png";
         const sprite_greet_invis = "Start the game? Press E";
         const sprite_data_invis = {
             id: 'Villager',
