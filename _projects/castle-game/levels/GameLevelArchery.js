@@ -35,6 +35,35 @@ class GameLevelArchery {
         const height = gameEnv.innerHeight;
         const path = gameEnv.path;
 
+        const archeryStorageKey = 'castleGame.archeryCompleted';
+        const getArcheryCompletion = () => {
+            try {
+                if (typeof window === 'undefined' || !window.localStorage) {
+                    return false;
+                }
+                const stored = window.localStorage.getItem(archeryStorageKey);
+                return stored === 'true';
+            } catch (error) {
+                return false;
+            }
+        };
+        const setArcheryCompletion = (value) => {
+            try {
+                if (typeof window === 'undefined' || !window.localStorage) {
+                    return;
+                }
+                window.localStorage.setItem(archeryStorageKey, value ? 'true' : 'false');
+            } catch (error) {
+                // Ignore storage errors (e.g., private mode)
+            }
+        };
+
+        if (typeof window !== 'undefined' && window.localStorage) {
+            if (window.localStorage.getItem(archeryStorageKey) === null) {
+                setArcheryCompletion(false);
+            }
+        }
+
         window.archeryGameStarted = false;
 
         // --- Floor ---
@@ -118,47 +147,91 @@ class GameLevelArchery {
                     this.dialogueSystem = new DialogueSystem();
                 }
                 
-                // Show portal dialogue with buttons
-                this.dialogueSystem.showDialogue(
-                    "Would you like to start the game?",
-                    "Villager",
-                    this.spriteData.src
-                );
-                
-                // Add buttons directly to the dialogue
-                this.dialogueSystem.addButtons([
-                    {
-                        text: "Start",
-                        primary: true,
-                        action: () => {
-                            this.dialogueSystem.closeDialogue();
-                            
-                            // Remove the barrier
-                            const barrier = this.gameEnv.gameObjects.find(obj => obj.canvas && obj.canvas.id === 'archery_barrier');
-                            if (barrier) {
-                                barrier.destroy();
+                const alreadyCompleted = getArcheryCompletion();
+
+                const removeBarrier = () => {
+                    const barrier = this.gameEnv.gameObjects.find(obj => obj.canvas && obj.canvas.id === 'archery_barrier');
+                    if (barrier) {
+                        barrier.destroy();
+                    }
+                };
+
+                const startArcheryGame = (resetTarget) => {
+                    removeBarrier();
+
+                    const target = this.gameEnv.gameObjects.find(obj => obj.canvas && obj.canvas.id === 'archery_target');
+                    if (target) {
+                        if (resetTarget) {
+                            target.hitsRemaining = 30;
+                            target.speed = 3;
+                            target.velocity = { x: 2, y: 0 };
+                            if (target.position) {
+                                target.position.x = 0.5 * width;
+                                target.position.y = 0.25 * height;
                             }
-
-                            // Start the target moving continuously left/right
-                            const target = this.gameEnv.gameObjects.find(obj => obj.canvas && obj.canvas.id === 'archery_target');
-                            if (target) {
-                                target.velocity = { x: 2, y: 0 }; // Start moving right
-                            }
-
-                            // Make the NPC disappear after interaction
-                            this.destroy();
-
-                            window.archeryGameStarted = true;
-                            window.timeStarted = Date.now() / 1000.0;
-                        }
-                    },
-                    {
-                        text: "Nevermind",
-                        action: () => {
-                            this.dialogueSystem.closeDialogue();
+                            target.victoryStored = false;
+                        } else if (!target.velocity) {
+                            target.velocity = { x: 2, y: 0 };
                         }
                     }
-                ]);
+
+                    if (typeof window !== 'undefined') {
+                        window.archeryVictory = false;
+                        window.archeryGameStarted = true;
+                        window.timeStarted = Date.now() / 1000.0;
+                    }
+                };
+
+                if (alreadyCompleted) {
+                    this.dialogueSystem.showDialogue(
+                        "You already beat the archery challenge. Would you like to play again?",
+                        "Villager",
+                        this.spriteData.src
+                    );
+
+                    this.dialogueSystem.addButtons([
+                        {
+                            text: "Play again",
+                            primary: true,
+                            action: () => {
+                                this.dialogueSystem.closeDialogue();
+                                startArcheryGame(true);
+                            }
+                        },
+                        {
+                            text: "Continue to the maze",
+                            action: () => {
+                                this.dialogueSystem.closeDialogue();
+                                removeBarrier();
+                            }
+                        }
+                    ]);
+                } else {
+                    // Show portal dialogue with buttons
+                    this.dialogueSystem.showDialogue(
+                        "Would you like to start the game?",
+                        "Villager",
+                        this.spriteData.src
+                    );
+
+                    // Add buttons directly to the dialogue
+                    this.dialogueSystem.addButtons([
+                        {
+                            text: "Start",
+                            primary: true,
+                            action: () => {
+                                this.dialogueSystem.closeDialogue();
+                                startArcheryGame(false);
+                            }
+                        },
+                        {
+                            text: "Nevermind",
+                            action: () => {
+                                this.dialogueSystem.closeDialogue();
+                            }
+                        }
+                    ]);
+                }
             }
         };
 
@@ -205,6 +278,10 @@ class GameLevelArchery {
             // This is where interactions between the target and projectiles are handled!
             update: function() {
                 if (typeof window !== 'undefined' && window.archeryVictory) {
+                    if (!this.victoryStored) {
+                        setArcheryCompletion(true);
+                        this.victoryStored = true;
+                    }
                     if (this.counterEl && this.counterEl.parentNode) {
                         this.counterEl.parentNode.removeChild(this.counterEl);
                     }
