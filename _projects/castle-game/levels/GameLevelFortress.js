@@ -128,7 +128,29 @@ class GameLevelFortress {
          * Player character sprite data for Spook character
          * Multi-directional sprite sheet with walking animations
          */
-        const sprite_src_mc = path + "/images/castleGame/playerSpritesheet.png";
+        const playerSpriteOptions = {
+            gray: path + "/images/projects/castle-game/grayKnight.png",
+            green: path + "/images/projects/castle-game/greenKnight.png",
+            dark: path + "/images/projects/castle-game/darkKnight.png"
+        };
+        const playerSkinStorageKey = 'castleGame.playerSkin';
+        const getPlayerSpriteSrc = (skinKey) => playerSpriteOptions[skinKey] || playerSpriteOptions.gray;
+        const getStoredPlayerSkinKey = () => {
+            try {
+                if (typeof window === 'undefined' || !window.localStorage) {
+                    return 'gray';
+                }
+                const stored = window.localStorage.getItem(playerSkinStorageKey);
+                if (stored && playerSpriteOptions[stored]) {
+                    return stored;
+                }
+                window.localStorage.setItem(playerSkinStorageKey, 'gray');
+                return 'gray';
+            } catch (error) {
+                return 'gray';
+            }
+        };
+        const sprite_src_mc = getPlayerSpriteSrc(getStoredPlayerSkinKey());
         const MC_SCALE_FACTOR = 7;
         const sprite_data_mc = {
             id: 'Knight',
