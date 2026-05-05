@@ -26,7 +26,7 @@ class GameLevelMaze {
     constructor(gameEnv) {
         // Reset grace period when level starts
         DeathBarrier.resetLevelStartTime();
-        
+
         const path = gameEnv.path;
         const width = gameEnv.innerWidth;
         const height = gameEnv.innerHeight;
@@ -39,21 +39,6 @@ class GameLevelMaze {
             pixels: { height: 772, width: 1134 }
         };
 
-<<<<<<< HEAD
-        const playerSpriteStorageKey = 'castleGame.playerSprite';
-        const getStoredPlayerSprite = () => {
-            try {
-                if (typeof window === 'undefined' || !window.localStorage) {
-                    return null;
-                }
-                return window.localStorage.getItem(playerSpriteStorageKey);
-            } catch (error) {
-                return null;
-            }
-        };
-        const storedSprite = getStoredPlayerSprite();
-        const sprite_src_mc = storedSprite || path + "/images/projects/castle-game/playerSpritesheet.png";
-=======
         const playerSpriteOptions = {
             gray: path + "/images/projects/castle-game/grayKnight.png",
             green: path + "/images/projects/castle-game/greenKnight.png",
@@ -77,7 +62,6 @@ class GameLevelMaze {
             }
         };
         const sprite_src_mc = getPlayerSpriteSrc(getStoredPlayerSkinKey());
->>>>>>> 4a46c7ecbf3e0cc0c9342716d1e3e26ca7882066
         const MC_SCALE_FACTOR = 20;
         const sprite_data_mc = {
             id: 'Knight',
@@ -86,41 +70,41 @@ class GameLevelMaze {
             SCALE_FACTOR: MC_SCALE_FACTOR,
             STEP_FACTOR: 1750,
             ANIMATION_RATE: 100,
-            INIT_POSITION: { 
-                x: 202 / 1911 * width, 
+            INIT_POSITION: {
+                x: 202 / 1911 * width,
                 y: 760 / 851 * height
             },
-            pixels: {height: 432, width: 234},
-            orientation: {rows: 4, columns: 3},
-            down: {row: 0, start: 0, columns: 3},
-            downRight: {row: 2, start: 0, columns: 3, rotate: Math.PI/16},
-            downLeft: {row: 1, start: 0, columns: 3, rotate: -Math.PI/16},
-            left: {row: 1, start: 0, columns: 3},
-            right: {row: 2, start: 0, columns: 3},
-            up: {row: 3, start: 0, columns: 3},
-            upLeft: {row: 1, start: 0, columns: 3, rotate: Math.PI/16},
-            upRight: {row: 2, start: 0, columns: 3, rotate: -Math.PI/16},
-            hitbox: {widthPercentage: 0.1, heightPercentage: 0.15},
-            keypress: {up: 87, left: 65, down: 83, right: 68} // W, A, S, D
+            pixels: { height: 432, width: 234 },
+            orientation: { rows: 4, columns: 3 },
+            down: { row: 0, start: 0, columns: 3 },
+            downRight: { row: 2, start: 0, columns: 3, rotate: Math.PI / 16 },
+            downLeft: { row: 1, start: 0, columns: 3, rotate: -Math.PI / 16 },
+            left: { row: 1, start: 0, columns: 3 },
+            right: { row: 2, start: 0, columns: 3 },
+            up: { row: 3, start: 0, columns: 3 },
+            upLeft: { row: 1, start: 0, columns: 3, rotate: Math.PI / 16 },
+            upRight: { row: 2, start: 0, columns: 3, rotate: -Math.PI / 16 },
+            hitbox: { widthPercentage: 0.1, heightPercentage: 0.15 },
+            keypress: { up: 87, left: 65, down: 83, right: 68 } // W, A, S, D
 
         };
-        
+
         const mortyData = {
             id: 'morty',
             greeting: 'Hey there!',
             src: path + "/images/projects/castle-game/morty.png",
             SCALE_FACTOR: 13,
-            INIT_POSITION: { 
-                x: 250 / 1911 * width, 
+            INIT_POSITION: {
+                x: 250 / 1911 * width,
                 y: 760 / 851 * height
             },
-            orientation: {rows: 1, columns: 1},
-            down: {row: 0, start: 0, columns: 1},
+            orientation: { rows: 1, columns: 1 },
+            down: { row: 0, start: 0, columns: 1 },
             pixels: { height: 895, width: 577 },
             hitbox: { widthPercentage: 0.1, heightPercentage: 0.2 },
             dialogues: ["a"],
-            reaction: function() { console.log('test (reaction)'); },
-            interact: function() { 
+            reaction: function () { console.log('test (reaction)'); },
+            interact: function () {
 
                 // Clear any existing dialogue first to prevent duplicates
                 if (this.dialogueSystem && this.dialogueSystem.isDialogueOpen()) {
@@ -157,21 +141,21 @@ class GameLevelMaze {
                     );
 
                     this.dialogueSystem.addButtons([
-                    {
-                        text: "Enter the maze",
-                        primary: true,
-                        action: () => {
-                            this.dialogueSystem.closeDialogue();
-                            
-                            this.destroy();
-                        }
-                    },
-                    {
-                        text: "no i am scared and want to leave",
-                        action: () => {
-                            this.dialogueSystem.closeDialogue();
-                        }
-                    }]);
+                        {
+                            text: "Enter the maze",
+                            primary: true,
+                            action: () => {
+                                this.dialogueSystem.closeDialogue();
+
+                                this.destroy();
+                            }
+                        },
+                        {
+                            text: "no i am scared and want to leave",
+                            action: () => {
+                                this.dialogueSystem.closeDialogue();
+                            }
+                        }]);
 
 
                 } catch (error) {
@@ -190,8 +174,8 @@ class GameLevelMaze {
             pixels: { width: 3000, height: 1000 },
             orientation: { rows: 2, columns: 6 },
             down: { row: 0, start: 0, columns: 6 },
-            left: { row: 1, start: 0, columns: 6},
-            right: { row: 1, start: 0, columns: 6},
+            left: { row: 1, start: 0, columns: 6 },
+            right: { row: 1, start: 0, columns: 6 },
             hitbox: { widthPercentage: 0.15, heightPercentage: 0.2 },
             followSpeedFactor: 0.4,
             followStopDistance: 12,
@@ -200,115 +184,115 @@ class GameLevelMaze {
         };
 
         const dbarrier_1 = {
-            id: 'dbarrier_1', x: 498/505*width , y: 0/291*height, width: 6/505*width, height: 295/291*height, visible: false /* BUILDER_DEFAULT */,
+            id: 'dbarrier_1', x: 498 / 505 * width, y: 0 / 291 * height, width: 6 / 505 * width, height: 295 / 291 * height, visible: false /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
             fromOverlay: true
         };
 
         const dbarrier_2 = {
-            id: 'dbarrier_2', x: 0/505*width , y: 0/291*height, width: 7/505*width, height: 296/291*height, visible: false /* BUILDER_DEFAULT */,
+            id: 'dbarrier_2', x: 0 / 505 * width, y: 0 / 291 * height, width: 7 / 505 * width, height: 296 / 291 * height, visible: false /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
             fromOverlay: true
         };
 
         const dbarrier_3 = {
-            id: 'dbarrier_3', x: 7/505*width, y: 71/291*height, width: 14/505*width, height: 225/291*height, visible: false /* BUILDER_DEFAULT */,
+            id: 'dbarrier_3', x: 7 / 505 * width, y: 71 / 291 * height, width: 14 / 505 * width, height: 225 / 291 * height, visible: false /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
             fromOverlay: true
         };
 
         const dbarrier_4 = {
-            id: 'dbarrier_4', x: 20/505*width, y: 72/291*height, width: 13/505*width, height: 188/291*height, visible: false /* BUILDER_DEFAULT */,
+            id: 'dbarrier_4', x: 20 / 505 * width, y: 72 / 291 * height, width: 13 / 505 * width, height: 188 / 291 * height, visible: false /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
             fromOverlay: true
         };
 
         const dbarrier_5 = {
-            id: 'dbarrier_5', x: 33/505*width, y: 200/291*height, width: 56/505*width, height: 60/291*height, visible: false /* BUILDER_DEFAULT */,
+            id: 'dbarrier_5', x: 33 / 505 * width, y: 200 / 291 * height, width: 56 / 505 * width, height: 60 / 291 * height, visible: false /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
             fromOverlay: true
         };
 
         const dbarrier_6 = {
-            id: 'dbarrier_6', x: 63/505*width, y: 71/291*height, width: 26/505*width, height: 129/291*height, visible: false /* BUILDER_DEFAULT */,
+            id: 'dbarrier_6', x: 63 / 505 * width, y: 71 / 291 * height, width: 26 / 505 * width, height: 129 / 291 * height, visible: false /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
             fromOverlay: true
         };
 
         const dbarrier_7 = {
-            id: 'dbarrier_7', x: 88/505*width, y: 71/291*height, width: 191/505*width, height: 64/291*height, visible: false /* BUILDER_DEFAULT */,
+            id: 'dbarrier_7', x: 88 / 505 * width, y: 71 / 291 * height, width: 191 / 505 * width, height: 64 / 291 * height, visible: false /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
             fromOverlay: true
         };
 
         const dbarrier_8 = {
-            id: 'dbarrier_8', x: 117/505*width, y: 156/291*height, width: 54/505*width, height: 64/291*height, visible: false /* BUILDER_DEFAULT */,
+            id: 'dbarrier_8', x: 117 / 505 * width, y: 156 / 291 * height, width: 54 / 505 * width, height: 64 / 291 * height, visible: false /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
             fromOverlay: true
         };
 
         const dbarrier_9 = {
-            id: 'dbarrier_9', x: 144/505*width, y: 220/291*height, width: 27/505*width, height: 38/291*height, visible: false /* BUILDER_DEFAULT */,
+            id: 'dbarrier_9', x: 144 / 505 * width, y: 220 / 291 * height, width: 27 / 505 * width, height: 38 / 291 * height, visible: false /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
             fromOverlay: true
         };
 
         const dbarrier_10 = {
-            id: 'dbarrier_10', x: 199/505*width, y: 134/291*height, width: 27/505*width, height: 125/291*height, visible: false /* BUILDER_DEFAULT */,
+            id: 'dbarrier_10', x: 199 / 505 * width, y: 134 / 291 * height, width: 27 / 505 * width, height: 125 / 291 * height, visible: false /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
             fromOverlay: true
         };
 
         const dbarrier_11 = {
-            id: 'dbarrier_11', x: 226/505*width, y: 199/291*height, width: 162/505*width, height: 60/291*height, visible: false /* BUILDER_DEFAULT */,
+            id: 'dbarrier_11', x: 226 / 505 * width, y: 199 / 291 * height, width: 162 / 505 * width, height: 60 / 291 * height, visible: false /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
             fromOverlay: true
         };
 
         const dbarrier_12 = {
-            id: 'dbarrier_12', x: 444/505*width, y: 71/291*height, width: 54/505*width, height: 81/291*height, visible: false /* BUILDER_DEFAULT */,
+            id: 'dbarrier_12', x: 444 / 505 * width, y: 71 / 291 * height, width: 54 / 505 * width, height: 81 / 291 * height, visible: false /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
             fromOverlay: true
         };
 
         const dbarrier_13 = {
-            id: 'dbarrier_13', x: 444/505*width, y: 152/291*height, width: 28/505*width, height: 108/291*height, visible: false /* BUILDER_DEFAULT */,
+            id: 'dbarrier_13', x: 444 / 505 * width, y: 152 / 291 * height, width: 28 / 505 * width, height: 108 / 291 * height, visible: false /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
             fromOverlay: true
         };
 
         const dbarrier_14 = {
-            id: 'dbarrier_14', x: 418/505*width, y: 201/291*height, width: 24/505*width, height: 58/291*height, visible: false /* BUILDER_DEFAULT */,
+            id: 'dbarrier_14', x: 418 / 505 * width, y: 201 / 291 * height, width: 24 / 505 * width, height: 58 / 291 * height, visible: false /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
             fromOverlay: true
         };
 
         const dbarrier_15 = {
-            id: 'dbarrier_15', x: 20/505*width, y: 286/291*height, width: 476/505*width, height: 10/291*height, visible: false /* BUILDER_DEFAULT */,
+            id: 'dbarrier_15', x: 20 / 505 * width, y: 286 / 291 * height, width: 476 / 505 * width, height: 10 / 291 * height, visible: false /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
             fromOverlay: true
         };
 
         const dbarrier_16 = {
-            id: 'dbarrier_16', x: 7/505*width, y: 1/291*height, width: 437/505*width, height: 38/291*height, visible: false /* BUILDER_DEFAULT */,
+            id: 'dbarrier_16', x: 7 / 505 * width, y: 1 / 291 * height, width: 437 / 505 * width, height: 38 / 291 * height, visible: false /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
             fromOverlay: true
         };
 
         const dbarrier_17 = {
-            id: 'dbarrier_17', x: 472/505*width, y: 0/291*height, width: 27/505*width, height: 37/291*height, visible: false /* BUILDER_DEFAULT */,
+            id: 'dbarrier_17', x: 472 / 505 * width, y: 0 / 291 * height, width: 27 / 505 * width, height: 37 / 291 * height, visible: false /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
             fromOverlay: true
         };
 
         const dbarrier_18 = {
-            id: 'dbarrier_18', x: 308/505*width, y: 40/291*height, width: 26/505*width, height: 131/291*height, visible: false /* BUILDER_DEFAULT */,
+            id: 'dbarrier_18', x: 308 / 505 * width, y: 40 / 291 * height, width: 26 / 505 * width, height: 131 / 291 * height, visible: false /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
             fromOverlay: true
         };
 
         const dbarrier_19 = {
-            id: 'dbarrier_19', x: 391/505*width, y: 39/291*height, width: 25/505*width, height: 133/291*height, visible: false /* BUILDER_DEFAULT */,
+            id: 'dbarrier_19', x: 391 / 505 * width, y: 39 / 291 * height, width: 25 / 505 * width, height: 133 / 291 * height, visible: false /* BUILDER_DEFAULT */,
             hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
             fromOverlay: true
         };
@@ -322,15 +306,15 @@ class GameLevelMaze {
             src: sprite_src_invis,
             SCALE_FACTOR: 9,
             ANIMATION_RATE: 100,
-            pixels: {width: 70, height: 90},
-            INIT_POSITION: {x: 0.88 * width, y: 0.05 * height},
-            orientation: {rows: 1, columns: 1},
-            down: {row: 0, start: 0, columns: 1},
-            hitbox: {widthPercentage: 0.1, heightPercentage: 0.2},
+            pixels: { width: 70, height: 90 },
+            INIT_POSITION: { x: 0.88 * width, y: 0.05 * height },
+            orientation: { rows: 1, columns: 1 },
+            down: { row: 0, start: 0, columns: 1 },
+            hitbox: { widthPercentage: 0.1, heightPercentage: 0.2 },
             dialogues: [
                 "Are you ready to play some archery?"
             ],
-            reaction: function() {
+            reaction: function () {
                 const gameControl = gameEnv.gameControl;
                 const fadeOverlay = document.createElement('div');
                 const fadeInMs = 700;
@@ -381,16 +365,16 @@ class GameLevelMaze {
                         }, fadeOutMs + 100);
                     }, 220);
                 }, fadeInMs + 30); // fade in and fade out for the transition to gamelevelfortress
-                }
+            }
         };
 
 
 
-        this.classes = [      
+        this.classes = [
             { class: GameEnvBackground, data: bgData },
             { class: Player, data: sprite_data_mc },
             { class: Npc, data: mortyData },
-            { class: Npc, data: sprite_data_invis},
+            { class: Npc, data: sprite_data_invis },
             { class: Ghost, data: ghostData },
             { class: DeathBarrier, data: dbarrier_1 },
             { class: DeathBarrier, data: dbarrier_2 },

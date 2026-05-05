@@ -1,7 +1,7 @@
 
-import GameEnvBackground  from '@assets/js/GameEnginev1.1/essentials/GameEnvBackground.js';
+import GameEnvBackground from '@assets/js/GameEnginev1.1/essentials/GameEnvBackground.js';
 import FightingPlayer from './FightingPlayer.js';
-import Npc  from '@assets/js/GameEnginev1.1/essentials/Npc.js';
+import Npc from '@assets/js/GameEnginev1.1/essentials/Npc.js';
 import Barrier from '@assets/js/GameEnginev1.1/essentials/Barrier.js';
 import Enemy from '@assets/js/GameEnginev1.1/essentials/Enemy.js';
 import GameLevelMaze from './GameLevelMaze.js';
@@ -72,7 +72,7 @@ class GameLevelArchery {
         const image_data_floor = {
             name: 'floor',
             src: image_src_floor,
-            pixels: {height: 341, width: 498}
+            pixels: { height: 341, width: 498 }
         };
 
         /**
@@ -112,24 +112,24 @@ class GameLevelArchery {
             SCALE_FACTOR: MC_SCALE_FACTOR,
             STEP_FACTOR: 500,
             ANIMATION_RATE: 40,
-            INIT_POSITION: { 
-                x: 0.5 * width, 
+            INIT_POSITION: {
+                x: 0.5 * width,
                 y: 0.75 * height
             },
-            pixels: {height: 432, width: 234},
-            orientation: {rows: 4, columns: 3},
-            down: {row: 0, start: 0, columns: 3},
-            downRight: {row: 2, start: 0, columns: 3, rotate: Math.PI/16},
-            downLeft: {row: 1, start: 0, columns: 3, rotate: -Math.PI/16},
-            left: {row: 1, start: 0, columns: 3},
-            right: {row: 2, start: 0, columns: 3},
-            up: {row: 3, start: 0, columns: 3},
-            upLeft: {row: 1, start: 0, columns: 3, rotate: Math.PI/16},
-            upRight: {row: 2, start: 0, columns: 3, rotate: -Math.PI/16},
-            hitbox: {widthPercentage: 0.1, heightPercentage: 0.15},
-            keypress: {up: 87, left: 65, down: 83, right: 68}, // W, A, S, D
+            pixels: { height: 432, width: 234 },
+            orientation: { rows: 4, columns: 3 },
+            down: { row: 0, start: 0, columns: 3 },
+            downRight: { row: 2, start: 0, columns: 3, rotate: Math.PI / 16 },
+            downLeft: { row: 1, start: 0, columns: 3, rotate: -Math.PI / 16 },
+            left: { row: 1, start: 0, columns: 3 },
+            right: { row: 2, start: 0, columns: 3 },
+            up: { row: 3, start: 0, columns: 3 },
+            upLeft: { row: 1, start: 0, columns: 3, rotate: Math.PI / 16 },
+            upRight: { row: 2, start: 0, columns: 3, rotate: -Math.PI / 16 },
+            hitbox: { widthPercentage: 0.1, heightPercentage: 0.15 },
+            keypress: { up: 87, left: 65, down: 83, right: 68 }, // W, A, S, D
         };
-    
+
 
         /**
          * Villager NPC configuration:
@@ -145,31 +145,31 @@ class GameLevelArchery {
             src: sprite_src_villager,
             SCALE_FACTOR: 6,
             ANIMATION_RATE: 100,
-            pixels: {width: 181, height: 272},
-            INIT_POSITION: {x: 0.75 * width, y: 0.75 * height},
-            orientation: {rows: 1, columns: 1},
-            down: {row: 0, start: 0, columns: 1},
-            hitbox: {widthPercentage: 0.1, heightPercentage: 0.2},
+            pixels: { width: 181, height: 272 },
+            INIT_POSITION: { x: 0.75 * width, y: 0.75 * height },
+            orientation: { rows: 1, columns: 1 },
+            down: { row: 0, start: 0, columns: 1 },
+            hitbox: { widthPercentage: 0.1, heightPercentage: 0.2 },
             dialogues: [
                 "Are you ready to play some archery?"
             ],
-            reaction: function() {
+            reaction: function () {
                 // Don't show any reaction dialogue - this prevents the first alert
                 // The interact function will handle all dialogue instead
             },
-            
+
             // This is where the interactions for starting the game are handled
-            interact: function() {
+            interact: function () {
                 // Clear any existing dialogue first to prevent duplicates
                 if (this.dialogueSystem && this.dialogueSystem.isDialogueOpen()) {
                     this.dialogueSystem.closeDialogue();
                 }
-                
+
                 // Create a new dialogue system if needed
                 if (!this.dialogueSystem) {
                     this.dialogueSystem = new DialogueSystem();
                 }
-                
+
                 const alreadyCompleted = getArcheryCompletion();
 
                 if (alreadyCompleted) {
@@ -208,6 +208,11 @@ class GameLevelArchery {
                             text: "Continue to the maze",
                             action: () => {
                                 this.dialogueSystem.closeDialogue();
+                                // Clean up the archery hits counter if it exists
+                                if (window.archeryHitsCounter && window.archeryHitsCounter.parentNode) {
+                                    window.archeryHitsCounter.parentNode.removeChild(window.archeryHitsCounter);
+                                }
+                                window.archeryHitsCounter = null;
                                 const gameControl = gameEnv.gameControl;
                                 const fadeOverlay = document.createElement('div');
                                 const fadeInMs = 700;
@@ -230,6 +235,11 @@ class GameLevelArchery {
 
                                 const switchToMazeLevel = () => {
                                     try {
+                                        // Clean up the archery hits counter before switching levels
+                                        if (window.archeryHitsCounter && window.archeryHitsCounter.parentNode) {
+                                            window.archeryHitsCounter.parentNode.removeChild(window.archeryHitsCounter);
+                                        }
+                                        window.archeryHitsCounter = null;
                                         gameControl._originalLevelClasses = gameControl.levelClasses;
                                         gameControl.levelClasses = [GameLevelMaze];
                                         gameControl.currentLevelIndex = 0;
@@ -309,7 +319,7 @@ class GameLevelArchery {
         /**
          * Invisible barrier preventing the player from accessing the
          * archery range before the game begins.
-         */        
+         */
         const barrier_data = {
             id: 'archery_barrier',
             x: 0,
@@ -336,18 +346,18 @@ class GameLevelArchery {
             src: path + "/images/projects/castle-game/target.png",
             SCALE_FACTOR: 5,
             ANIMATION_RATE: 100,
-            pixels: {width: 178, height: 169},
-            INIT_POSITION: {x: 0.5 * width, y: 0.25 * height},
-            orientation: {rows: 1, columns: 1},
-            down: {row: 0, start: 0, columns: 1},
-            hitbox: {widthPercentage: 0.0, heightPercentage: 0.0},
+            pixels: { width: 178, height: 169 },
+            INIT_POSITION: { x: 0.5 * width, y: 0.25 * height },
+            orientation: { rows: 1, columns: 1 },
+            down: { row: 0, start: 0, columns: 1 },
+            hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
             // Override stayWithinCanvas to prevent default boundary checking
-            stayWithinCanvas: function() {
+            stayWithinCanvas: function () {
                 // Custom boundary handling in update function
             },
 
             // This is where interactions between the target and projectiles are handled!
-            update: function() {
+            update: function () {
                 if (typeof window !== 'undefined' && window.archeryVictory) {
                     if (!this.victoryStored) {
                         setArcheryCompletion(true);
@@ -367,7 +377,7 @@ class GameLevelArchery {
                 // Move the target left/right only if game has started
                 if (window.archeryGameStarted) {
 
-                    if (!this.speed){
+                    if (!this.speed) {
                         this.speed = 3;
                     }
 
@@ -376,11 +386,11 @@ class GameLevelArchery {
                     }
 
                     this.position.x += this.velocity.x;
-                    
+
                     // Bounce off edges - check position boundaries
                     // console.log(`Position: ${this.position.x}, Velocity: ${this.velocity.x}, Canvas width: ${this.gameEnv.innerWidth}, Target width: ${this.width}`);
-                    
-                    if (this.position.x <= 0){
+
+                    if (this.position.x <= 0) {
                         this.velocity.x = this.speed;
                         this.speed += 0.5;
                     } else if (this.position.x + this.width >= this.gameEnv.innerWidth) {
@@ -388,7 +398,7 @@ class GameLevelArchery {
                         this.speed += 0.5;
                     }
 
-                    if (this.speed > 7){
+                    if (this.speed > 7) {
                         this.speed = 7; // cap the speed
                     }
                 }
@@ -429,11 +439,11 @@ class GameLevelArchery {
         };
 
         this.classes = [
-            {class: GameEnvBackground, data: image_data_floor},
-            {class: FightingPlayer, data: sprite_data_mc},
-            {class: Npc, data: sprite_data_villager},
-            {class: Barrier, data: barrier_data},
-            {class: Enemy, data: target_data},
+            { class: GameEnvBackground, data: image_data_floor },
+            { class: FightingPlayer, data: sprite_data_mc },
+            { class: Npc, data: sprite_data_villager },
+            { class: Barrier, data: barrier_data },
+            { class: Enemy, data: target_data },
         ];
     }
 }
