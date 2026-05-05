@@ -60,6 +60,7 @@ class Interceptor extends Character {
         this.glowColor = '#00ffff'; // Cyan glow for interceptor
         
         // Trail effect properties
+        this.trailEnabled = false; // Toggle to enable/disable trail effect
         this.trailTimer = 0;
         this.trailInterval = 2; // Create trail every 2 frames
         this.trails = []; // Array to store trail elements
@@ -111,11 +112,13 @@ class Interceptor extends Character {
         this.position.x += this.velocity.x;
         this.position.y += this.velocity.y;
         
-        // Create trail effect
-        this.trailTimer++;
-        if (this.trailTimer >= this.trailInterval) {
-            this.createTrailParticle();
-            this.trailTimer = 0;
+        // Create trail effect (only if enabled)
+        if (this.trailEnabled) {
+            this.trailTimer++;
+            if (this.trailTimer >= this.trailInterval) {
+                this.createTrailParticle();
+                this.trailTimer = 0;
+            }
         }
         
         // Check if offscreen (in any direction)
