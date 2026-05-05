@@ -541,11 +541,11 @@ class GameLevelOutside {
             interactDistance: 50, // Reduce interaction distance
             pixels: {width: 895, height: 895},
             INIT_POSITION: {x: 0.35 * width, y: 0.7 * height},
-            orientation: {rows: 4, columns: 3},
-            down: {row: 0, start: 0, columns: 3},
-            left: {row: 1, start: 0, columns: 3},
-            right: {row: 2, start: 0, columns: 3},
-            up: {row: 3, start: 0, columns: 3},
+            orientation: {rows: 1, columns: 1},
+            down: {row: 0, start: 0, columns: 1},
+            left: {row: 0, start: 0, columns: 1},
+            right: {row: 0, start: 0, columns: 1},
+            up: {row: 0, start: 0, columns: 1},
             hitbox: {widthPercentage: 0.1, heightPercentage: 0.2},
             dialogues: [
                 "Pick a knight look."
