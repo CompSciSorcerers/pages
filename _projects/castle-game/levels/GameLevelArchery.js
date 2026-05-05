@@ -4,6 +4,7 @@ import FightingPlayer from './FightingPlayer.js';
 import Npc  from '@assets/js/GameEnginev1.1/essentials/Npc.js';
 import Barrier from '@assets/js/GameEnginev1.1/essentials/Barrier.js';
 import Enemy from '@assets/js/GameEnginev1.1/essentials/Enemy.js';
+import GameLevelMaze from './GameLevelMaze.js';
 
 /**
  * GameLevelArchery
@@ -149,39 +150,6 @@ class GameLevelArchery {
                 
                 const alreadyCompleted = getArcheryCompletion();
 
-                const removeBarrier = () => {
-                    const barrier = this.gameEnv.gameObjects.find(obj => obj.canvas && obj.canvas.id === 'archery_barrier');
-                    if (barrier) {
-                        barrier.destroy();
-                    }
-                };
-
-                const startArcheryGame = (resetTarget) => {
-                    removeBarrier();
-
-                    const target = this.gameEnv.gameObjects.find(obj => obj.canvas && obj.canvas.id === 'archery_target');
-                    if (target) {
-                        if (resetTarget) {
-                            target.hitsRemaining = 30;
-                            target.speed = 3;
-                            target.velocity = { x: 2, y: 0 };
-                            if (target.position) {
-                                target.position.x = 0.5 * width;
-                                target.position.y = 0.25 * height;
-                            }
-                            target.victoryStored = false;
-                        } else if (!target.velocity) {
-                            target.velocity = { x: 2, y: 0 };
-                        }
-                    }
-
-                    if (typeof window !== 'undefined') {
-                        window.archeryVictory = false;
-                        window.archeryGameStarted = true;
-                        window.timeStarted = Date.now() / 1000.0;
-                    }
-                };
-
                 if (alreadyCompleted) {
                     this.dialogueSystem.showDialogue(
                         "You already beat the archery challenge. Would you like to play again?",
@@ -195,14 +163,79 @@ class GameLevelArchery {
                             primary: true,
                             action: () => {
                                 this.dialogueSystem.closeDialogue();
-                                startArcheryGame(true);
+                                // Remove the barrier
+                                const barrier = this.gameEnv.gameObjects.find(obj => obj.canvas && obj.canvas.id === 'archery_barrier');
+                                if (barrier) {
+                                    barrier.destroy();
+                                }
+
+                                // Start the target moving continuously left/right
+                                const target = this.gameEnv.gameObjects.find(obj => obj.canvas && obj.canvas.id === 'archery_target');
+                                if (target) {
+                                    target.velocity = { x: 2, y: 0 }; // Start moving right
+                                }
+
+                                // Make the NPC disappear after interaction
+                                this.destroy();
+
+                                window.archeryGameStarted = true;
+                                window.timeStarted = Date.now() / 1000.0;
                             }
                         },
                         {
                             text: "Continue to the maze",
                             action: () => {
                                 this.dialogueSystem.closeDialogue();
-                                removeBarrier();
+                                const gameControl = gameEnv.gameControl;
+                                const fadeOverlay = document.createElement('div');
+                                const fadeInMs = 700;
+                                const fadeOutMs = 700;
+
+                                Object.assign(fadeOverlay.style, {
+                                    position: 'fixed',
+                                    top: '0',
+                                    left: '0',
+                                    width: '100%',
+                                    height: '100%',
+                                    backgroundColor: '#000000',
+                                    opacity: '0',
+                                    zIndex: '10002',
+                                    pointerEvents: 'none',
+                                    transition: `opacity ${fadeInMs}ms ease-in-out`
+                                });
+
+                                try { document.body.appendChild(fadeOverlay); } catch (err) { console.warn('Could not append fade overlay:', err); }
+
+                                const switchToMazeLevel = () => {
+                                    try {
+                                        gameControl._originalLevelClasses = gameControl.levelClasses;
+                                        gameControl.levelClasses = [GameLevelMaze];
+                                        gameControl.currentLevelIndex = 0;
+                                        gameControl.isPaused = false;
+                                        gameControl.transitionToLevel(); // defined by game engine most likely, forces the level to switch immediately
+                                    } catch (err) {
+                                        console.warn('Failed to transition to maze level:', err);
+                                    }
+                                };
+
+                                requestAnimationFrame(() => {
+                                    fadeOverlay.style.opacity = '1';
+                                });
+
+                                setTimeout(() => {
+                                    try { fadeOverlay.remove(); } catch (err) { /* ignore */ }
+
+                                    switchToMazeLevel();
+
+                                    setTimeout(() => {
+                                        fadeOverlay.style.transition = `opacity ${fadeOutMs}ms ease-in-out`;
+                                        fadeOverlay.style.opacity = '0';
+
+                                        setTimeout(() => {
+                                            try { fadeOverlay.remove(); } catch (err) { /* ignore */ }
+                                        }, fadeOutMs + 100);
+                                    }, 220);
+                                }, fadeInMs + 30);
                             }
                         }
                     ]);
@@ -221,7 +254,23 @@ class GameLevelArchery {
                             primary: true,
                             action: () => {
                                 this.dialogueSystem.closeDialogue();
-                                startArcheryGame(false);
+                                // Remove the barrier
+                                const barrier = this.gameEnv.gameObjects.find(obj => obj.canvas && obj.canvas.id === 'archery_barrier');
+                                if (barrier) {
+                                    barrier.destroy();
+                                }
+
+                                // Start the target moving continuously left/right
+                                const target = this.gameEnv.gameObjects.find(obj => obj.canvas && obj.canvas.id === 'archery_target');
+                                if (target) {
+                                    target.velocity = { x: 2, y: 0 }; // Start moving right
+                                }
+
+                                // Make the NPC disappear after interaction
+                                this.destroy();
+
+                                window.archeryGameStarted = true;
+                                window.timeStarted = Date.now() / 1000.0;
                             }
                         },
                         {

@@ -555,6 +555,7 @@ destroy() {
       if (!button || !button.text) return;
       
       const btn = document.createElement('button');
+      btn.type = 'button';
       btn.textContent = button.text;
       btn.className = button.primary ? 'primary-button' : 'secondary-button';
       btn.style.padding = '8px 15px';
@@ -563,11 +564,19 @@ destroy() {
       btn.style.cursor = 'pointer';
       
       // Add click handler
-      btn.onclick = () => {
-        if (button.action && typeof button.action === 'function') {
-          button.action();
+      btn.addEventListener('click', (event) => {
+        if (event) {
+          event.preventDefault();
+          event.stopPropagation();
         }
-      };
+        if (button.action && typeof button.action === 'function') {
+          try {
+            button.action();
+          } catch (error) {
+            console.error('DialogueSystem button action failed:', error);
+          }
+        }
+      });
       
       this.actionButtonGroup.appendChild(btn);
     });
