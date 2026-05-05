@@ -50,7 +50,31 @@ class GameLevelOutside {
          * Represents the main controllable character (knight)
          * The player can move around the map and interact with NPCs. It can also shoot arrows.
          */
-        const sprite_src_mc = path + "/images/projects/castle-game/playerSpritesheet.png";
+        const sprite_src_mc = path + "/images/projects/castle-game/grayKnight.png";
+        const playerSpriteOptions = {
+            gray: path + "/images/projects/castle-game/grayKnight.png",
+            green: path + "/images/projects/castle-game/greenKnight.png",
+            dark: path + "/images/projects/castle-game/darkKnight.png"
+        };
+        const applyPlayerSprite = (player, spriteSrc) => {
+            if (!player || !spriteSrc) return;
+            if (player.spriteData?.src === spriteSrc) return;
+
+            const newSpriteSheet = new Image();
+            newSpriteSheet.onload = () => {
+                player.spriteSheet = newSpriteSheet;
+                player.spriteReady = true;
+                player.spriteData = { ...(player.spriteData || {}), src: spriteSrc };
+                player.data = player.spriteData;
+                player.frameIndex = 0;
+                player.frameCounter = 0;
+                player.resize();
+            };
+            newSpriteSheet.onerror = (error) => {
+                console.warn('Failed to load player spritesheet:', spriteSrc, error);
+            };
+            newSpriteSheet.src = spriteSrc;
+        };
         const MC_SCALE_FACTOR = 15;
         const sprite_data_mc = {
             id: 'Knight',
@@ -507,13 +531,94 @@ class GameLevelOutside {
             spriteFrames: { rows: 2, columns: 4, frameIndex: Math.floor(Math.random() * 8) }     
         }
 
+        const sprite_src_closet = path + "/images/projects/castle-game/closet.png";
+        const sprite_data_closet = {
+            id: 'Closet',
+            greeting: "Need a new suit of armor?",
+            src: sprite_src_closet,
+            SCALE_FACTOR: 14,
+            ANIMATION_RATE: 40,
+            interactDistance: 50, // Reduce interaction distance
+            pixels: {width: 895, height: 895},
+            INIT_POSITION: {x: 0.35 * width, y: 0.7 * height},
+            orientation: {rows: 4, columns: 3},
+            down: {row: 0, start: 0, columns: 3},
+            left: {row: 1, start: 0, columns: 3},
+            right: {row: 2, start: 0, columns: 3},
+            up: {row: 3, start: 0, columns: 3},
+            hitbox: {widthPercentage: 0.1, heightPercentage: 0.2},
+            dialogues: [
+                "Pick a knight look."
+            ],
+            reaction: function() {
+                // Don't show any reaction dialogue - this prevents the first alert
+                // The interact function will handle all dialogue instead
+            },
+            
+            // This is where the interactions for starting the game are handled
+            interact: function() {
+                if (this.dialogueSystem && this.dialogueSystem.isDialogueOpen()) {
+                    this.dialogueSystem.closeDialogue();
+                }
 
+                if (!this.dialogueSystem) {
+                    this.dialogueSystem = new DialogueSystem();
+                }
+
+                this.dialogueSystem.showDialogue(
+                    "Choose your armor style:",
+                    "Closet",
+                    this.spriteData.src
+                );
+
+                this.dialogueSystem.addButtons([
+                    {
+                        text: "Green Knight",
+                        primary: true,
+                        action: () => {
+                            const player = this.gameEnv?.gameObjects?.find(
+                                obj => obj.constructor?.name === 'Player'
+                            );
+                            applyPlayerSprite(player, playerSpriteOptions.green);
+                            this.dialogueSystem.closeDialogue();
+                        }
+                    },
+                    {
+                        text: "Gray Knight",
+                        action: () => {
+                            const player = this.gameEnv?.gameObjects?.find(
+                                obj => obj.constructor?.name === 'Player'
+                            );
+                            applyPlayerSprite(player, playerSpriteOptions.gray);
+                            this.dialogueSystem.closeDialogue();
+                        }
+                    },
+                    {
+                        text: "Dark Knight",
+                        action: () => {
+                            const player = this.gameEnv?.gameObjects?.find(
+                                obj => obj.constructor?.name === 'Player'
+                            );
+                            applyPlayerSprite(player, playerSpriteOptions.dark);
+                            this.dialogueSystem.closeDialogue();
+                        }
+                    },
+                    {
+                        text: "Nevermind",
+                        action: () => {
+                            this.dialogueSystem.closeDialogue();
+                        }
+                    }
+                ]);
+            }
+        };
 
         this.classes = [
             {class: GameEnvBackground, data: image_data_floor},
             {class: Player, data: sprite_data_mc},
             {class: Npc, data: sprite_data_darkKnight},
             {class: Npc, data: sir_morty_data},
+            {class: Npc, data: sprite_data_closet},
             {class: SpriteSheetCoin, data: gem_data}
         ];
     }
