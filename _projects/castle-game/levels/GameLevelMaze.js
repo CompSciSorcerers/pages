@@ -39,6 +39,7 @@ class GameLevelMaze {
             pixels: { height: 772, width: 1134 }
         };
 
+<<<<<<< HEAD
         const playerSpriteStorageKey = 'castleGame.playerSprite';
         const getStoredPlayerSprite = () => {
             try {
@@ -52,6 +53,31 @@ class GameLevelMaze {
         };
         const storedSprite = getStoredPlayerSprite();
         const sprite_src_mc = storedSprite || path + "/images/projects/castle-game/playerSpritesheet.png";
+=======
+        const playerSpriteOptions = {
+            gray: path + "/images/projects/castle-game/grayKnight.png",
+            green: path + "/images/projects/castle-game/greenKnight.png",
+            dark: path + "/images/projects/castle-game/darkKnight.png"
+        };
+        const playerSkinStorageKey = 'castleGame.playerSkin';
+        const getPlayerSpriteSrc = (skinKey) => playerSpriteOptions[skinKey] || playerSpriteOptions.gray;
+        const getStoredPlayerSkinKey = () => {
+            try {
+                if (typeof window === 'undefined' || !window.localStorage) {
+                    return 'gray';
+                }
+                const stored = window.localStorage.getItem(playerSkinStorageKey);
+                if (stored && playerSpriteOptions[stored]) {
+                    return stored;
+                }
+                window.localStorage.setItem(playerSkinStorageKey, 'gray');
+                return 'gray';
+            } catch (error) {
+                return 'gray';
+            }
+        };
+        const sprite_src_mc = getPlayerSpriteSrc(getStoredPlayerSkinKey());
+>>>>>>> 4a46c7ecbf3e0cc0c9342716d1e3e26ca7882066
         const MC_SCALE_FACTOR = 20;
         const sprite_data_mc = {
             id: 'Knight',

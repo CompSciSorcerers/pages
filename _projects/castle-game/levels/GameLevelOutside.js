@@ -50,40 +50,46 @@ class GameLevelOutside {
          * Represents the main controllable character (knight)
          * The player can move around the map and interact with NPCs. It can also shoot arrows.
          */
-        const playerSpriteStorageKey = 'castleGame.playerSprite';
         const playerSpriteOptions = {
             gray: path + "/images/projects/castle-game/grayKnight.png",
             green: path + "/images/projects/castle-game/greenKnight.png",
             dark: path + "/images/projects/castle-game/darkKnight.png"
         };
-        const getStoredPlayerSprite = () => {
+        const playerSkinStorageKey = 'castleGame.playerSkin';
+        const getPlayerSpriteSrc = (skinKey) => playerSpriteOptions[skinKey] || playerSpriteOptions.gray;
+        const getStoredPlayerSkinKey = () => {
             try {
                 if (typeof window === 'undefined' || !window.localStorage) {
-                    return null;
+                    return 'gray';
                 }
-                return window.localStorage.getItem(playerSpriteStorageKey);
+                const stored = window.localStorage.getItem(playerSkinStorageKey);
+                if (stored && playerSpriteOptions[stored]) {
+                    return stored;
+                }
+                window.localStorage.setItem(playerSkinStorageKey, 'gray');
+                return 'gray';
             } catch (error) {
-                return null;
+                return 'gray';
             }
         };
-        const setStoredPlayerSprite = (spriteSrc) => {
+        const setStoredPlayerSkinKey = (skinKey) => {
             try {
                 if (typeof window === 'undefined' || !window.localStorage) {
                     return;
                 }
-                window.localStorage.setItem(playerSpriteStorageKey, spriteSrc);
+                const normalized = playerSpriteOptions[skinKey] ? skinKey : 'gray';
+                window.localStorage.setItem(playerSkinStorageKey, normalized);
             } catch (error) {
                 // Ignore storage errors (e.g., private mode)
             }
         };
-        // Determine initial sprite: stored preference or default gray
-        const storedSprite = getStoredPlayerSprite();
-        const sprite_src_mc = storedSprite || playerSpriteOptions.gray;
-        const applyPlayerSprite = (player, spriteSrc) => {
+        const applyPlayerSprite = (player, skinKey) => {
+            const spriteSrc = getPlayerSpriteSrc(skinKey);
             if (!player || !spriteSrc) return;
-            if (player.spriteData?.src === spriteSrc) return;
-            // Persist the selection to localStorage
-            setStoredPlayerSprite(spriteSrc);
+            if (player.spriteData?.src === spriteSrc) {
+                setStoredPlayerSkinKey(skinKey);
+                return;
+            }
 
             const newSpriteSheet = new Image();
             newSpriteSheet.onload = () => {
@@ -94,12 +100,14 @@ class GameLevelOutside {
                 player.frameIndex = 0;
                 player.frameCounter = 0;
                 player.resize();
+                setStoredPlayerSkinKey(skinKey);
             };
             newSpriteSheet.onerror = (error) => {
                 console.warn('Failed to load player spritesheet:', spriteSrc, error);
             };
             newSpriteSheet.src = spriteSrc;
         };
+        const sprite_src_mc = getPlayerSpriteSrc(getStoredPlayerSkinKey());
         const MC_SCALE_FACTOR = 15;
         const sprite_data_mc = {
             id: 'Knight',
@@ -561,16 +569,13 @@ class GameLevelOutside {
             id: 'Closet',
             greeting: "Need a new suit of armor?",
             src: sprite_src_closet,
-            SCALE_FACTOR: 14,
+            SCALE_FACTOR: 5,
             ANIMATION_RATE: 40,
             interactDistance: 50, // Reduce interaction distance
             pixels: {width: 895, height: 895},
-            INIT_POSITION: {x: 0.35 * width, y: 0.7 * height},
+            INIT_POSITION: {x: 0.275 * width, y: 0.7 * height},
             orientation: {rows: 1, columns: 1},
             down: {row: 0, start: 0, columns: 1},
-            left: {row: 0, start: 0, columns: 1},
-            right: {row: 0, start: 0, columns: 1},
-            up: {row: 0, start: 0, columns: 1},
             hitbox: {widthPercentage: 0.1, heightPercentage: 0.2},
             dialogues: [
                 "Pick a knight look."
@@ -604,7 +609,7 @@ class GameLevelOutside {
                             const player = this.gameEnv?.gameObjects?.find(
                                 obj => obj.constructor?.name === 'Player'
                             );
-                            applyPlayerSprite(player, playerSpriteOptions.green);
+                            applyPlayerSprite(player, 'green');
                             this.dialogueSystem.closeDialogue();
                         }
                     },
@@ -614,7 +619,7 @@ class GameLevelOutside {
                             const player = this.gameEnv?.gameObjects?.find(
                                 obj => obj.constructor?.name === 'Player'
                             );
-                            applyPlayerSprite(player, playerSpriteOptions.gray);
+                            applyPlayerSprite(player, 'gray');
                             this.dialogueSystem.closeDialogue();
                         }
                     },
@@ -624,7 +629,7 @@ class GameLevelOutside {
                             const player = this.gameEnv?.gameObjects?.find(
                                 obj => obj.constructor?.name === 'Player'
                             );
-                            applyPlayerSprite(player, playerSpriteOptions.dark);
+                            applyPlayerSprite(player, 'dark');
                             this.dialogueSystem.closeDialogue();
                         }
                     },
