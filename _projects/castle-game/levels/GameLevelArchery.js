@@ -81,7 +81,19 @@ class GameLevelArchery {
          * Represents the main controllable character (knight)
          * The player can move around the map and interact with NPCs. It can also shoot arrows.
          */
-        const sprite_src_mc = path + "/images/projects/castle-game/playerSpritesheet.png";
+        const playerSpriteStorageKey = 'castleGame.playerSprite';
+        const getStoredPlayerSprite = () => {
+            try {
+                if (typeof window === 'undefined' || !window.localStorage) {
+                    return null;
+                }
+                return window.localStorage.getItem(playerSpriteStorageKey);
+            } catch (error) {
+                return null;
+            }
+        };
+        const storedSprite = getStoredPlayerSprite();
+        const sprite_src_mc = storedSprite || path + "/images/projects/castle-game/playerSpritesheet.png";
         const MC_SCALE_FACTOR = 7;
         const sprite_data_mc = {
             id: 'Knight',

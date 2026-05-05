@@ -50,15 +50,40 @@ class GameLevelOutside {
          * Represents the main controllable character (knight)
          * The player can move around the map and interact with NPCs. It can also shoot arrows.
          */
-        const sprite_src_mc = path + "/images/projects/castle-game/grayKnight.png";
+        const playerSpriteStorageKey = 'castleGame.playerSprite';
         const playerSpriteOptions = {
             gray: path + "/images/projects/castle-game/grayKnight.png",
             green: path + "/images/projects/castle-game/greenKnight.png",
             dark: path + "/images/projects/castle-game/darkKnight.png"
         };
+        const getStoredPlayerSprite = () => {
+            try {
+                if (typeof window === 'undefined' || !window.localStorage) {
+                    return null;
+                }
+                return window.localStorage.getItem(playerSpriteStorageKey);
+            } catch (error) {
+                return null;
+            }
+        };
+        const setStoredPlayerSprite = (spriteSrc) => {
+            try {
+                if (typeof window === 'undefined' || !window.localStorage) {
+                    return;
+                }
+                window.localStorage.setItem(playerSpriteStorageKey, spriteSrc);
+            } catch (error) {
+                // Ignore storage errors (e.g., private mode)
+            }
+        };
+        // Determine initial sprite: stored preference or default gray
+        const storedSprite = getStoredPlayerSprite();
+        const sprite_src_mc = storedSprite || playerSpriteOptions.gray;
         const applyPlayerSprite = (player, spriteSrc) => {
             if (!player || !spriteSrc) return;
             if (player.spriteData?.src === spriteSrc) return;
+            // Persist the selection to localStorage
+            setStoredPlayerSprite(spriteSrc);
 
             const newSpriteSheet = new Image();
             newSpriteSheet.onload = () => {

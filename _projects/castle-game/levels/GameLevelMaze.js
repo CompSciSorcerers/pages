@@ -39,7 +39,19 @@ class GameLevelMaze {
             pixels: { height: 772, width: 1134 }
         };
 
-        const sprite_src_mc = path + "/images/projects/castle-game/playerSpritesheet.png";
+        const playerSpriteStorageKey = 'castleGame.playerSprite';
+        const getStoredPlayerSprite = () => {
+            try {
+                if (typeof window === 'undefined' || !window.localStorage) {
+                    return null;
+                }
+                return window.localStorage.getItem(playerSpriteStorageKey);
+            } catch (error) {
+                return null;
+            }
+        };
+        const storedSprite = getStoredPlayerSprite();
+        const sprite_src_mc = storedSprite || path + "/images/projects/castle-game/playerSpritesheet.png";
         const MC_SCALE_FACTOR = 20;
         const sprite_data_mc = {
             id: 'Knight',
