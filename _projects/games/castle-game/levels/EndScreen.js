@@ -14,7 +14,7 @@ export default function showEndScreen(gameEnv, filepath='/images/sorcerers/arche
 
     const overlay = document.createElement('div');
     overlay.id = 'archery-victory-overlay';
-    overlay.style.position = 'fixed';
+    overlay.style.position = 'absolute';
     overlay.style.top = '0';
     overlay.style.left = '0';
     overlay.style.width = '100%';
@@ -42,8 +42,9 @@ export default function showEndScreen(gameEnv, filepath='/images/sorcerers/arche
         e.preventDefault();
     });
 
-    // Append to body
-    try { document.body.appendChild(overlay); } catch (e) { console.warn('Failed to append victory overlay:', e); }
+    // Append to game container
+    const gameContainer = gameEnv.canvasContainer || gameEnv.container || document.body;
+    try { gameContainer.appendChild(overlay); } catch (e) { console.warn('Failed to append victory overlay:', e); }
 
     // Fallback: stop the level after a short delay
     setTimeout(() => {

@@ -20,6 +20,7 @@ function showDeathScreen(player, message="The Scythes have claimed another soul!
     const playerY = player.position.y;
     
     // Create explosion effect
+    const gameContainer = player.gameEnv.canvasContainer || player.gameEnv.container || document.body;
     for (let i = 0; i < 20; i++) {
         const particle = document.createElement('div');
         particle.style.position = 'absolute';
@@ -29,7 +30,7 @@ function showDeathScreen(player, message="The Scythes have claimed another soul!
         particle.style.left = `${playerX + player.width/2}px`;
         particle.style.top = `${playerY + player.height/2}px`;
         particle.style.zIndex = '9999';
-        document.body.appendChild(particle);
+        gameContainer.appendChild(particle);
         
         // Animate particles outward
         const angle = Math.random() * Math.PI * 2;

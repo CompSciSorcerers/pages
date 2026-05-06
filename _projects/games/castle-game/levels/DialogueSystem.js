@@ -38,8 +38,8 @@ class DialogueSystem {
     
     // Set styles for the dialogue box
     Object.assign(this.dialogueBox.style, {
-      position: "fixed",
-      bottom: "100px",
+      position: "absolute",
+      bottom: "20px",
       left: "50%",
       transform: "translateX(-50%)",
       padding: "20px",
@@ -125,8 +125,8 @@ class DialogueSystem {
     this.dialogueBox.appendChild(contentContainer);
     this.dialogueBox.appendChild(this.closeBtn);
     
-    // Add to the document
-    document.body.appendChild(this.dialogueBox);
+    // Add to the game container
+    this.gameContainer.appendChild(this.dialogueBox);
     
     // Also listen for Escape key to close dialogue
     document.addEventListener("keydown", (e) => {

@@ -85,7 +85,7 @@ export default function showEndScreen(gameEnv) {
 
     const overlay = document.createElement('div');
     overlay.id = 'archery-victory-overlay';
-    overlay.style.position = 'fixed';
+    overlay.style.position = 'absolute';
     overlay.style.top = '0';
     overlay.style.left = '0';
     overlay.style.width = '100%';
@@ -206,7 +206,8 @@ export default function showEndScreen(gameEnv) {
             transition: `opacity ${fadeInMs}ms ease-in-out`
         });
 
-        try { document.body.appendChild(fadeOverlay); } catch (err) { console.warn('Could not append fade overlay:', err); }
+        const gameContainer = gameEnv.canvasContainer || gameEnv.container || document.body;
+try { gameContainer.appendChild(fadeOverlay); } catch (err) { console.warn('Could not append fade overlay:', err); }
 
         const switchToMazeLevel = () => {
             try {
@@ -249,8 +250,9 @@ export default function showEndScreen(gameEnv) {
         e.preventDefault();
     });
 
-    // Append to body
-    try { document.body.appendChild(overlay); } catch (e) { console.warn('Failed to append victory overlay:', e); }
+    // Append to game container
+    const gameContainer = gameEnv.canvasContainer || gameEnv.container || document.body;
+    try { gameContainer.appendChild(overlay); } catch (e) { console.warn('Failed to append victory overlay:', e); }
 
 
     // Fallback: stop the level after a short delay
