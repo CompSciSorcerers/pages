@@ -149,13 +149,8 @@ class GameLevelMaze {
 
                                 this.destroy();
                             }
-                        },
-                        {
-                            text: "no i am scared and want to leave",
-                            action: () => {
-                                this.dialogueSystem.closeDialogue();
-                            }
-                        }]);
+                        }
+                    ]);
 
 
                 } catch (error) {

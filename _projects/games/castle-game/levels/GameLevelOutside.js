@@ -543,12 +543,6 @@ class GameLevelOutside {
                                 });
                             }
                         }
-                    },
-                    {
-                        text: "Nevermind",
-                        action: () => {
-                            this.dialogueSystem.closeDialogue();
-                        }
                     }
                 ]);
             }
@@ -596,7 +590,7 @@ class GameLevelOutside {
                 }
 
                 this.dialogueSystem.showDialogue(
-                    "Choose your armor style:",
+                    "Pick a knight look.",
                     "Closet",
                     this.spriteData.src
                 );
@@ -630,12 +624,6 @@ class GameLevelOutside {
                                 obj => obj.constructor?.name === 'Player'
                             );
                             applyPlayerSprite(player, 'dark');
-                            this.dialogueSystem.closeDialogue();
-                        }
-                    },
-                    {
-                        text: "Nevermind",
-                        action: () => {
                             this.dialogueSystem.closeDialogue();
                         }
                     }

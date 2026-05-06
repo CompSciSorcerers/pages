@@ -304,12 +304,6 @@ class GameLevelArchery {
                                 window.archeryGameStarted = true;
                                 window.timeStarted = Date.now() / 1000.0;
                             }
-                        },
-                        {
-                            text: "Nevermind",
-                            action: () => {
-                                this.dialogueSystem.closeDialogue();
-                            }
                         }
                     ]);
                 }
