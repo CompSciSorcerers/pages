@@ -7,7 +7,7 @@ breadcrumb: true
 permalink: /castle-game/adoptions
 ---
 
-Our team has taken inspiration from other teams (even in period 5!) and their lessons to make improvements to our game.
+Our team has taken inspiration from other teams (including those in period five) and their lessons to make improvements to our game.
 
 ## 1. Character Chase (Team Ocean)
 
@@ -78,3 +78,8 @@ To add more customizability and UX to our game, we added a closet to the outside
 However, there was an issue: the selected sprite wouldn't persist across levels, meaning that the spritesheet would reset when going from one level to the next. To solve this, we saved the selected spritesheet in **local storage**. This has the added advantage of persisting spritesheet selections across reloads as well.
 
 <img src="/images/projects/castle-game/docs/localstorage-sprite.png" alt="Spritesheet local storage demo"/>
+
+## 6. Collision Mechanics (Triple Chocolate Banana Swirl from P5)
+
+We modified the way some collisions between the player and objects work to suit our game. For example, in our maze game, we extended the `Barrier` class to create `DeathBarrier`, which modifies what happens upon a collision to kill and respawn the player.
+
