@@ -302,7 +302,8 @@ class Interceptor extends Character {
             document.head.appendChild(style);
         }
 
-        document.body.appendChild(effect);
+        const gameContainer = this.gameEnv.canvasContainer || this.gameEnv.container || document.body;
+        gameContainer.appendChild(effect);
 
         // Remove effect after animation
         setTimeout(() => {
@@ -347,7 +348,8 @@ class Interceptor extends Character {
             document.head.appendChild(style);
         }
 
-        document.body.appendChild(effect);
+        const gameContainer = this.gameEnv.canvasContainer || this.gameEnv.container || document.body;
+        gameContainer.appendChild(effect);
 
         // Remove effect after animation
         setTimeout(() => {
@@ -395,7 +397,8 @@ class Interceptor extends Character {
             document.head.appendChild(style);
         }
         
-        document.body.appendChild(trail);
+        const gameContainer = this.gameEnv.canvasContainer || this.gameEnv.container || document.body;
+        gameContainer.appendChild(trail);
         this.trails.push(trail);
         
         // Remove trail particle after animation

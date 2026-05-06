@@ -355,7 +355,8 @@ class GameLevelFortress {
             );
             npcs.forEach((npc, index) => {
                 if (npc.id === 'King') {
-                    npc.dialogueSystem = new DialogueSystem();
+                    const gameContainer = this.gameEnv.canvasContainer || this.gameEnv.container || document.body;
+                    npc.dialogueSystem = new DialogueSystem({ gameContainer });
                 }
             });
         }, 100);
@@ -738,8 +739,8 @@ class GameLevelFortress {
         // Create timer element
         this.timerElement = document.createElement('div');
         this.timerElement.id = 'game-timer';
-        this.timerElement.style.position = 'fixed';
-        this.timerElement.style.top = '60px';
+        this.timerElement.style.position = 'absolute';
+        this.timerElement.style.top = '20px';
         this.timerElement.style.left = '20px';
         this.timerElement.style.color = '#ffffff';
         this.timerElement.style.fontSize = '24px';
@@ -753,8 +754,8 @@ class GameLevelFortress {
         this.timerElement.style.padding = '5px 10px';
         this.timerElement.style.borderRadius = '5px';
 
-        // Add to document body for better visibility
-        document.body.appendChild(this.timerElement);
+        // Add to game container for proper positioning
+        this.gameEnv.container.appendChild(this.timerElement);
 
         // Initial timer display
         this.updateTimerDisplay();
