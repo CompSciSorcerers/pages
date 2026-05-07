@@ -24,6 +24,7 @@ class SpriteSheetCoin extends Coin {
 		this.isImageLoaded = false;
 		this.spriteFrames = data?.spriteFrames || { rows: 1, columns: 1, frameIndex: 0 };
 		this.fallbackToCircle = data?.fallbackToCircle !== false; // Default true
+		this.spawnLocations = Array.isArray(data?.spawnLocations) ? data.spawnLocations : null;
 		
 		// Load the image if provided
 		if (this.spriteImagePath) {
@@ -121,6 +122,53 @@ class SpriteSheetCoin extends Coin {
 		this.ctx.strokeStyle = '#B8860B'; // Dark gold
 		this.ctx.lineWidth = 2;
 		this.ctx.stroke();
+	}
+
+	/**
+	 * Teleport to a new position and swap to a new frame for visual variety.
+	 */
+	randomizePosition() {
+		let newX;
+		let newY;
+		let spawnLocation = null;
+
+		if (Array.isArray(this.spawnLocations) && this.spawnLocations.length > 0) {
+			const index = Math.floor(Math.random() * this.spawnLocations.length);
+			spawnLocation = this.spawnLocations[index];
+		}
+
+		if (spawnLocation && Number.isFinite(spawnLocation.x) && Number.isFinite(spawnLocation.y)) {
+			const isNormalized = spawnLocation.x >= 0 && spawnLocation.x <= 1
+				&& spawnLocation.y >= 0 && spawnLocation.y <= 1;
+			newX = isNormalized ? spawnLocation.x * this.gameEnv.innerWidth : spawnLocation.x;
+			newY = isNormalized ? spawnLocation.y * this.gameEnv.innerHeight : spawnLocation.y;
+		} else {
+			const randX = Math.random() * 0.8 + 0.1;
+			const randY = Math.random() * 0.8 + 0.1;
+			newX = randX * this.gameEnv.innerWidth;
+			newY = randY * this.gameEnv.innerHeight;
+		}
+
+		this.position.x = newX;
+		this.position.y = newY;
+		this.resize();
+		this.applyTeleportAppearance();
+	}
+
+	applyTeleportAppearance() {
+		const rows = this.spriteFrames?.rows ?? 1;
+		const columns = this.spriteFrames?.columns ?? 1;
+		const totalFrames = rows * columns;
+		if (totalFrames <= 1) return;
+
+		const currentFrame = Number(this.spriteFrames?.frameIndex ?? 0);
+		let nextFrame = currentFrame;
+		let guard = 0;
+		while (nextFrame === currentFrame && guard < 5) {
+			nextFrame = Math.floor(Math.random() * totalFrames);
+			guard += 1;
+		}
+		this.spriteFrames.frameIndex = nextFrame;
 	}
 
 	/**
