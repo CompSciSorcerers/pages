@@ -5,6 +5,7 @@ import Npc from '@assets/js/GameEnginev1.1/essentials/Npc.js';
 import AiNpc from '@assets/js/GameEnginev1.1/essentials/AiNpc.js';
 import GameLevelArchery from './GameLevelArchery.js';
 import SpriteSheetCoin from './SpriteSheetCoin.js';
+import SplineBarrier from './SplineBarrier.js';
 
 /**
  * GameLevelOutside
@@ -37,11 +38,11 @@ class GameLevelOutside {
         const path = gameEnv.path;
 
         // --- Floor ---
-        const image_src_floor = path + "/images/projects/castle-game/castleOutside.png";
+        const image_src_floor = path + "/images/projects/castle-game/castleOutsideV2.png";
         const image_data_floor = {
             name: 'floor',
             src: image_src_floor,
-            pixels: { height: 755, width: 1206 }
+            pixels: { height: 989, width: 1582 }
         };
 
         /**
@@ -144,7 +145,8 @@ class GameLevelOutside {
             SCALE_FACTOR: 7,
             ANIMATION_RATE: 40,
             pixels: { height: 864, width: 468 },
-            INIT_POSITION: { x: width * 0.57, y: height * 0.5 },
+            INIT_POSITION: { x: 1259/1667 * width, y: 430/1137 * height },    
+            interactDistance: 20,        
             orientation: { rows: 4, columns: 3 },
             // LOCK: use ONLY the 4th row (index 3) for every direction/state
             down: { row: 0, start: 0, columns: 3 },
@@ -555,7 +557,15 @@ class GameLevelOutside {
             SCALE_FACTOR: 30,
             value: 5,
             spriteImagePath: path + '/images/projects/castle-game/gems.png',
-            spriteFrames: { rows: 2, columns: 4, frameIndex: Math.floor(Math.random() * 8) }
+            spriteFrames: { rows: 2, columns: 4, frameIndex: Math.floor(Math.random() * 8) },
+            spawnLocations: [
+                { x: 340/1110*width, y: 447/760*height },
+                { x: 490/1110*width, y: 510/760*height },
+                { x: 481/1110*width, y: 594/760*height },
+                { x: (1110-340)/1110*width, y: 447/760*height },
+                { x: (1110-490)/1110*width, y: 510/760*height },
+                { x: (1110-481)/1110*width, y: 594/760*height }
+            ]
         }
 
         const sprite_src_closet = path + "/images/projects/castle-game/closet.png";
@@ -563,11 +573,11 @@ class GameLevelOutside {
             id: 'Closet',
             greeting: "Need a new suit of armor?",
             src: sprite_src_closet,
-            SCALE_FACTOR: 5,
+            SCALE_FACTOR: 6,
             ANIMATION_RATE: 40,
-            interactDistance: 50, // Reduce interaction distance
+            interactDistance: 20, // Reduce interaction distance
             pixels: { width: 895, height: 895 },
-            INIT_POSITION: { x: 0.275 * width, y: 0.7 * height },
+            INIT_POSITION: { x: 250/1667 * width, y: 420/1137 * height },
             orientation: { rows: 1, columns: 1 },
             down: { row: 0, start: 0, columns: 1 },
             hitbox: { widthPercentage: 0.1, heightPercentage: 0.2 },
@@ -631,13 +641,60 @@ class GameLevelOutside {
             }
         };
 
+        const left_wall = {
+            id: 'left-wall-1',
+            greeting: "This is a curved barrier, you cannot pass through it!",
+            splinePoints: [
+                { x: 318/1110*width, y: 749/760*height },
+                { x: 435/1110*width, y: 587/760*height },
+                { x: 293/1110*width, y: 497/760*height },
+                { x: 273/1110*width, y: 436/760*height },
+                { x: 142/1110*width, y: 402/760*height },
+                { x: 98/1110*width, y: 332/760*height },
+                { x: 233/1110*width, y: 246/760*height },
+                { x: 342/1110*width, y: 302/760*height },
+                { x: 355/1110*width, y: 361/760*height },
+                { x: 447/1110*width, y: 435/760*height },
+                { x: 506/1110*width, y: 327/760*height }
+            ],
+            // Optional: Add visual properties if you want to render the barrier
+            visible: false,
+            color: '#8B4513',  // Brown color for wooden barrier
+            lineWidth: 5        // Line thickness for visual representation
+        };
+
+        const right_wall = {
+            id: 'right-wall-1',
+            greeting: "This is a curved barrier, you cannot pass through it!",
+            splinePoints: [
+                // all points mirrored on the right half of the screen compared to the left wall
+                { x: (1110-318)/1110*width, y: 749/760*height },
+                { x: (1110-435)/1110*width, y: 587/760*height },
+                { x: (1110-293)/1110*width, y: 497/760*height },
+                { x: (1110-273)/1110*width, y: 436/760*height },
+                { x: (1110-142)/1110*width, y: 402/760*height },
+                { x: (1110-98)/1110*width, y: 332/760*height },
+                { x: (1110-233)/1110*width, y: 246/760*height },
+                { x: (1110-342)/1110*width, y: 302/760*height },
+                { x: (1110-355)/1110*width, y: 361/760*height },
+                { x: (1110-447)/1110*width, y: 435/760*height },
+                { x: (1110-506)/1110*width, y: 327/760*height }
+            ],
+            // Optional: Add visual properties if you want to render the barrier
+            visible: false,
+            color: '#8B4513',  // Brown color for wooden barrier
+            lineWidth: 5        // Line thickness for visual representation
+        };
+
         this.classes = [
             { class: GameEnvBackground, data: image_data_floor },
             { class: Player, data: sprite_data_mc },
             { class: Npc, data: sprite_data_darkKnight },
             { class: Npc, data: sir_morty_data },
             { class: Npc, data: sprite_data_closet },
-            { class: SpriteSheetCoin, data: gem_data }
+            { class: SpriteSheetCoin, data: gem_data },
+            { class: SplineBarrier, data: left_wall },
+            { class: SplineBarrier, data: right_wall }
         ];
     }
 }
