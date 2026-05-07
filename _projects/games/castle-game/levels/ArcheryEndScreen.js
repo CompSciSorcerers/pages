@@ -98,7 +98,7 @@ export default function showEndScreen(gameEnv) {
 
     const img = document.createElement('img');
     // use previously computed `path` variable
-    img.src = path + '/images/sorcerers/archeryWinScreen.png';
+    img.src = path + '/images/projects/castle-game/archeryWinScreen.png';
     img.alt = 'Victory';
     img.style.maxWidth = '95%';
     img.style.maxHeight = '95%';
@@ -109,10 +109,10 @@ export default function showEndScreen(gameEnv) {
     timeLabel.textContent = `Time taken: ${formattedTime}`;
     timeLabel.style.position = 'absolute';
     timeLabel.style.left = '50%';
-    timeLabel.style.bottom = '30%';
+    timeLabel.style.bottom = '40%';
     timeLabel.style.transform = 'translateX(-50%)';
     timeLabel.style.color = '#ffffff';
-    timeLabel.style.fontSize = '1.5rem';
+    timeLabel.style.fontSize = '0.75rem';
     timeLabel.style.fontWeight = '700';
     timeLabel.style.fontFamily = "'Press Start 2P', monospace";
     timeLabel.style.letterSpacing = '0.08em';
@@ -146,10 +146,10 @@ export default function showEndScreen(gameEnv) {
     commentaryLabel.textContent = commentary;
     commentaryLabel.style.position = 'absolute';
     commentaryLabel.style.left = '50%';
-    commentaryLabel.style.bottom = '20%';
+    commentaryLabel.style.bottom = '35%';
     commentaryLabel.style.transform = 'translateX(-50%)';
     commentaryLabel.style.color = '#ffe354';
-    commentaryLabel.style.fontSize = '1.1rem';
+    commentaryLabel.style.fontSize = '0.55rem';
     commentaryLabel.style.fontWeight = '700';
     commentaryLabel.style.fontFamily = "'Press Start 2P', monospace";
     commentaryLabel.style.letterSpacing = '0.08em';
