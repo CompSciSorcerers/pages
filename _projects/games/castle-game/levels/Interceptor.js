@@ -73,7 +73,8 @@ class Interceptor extends Character {
     findNearestScythe() {
         // Find all scythe objects, but exclude special scythes
         const scythes = this.gameEnv.gameObjects.filter(obj => 
-            obj.constructor.name === 'Scythe' && !obj.isSpecial
+            (obj.constructor.name === 'Scythe' && !obj.isSpecial) ||
+            (obj.constructor.name === 'UnifiedScythe' && obj.scytheType === 'regular' && obj.canBeIntercepted())
         );
         
         if (scythes.length === 0) {
@@ -144,7 +145,8 @@ class Interceptor extends Character {
         
         // Find all scythe objects, but exclude special scythes
         const scythes = this.gameEnv.gameObjects.filter(obj => 
-            obj.constructor.name === 'Scythe' && !obj.isSpecial
+            (obj.constructor.name === 'Scythe' && !obj.isSpecial) ||
+            (obj.constructor.name === 'UnifiedScythe' && obj.scytheType === 'regular' && obj.canBeIntercepted())
         );
         
         if (scythes.length === 0) return;
@@ -204,7 +206,8 @@ class Interceptor extends Character {
 
         // Find all scythe objects, but exclude special scythes
         const scythes = this.gameEnv.gameObjects.filter(obj => 
-            obj.constructor.name === 'Scythe' && !obj.isSpecial
+            (obj.constructor.name === 'Scythe' && !obj.isSpecial) ||
+            (obj.constructor.name === 'UnifiedScythe' && obj.scytheType === 'regular' && obj.canBeIntercepted())
         );
 
         if (scythes.length === 0) return;

@@ -3,11 +3,7 @@ import Player from "@assets/js/GameEnginev1.1/essentials/Player.js";
 import Npc from '@assets/js/GameEnginev1.1/essentials/Npc.js';
 import Barrier from '@assets/js/GameEnginev1.1/essentials/Barrier.js';
 import DialogueSystem from './DialogueSystem.js';
-import Scythe from './Scythe.js';
-import SpecialScythe from './SpecialScythe.js';
-import UltraScythe from './UltraScythe.js';
-import SuperScythe from './SuperScythe.js';
-import BossScythe from './BossScythe.js';
+import UnifiedScythe from './UnifiedScythe.js';
 import Interceptor from './Interceptor.js';
 import showEndScreen from "./EndScreen.js";
 import Leaderboard from "@assets/js/GameEnginev1.1/essentials/Leaderboard.js";
@@ -592,7 +588,7 @@ class GameLevelFortress {
             const spawnY = -200; // Spawn at top of screen (accounting for much larger size)
 
             // Create new SuperScythe
-            const superScythe = new SuperScythe(this.gameEnv, spawnX, spawnY);
+            const superScythe = new UnifiedScythe(this.gameEnv, 'super', spawnX, spawnY);
 
             // Add to game objects and container
             this.gameEnv.gameObjects.push(superScythe);
@@ -610,7 +606,7 @@ class GameLevelFortress {
             const spawnY = -150; // Spawn at top of screen (accounting for larger size)
 
             // Create new UltraScythe
-            const ultraScythe = new UltraScythe(this.gameEnv, spawnX, spawnY);
+            const ultraScythe = new UnifiedScythe(this.gameEnv, 'ultra', spawnX, spawnY);
 
             // Add to game objects and container
             this.gameEnv.gameObjects.push(ultraScythe);
@@ -628,7 +624,7 @@ class GameLevelFortress {
             const spawnY = -100; // Spawn at top of screen (accounting for larger size)
 
             // Create new SpecialScythe
-            const specialScythe = new SpecialScythe(this.gameEnv);
+            const specialScythe = new UnifiedScythe(this.gameEnv, 'special');
 
             // Add to game objects and container
             this.gameEnv.gameObjects.push(specialScythe);
@@ -646,7 +642,7 @@ class GameLevelFortress {
             const spawnY = -300; // Spawn at top of screen (accounting for massive size)
 
             // Create new BossScythe
-            const bossScythe = new BossScythe(this.gameEnv, spawnX, spawnY);
+            const bossScythe = new UnifiedScythe(this.gameEnv, 'boss', spawnX, spawnY);
 
             // Add to game objects and container
             this.gameEnv.gameObjects.push(bossScythe);
@@ -706,7 +702,7 @@ class GameLevelFortress {
      * @returns {void} - Modifies game state by adding new projectile
      */
     spawnScythe() {
-        const scythe = new Scythe(this.gameEnv); // Create with environment context
+        const scythe = new UnifiedScythe(this.gameEnv, 'regular'); // Create regular scythe
 
         // Add to active game objects - enables update/render cycle participation
         this.gameEnv.gameObjects.push(scythe);
@@ -722,7 +718,7 @@ class GameLevelFortress {
      * @returns {void} - Modifies game state by adding new special projectile
      */
     spawnSpecialScythe() {
-        const specialScythe = new SpecialScythe(this.gameEnv); // Create with environment context
+        const specialScythe = new UnifiedScythe(this.gameEnv, 'special'); // Create special scythe
 
         // Add to active game objects - enables update/render cycle participation
         this.gameEnv.gameObjects.push(specialScythe);
