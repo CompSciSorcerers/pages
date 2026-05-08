@@ -343,7 +343,7 @@ class UnifiedScythe extends Enemy {
 
     checkRegularScytheCollisions() {
         const regularScythes = this.gameEnv.gameObjects.filter(obj =>
-            obj.constructor.name === 'Scythe' && !obj.isSpecial && obj.constructor.name !== 'UnifiedScythe'
+            obj.constructor.name === 'UnifiedScythe' && obj.scytheType === 'regular'
         );
 
         regularScythes.forEach(regularScythe => {
@@ -368,7 +368,7 @@ class UnifiedScythe extends Enemy {
 
     checkSpecialScytheCollisions() {
         const otherSpecialScythes = this.gameEnv.gameObjects.filter(obj =>
-            (obj.constructor.name === 'SpecialScythe' || (obj.constructor.name === 'UnifiedScythe' && obj.scytheType === 'special')) &&
+            obj.constructor.name === 'UnifiedScythe' && obj.scytheType === 'special' &&
             obj !== this && !obj.revComplete
         );
 
@@ -409,7 +409,7 @@ class UnifiedScythe extends Enemy {
         if (this.hasFused) return;
 
         const otherUltraScythes = this.gameEnv.gameObjects.filter(obj =>
-            (obj.constructor.name === 'UltraScythe' || (obj.constructor.name === 'UnifiedScythe' && obj.scytheType === 'ultra')) &&
+            obj.constructor.name === 'UnifiedScythe' && obj.scytheType === 'ultra' &&
             obj !== this && !obj.hasFused && !obj.revComplete
         );
 
@@ -451,7 +451,7 @@ class UnifiedScythe extends Enemy {
         if (this.hasFused) return;
 
         const otherSuperScythes = this.gameEnv.gameObjects.filter(obj =>
-            (obj.constructor.name === 'SuperScythe' || (obj.constructor.name === 'UnifiedScythe' && obj.scytheType === 'super')) &&
+            obj.constructor.name === 'UnifiedScythe' && obj.scytheType === 'super' &&
             obj !== this && !obj.hasFused && !obj.revComplete
         );
 
@@ -492,21 +492,13 @@ class UnifiedScythe extends Enemy {
     autoDestroyNearbyScythes() {
         if (!this.autoDestroyRadius) return;
 
-        // Find all scythes (including legacy and unified)
+        // Find all scythes (only unified scythes now)
         const allScythes = this.gameEnv.gameObjects.filter(obj => {
             if (obj === this || obj.revComplete) return false;
 
             if (obj.constructor.name === 'UnifiedScythe') {
                 // Don't destroy scythes of equal or higher level
                 return this.isHigherLevelThan(obj.scytheType);
-            } else if (obj.constructor.name === 'Scythe' && !obj.isSpecial) {
-                return true; // Destroy regular scythes
-            } else if (obj.constructor.name === 'SpecialScythe' && !obj.isUltra) {
-                return this.scytheType !== 'special'; // Ultra+ destroy special
-            } else if (obj.constructor.name === 'UltraScythe' && !obj.isSuper) {
-                return this.scytheType === 'super' || this.scytheType === 'boss'; // Super+ destroy ultra
-            } else if (obj.constructor.name === 'SuperScythe' && !obj.isBoss) {
-                return this.scytheType === 'boss'; // Only boss destroys super
             }
             return false;
         });
