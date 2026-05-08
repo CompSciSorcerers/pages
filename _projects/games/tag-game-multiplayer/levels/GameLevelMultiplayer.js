@@ -282,6 +282,64 @@ class NetworkSynchronizer extends GameObject {
     destroy() {}
 }
 
+class RandomTeleportController extends GameObject {
+    constructor(data = null, gameEnv = null) {
+        super(gameEnv);
+        this.playerInstance = null;
+        this.intervalMs = data?.intervalMs ?? 250;
+        this.edgePadding = data?.edgePadding ?? 40;
+        this.lastTeleport = 0;
+        this._keyboardDisabled = false;
+    }
+
+    _disableKeyboard(player) {
+        if (this._keyboardDisabled || !player) return;
+        player.keypress = {};
+        player.pressedKeys = {};
+        if (player.hideTouchControls) {
+            player.hideTouchControls();
+        }
+        this._keyboardDisabled = true;
+    }
+
+    update() {
+        if (!this.playerInstance) {
+            this.playerInstance = this.gameEnv?.gameObjects?.find(
+                obj => obj instanceof Player
+            );
+        }
+        if (!this.playerInstance) return;
+
+        this._disableKeyboard(this.playerInstance);
+
+        const now = Date.now();
+        if (now - this.lastTeleport < this.intervalMs) return;
+
+        const width = this.gameEnv?.innerWidth ?? 0;
+        const height = this.gameEnv?.innerHeight ?? 0;
+        const pw = this.playerInstance.width ?? 40;
+        const ph = this.playerInstance.height ?? 40;
+        const maxX = Math.max(0, width - pw - this.edgePadding);
+        const maxY = Math.max(0, height - ph - this.edgePadding);
+        const minX = Math.min(this.edgePadding, maxX);
+        const minY = Math.min(this.edgePadding, maxY);
+
+        const x = minX + Math.random() * Math.max(0, maxX - minX);
+        const y = minY + Math.random() * Math.max(0, maxY - minY);
+
+        this.playerInstance.position.x = x;
+        this.playerInstance.position.y = y;
+        this.playerInstance.velocity.x = 0;
+        this.playerInstance.velocity.y = 0;
+
+        this.lastTeleport = now;
+    }
+
+    draw() {}
+    resize() {}
+    destroy() {}
+}
+
 class GameLevelMultiplayer {
     constructor(gameEnv) {
 
@@ -629,6 +687,7 @@ class GameLevelMultiplayer {
             { class: GameEnvBackground, data: bgData },
             { class: SplineBarrier,     data: arenaBarrierData },
             { class: Player,            data: playerData },
+            { class: RandomTeleportController, data: { intervalMs: 250, edgePadding: 40 } },
             { class: NetworkSynchronizer,   data: { socket } },
             { class: TagCollisionDetector,  data: { socket, remotePlayers, tagState, myIdRef } },
             { class: RemotePlayerVisualizer, data: { remotePlayers, tagState, myIdRef } },
