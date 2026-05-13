@@ -3,14 +3,75 @@ import Player from '@assets/js/GameEnginev1.1/essentials/Player.js';
 import Npc from '@assets/js/GameEnginev1.1/essentials/Npc.js';
 import Barrier from '@assets/js/GameEnginev1.1/essentials/Barrier.js';
 import Collectible from '@assets/js/GameEnginev1.1/essentials/Collectible.js';
+import GameLevelBasketball from './GameLevelBasketball.js';
+import KirbyLevelMusic from './KirbyLevelMusic.js';
 
 console.log('GameLevelSeek.js loaded:', new Date().toISOString());
+
+class SeekParallaxBackground extends GameEnvBackground {
+    constructor(data = null, gameEnv = null) {
+        super(data, gameEnv);
+        this.layers = (data.layers || []).map(layer => ({
+            ...layer,
+            particles: this.createParticles(layer)
+        }));
+    }
+
+    createParticles(layer) {
+        const width = this.gameEnv.innerWidth;
+        const height = this.gameEnv.innerHeight;
+        const count = layer.count || 40;
+
+        return Array.from({ length: count }, (_, index) => {
+            const seed = index + 1;
+            return {
+                x: (seed * 97) % width,
+                y: (seed * 193) % height,
+                radius: layer.radius || 2,
+                speed: layer.speed || 1,
+                color: layer.color || '#ffffff',
+                alpha: layer.alpha || 0.8
+            };
+        });
+    }
+
+    draw() {
+        super.draw();
+
+        const ctx = this.gameEnv.ctx;
+        const width = this.gameEnv.innerWidth;
+        const height = this.gameEnv.innerHeight;
+
+        this.layers.forEach(layer => {
+            layer.particles.forEach(particle => {
+                particle.y = (particle.y + particle.speed) % height;
+
+                ctx.save();
+                ctx.globalAlpha = particle.alpha;
+                ctx.fillStyle = particle.color;
+                ctx.beginPath();
+                ctx.arc(particle.x % width, particle.y, particle.radius, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            });
+        });
+    }
+
+    resize() {
+        this.layers = this.layers.map(layer => ({
+            ...layer,
+            particles: this.createParticles(layer)
+        }));
+        this.draw();
+    }
+}
 
 class GameLevelSeek {
     constructor(gameEnv) {
         this.gameEnv = gameEnv;
         this.levelCompleted = false;
         this.completionTriggered = false;
+        this.basketballTransitionStarted = false;
         this.spriteSwapScrollTriggered = false;
 
         const path = gameEnv.path;
@@ -21,7 +82,23 @@ class GameLevelSeek {
         const bgData = {
             name: "custom_bg",
             src: path + "/images/projects/characters/tagplayground.png",
-            pixels: { height: 400, width: 560 }
+            pixels: { height: 400, width: 560 },
+            layers: [
+                {
+                    count: 55,
+                    radius: 1,
+                    speed: 0.1,
+                    color: '#d9f2ff',
+                    alpha: 0.55
+                },
+                {
+                    count: 28,
+                    radius: 2,
+                    speed: 2.5,
+                    color: '#ffffff',
+                    alpha: 0.75
+                }
+            ]
         };
 
         // ---------------- PLAYER ----------------
@@ -376,7 +453,7 @@ class GameLevelSeek {
 
         // ---------------- GAME OBJECTS ----------------
         this.classes = [
-            { class: GameEnvBackground, data: bgData },
+            { class: SeekParallaxBackground, data: bgData },
             { class: Player, data: playerData },
             { class: Barrier, data: { id: 'b1', x: 100, y: 100, width: 50, height: 50 } }
         ];
@@ -392,6 +469,12 @@ class GameLevelSeek {
     initialize() {
         this.levelCompleted = false;
         this.completionTriggered = false;
+        if (!this.levelMusic) {
+            this.levelMusic = new KirbyLevelMusic({
+                levelName: 'Seek',
+                buttonId: 'kirby-seek-music-toggle'
+            }).attach();
+        }
 
         if (!this.spriteSwapScrollTriggered) {
             this.spriteSwapScrollTriggered = true;
@@ -423,16 +506,40 @@ class GameLevelSeek {
                 console.warn('Failed to emit seek completion event:', err);
             }
 
-            const level = this.gameEnv?.gameControl?.currentLevel;
-            if (level) {
-                setTimeout(() => {
-                    level.continue = false;
-                }, 350);
-            }
+            this.transitionToBasketball();
         }
     }
 
+    transitionToBasketball() {
+        if (this.basketballTransitionStarted) return;
+        this.basketballTransitionStarted = true;
+
+        const primaryGame = this.gameEnv?.gameControl;
+        const topGame = primaryGame?.parentControl || primaryGame;
+        if (!topGame?.transitionToLevel) {
+            console.warn('Seek could not transition to Basketball because the game control chain is missing.');
+            return;
+        }
+
+        const basketballIndex = Array.isArray(topGame.levelClasses)
+            ? topGame.levelClasses.findIndex((LevelClass) => LevelClass === GameLevelBasketball)
+            : -1;
+
+        if (basketballIndex >= 0) {
+            topGame.currentLevelIndex = basketballIndex;
+        } else {
+            topGame.levelClasses = [GameLevelBasketball];
+            topGame.currentLevelIndex = 0;
+        }
+
+        topGame.isPaused = false;
+        topGame.transitionToLevel();
+    }
+
     destroy() {
+        this.levelMusic?.destroy?.();
+        this.levelMusic = null;
+
         if (this.menuId) {
             const menu = document.getElementById(this.menuId);
             if (menu) menu.remove();
