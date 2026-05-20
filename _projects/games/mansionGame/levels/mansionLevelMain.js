@@ -3,7 +3,6 @@ import GamEnvBackground from '@assets/js/GameEnginev1.1/essentials/GameEnvBackgr
 import Player from '@assets/js/GameEnginev1.1/essentials/Player.js';
 import Npc from '@assets/js/GameEnginev1.1/essentials/Npc.js';
 import DialogueSystem from '@assets/js/GameEnginev1.1/essentials/DialogueSystem.js';
-// import GameControl from '../MansionLogic/GameControl.js';
 import GameLevel1 from './mansionLevel1.js';
 import GameLevel2 from './mansionLevel2.js';
 import GameLevel3 from './mansionLevel3.js';

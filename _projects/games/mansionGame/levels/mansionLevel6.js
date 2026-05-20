@@ -351,12 +351,16 @@ class MansionLevel6 {
                                             gameControl.currentLevel.destroy();
                                             
                                             // Force cleanup of any remaining canvases
-                                            const gameContainer = document.getElementById('gameContainer');
-                                            const oldCanvases = gameContainer.querySelectorAll('canvas:not(#gameCanvas)');
-                                            oldCanvases.forEach(canvas => {
-                                                console.log("Removing old canvas:", canvas.id);
-                                                canvas.parentNode.removeChild(canvas);
-                                            });
+                                            const gameContainer = gameControl.gameContainer || document.getElementById('gameContainer');
+                                            if (gameContainer && gameContainer.querySelectorAll) {
+                                                const oldCanvases = gameContainer.querySelectorAll('canvas:not(#gameCanvas)');
+                                                oldCanvases.forEach(canvas => {
+                                                    console.log("Removing old canvas:", canvas.id);
+                                                    canvas.parentNode.removeChild(canvas);
+                                                });
+                                            } else {
+                                                console.warn('gameContainer not found; skipping canvas cleanup');
+                                            }
                                         }
                                         
                                         console.log("Setting up battle room level...");

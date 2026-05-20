@@ -2,7 +2,6 @@
 import GameEnvBackground from '@assets/js/GameEnginev1.1/essentials/GameEnvBackground.js';
 import Player from '@assets/js/GameEnginev1.1/essentials/Player.js';
 import Enemy from '@assets/js/GameEnginev1.1/essentials/Enemy.js';
-import GameControl from './GameControl.js';
 import Character from '@assets/js/GameEnginev1.1/essentials/Character.js';
 import Npc from '@assets/js/GameEnginev1.1/essentials/Npc.js';
 import DialogueSystem from '@assets/js/GameEnginev1.1/essentials/DialogueSystem.js';

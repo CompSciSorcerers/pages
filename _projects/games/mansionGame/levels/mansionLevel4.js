@@ -5,9 +5,9 @@ import GameObject from '@assets/js/GameEnginev1.1/essentials/GameObject.js';
 import DialogueSystem from '@assets/js/GameEnginev1.1/essentials/DialogueSystem.js';
 
 //Import custom classes from select files
-import Barrier from './CustomGameClasses/Barrier.js';
-import BlackjackGameManager from './CustomGameClasses/Blackjack.js';
-import TriggerZone from './CustomGameClasses/TriggerZone.js';
+import Barrier from './Barrier.js';
+import BlackjackGameManager from './Blackjack.js';
+import TriggerZone from './TriggerZone.js';
 
 class MansionLevel4 {
     constructor(gameEnv) {
